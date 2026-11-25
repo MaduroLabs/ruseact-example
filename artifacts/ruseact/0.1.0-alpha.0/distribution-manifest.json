@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "repository": "MaduroLabs/ruseact",
+  "sourceCommit": "1cd9a19200d3faea2d3f84f5a162a2e7b8e3c3d5",
+  "sourceTree": {
+    "status": "clean",
+    "changedPaths": [],
+    "note": "Generated from a clean source tree."
+  },
+  "packageVersion": "0.1.0-alpha.0",
+  "supportedTemplateProtocols": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "toolchain": {
+    "node": "v22.23.3",
+    "os": "linux x64",
+    "pnpm": "12.16.1",
+    "rust": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)",
+    "typescript": "5.9.3",
+    "wasmBindgen": "wasm-bindgen 0.2.130",
+    "wasmTarget": "wasm32-unknown-unknown"
+  },
+  "wasm": {
+    "package": "ruseact",
+    "targets": [
+      "nodejs",
+      "web"
+    ],
+    "loaderSubpaths": [
+      "ruseact/wasm/node",
+      "ruseact/wasm/web"
+    ]
+  },
+  "packages": [
+    {
+      "name": "ruseact",
+      "version": "0.1.0-alpha.0",
+      "file": "artifacts/ruseact-0.1.0-alpha.0.tgz",
+      "bytes": 78248,
+      "sha256": "baa47209ece2a943f3990eff4a0e4ca527c84a88c3fd0124cae0d0b73b3bb0c2",
+      "unpackedBytes": 308130,
+      "contents": {
+        "javascriptBytes": 55536,
+        "wasmBytes": 188108,
+        "declarationBytes": 19195,
+        "sourceMapBytes": 44626
+      }
+    },
+    {
+      "name": "ruseact-dom",
+      "version": "0.1.0-alpha.0",
+      "file": "artifacts/ruseact-dom-0.1.0-alpha.0.tgz",
+      "bytes": 74898,
+      "sha256": "ab799f42890ddd5dcd313af27fd71a25caf9be8d96da1889f86601cac8073296",
+      "unpackedBytes": 438766,
+      "contents": {
+        "javascriptBytes": 133479,
+        "wasmBytes": 0,
+        "declarationBytes": 18778,
+        "sourceMapBytes": 286062
+      }
+    },
+    {
+      "name": "ruseact-compiler",
+      "version": "0.1.0-alpha.0",
+      "file": "artifacts/ruseact-compiler-0.1.0-alpha.0.tgz",
+      "bytes": 22072,
+      "sha256": "1017c2888fb7e1f69d07de480e182169a21785bc4db56c4b24156f09331f52e1",
+      "unpackedBytes": 125203,
+      "contents": {
+        "javascriptBytes": 39255,
+        "wasmBytes": 0,
+        "declarationBytes": 1428,
+        "sourceMapBytes": 84073
+      }
+    }
+  ]
+}

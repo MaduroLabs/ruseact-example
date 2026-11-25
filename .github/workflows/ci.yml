@@ -1,0 +1,40 @@
+name: consumer
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out consumer
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - name: Enable pnpm
+        run: corepack enable
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Verify reviewed artifacts
+        run: pnpm artifacts:verify
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Build production assets
+        run: pnpm build
+      - name: Install Chromium
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+      - name: Run consumer browser verification
+        run: pnpm test
+        env:
+          CHROMIUM: chrome

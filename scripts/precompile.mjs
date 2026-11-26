@@ -11,6 +11,7 @@ const sourceFiles = [
   resolve(sourceRoot, "counter/App.tsx"),
   resolve(sourceRoot, "conditional/App.tsx"),
   resolve(sourceRoot, "todo/App.tsx"),
+  resolve(sourceRoot, "reorderable/App.tsx"),
 ];
 
 function formatDiagnostic(diagnostic) {

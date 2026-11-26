@@ -9,6 +9,7 @@ export default defineConfig({
         counter: "counter.html",
         conditional: "conditional.html",
         todo: "todo.html",
+        reorderable: "reorderable.html",
       },
     },
   },

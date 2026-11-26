@@ -171,3 +171,48 @@ This document records observations from the independent Hello World and Counter 
   Actual: the example keeps data in memory only. Workaround: none in this
   milestone. Impact: persistence, backend integration, and localStorage are
   deferred to later consumer work.
+
+## M4.5.3.3 Reorderable List
+
+- Expected: moving a keyed item requires application code to move its DOM
+  node. Actual: the application replaces the JavaScript collection order and
+  increments the explicit revision; the installed renderer moves the owned
+  native range. Workaround: use stable monotonically increasing IDs and call
+  the existing flush boundary. Impact: no blocker; manual DOM reconciliation
+  remains prohibited.
+
+- Expected: retained item data requires recreating the component. Actual:
+  `taskKey` and `title` are renderer-owned scalar field handles passed through
+  immutable component props. Updating a retained title preserves item setup,
+  the item node, the uncontrolled input, and the checkbox. Workaround: keep
+  the item field schema scalar and stable. Impact: no blocker for this example.
+
+- Expected: every browser preserves focus and selection during native range
+  movement. Actual Chromium preserved focus and selection when the focused item
+  itself moved. Moving another item around the focused item and inserting
+  before it cleared focus; removing an unrelated item and updating retained
+  title data preserved focus and selection; removing the focused item cleared
+  focus. Workaround: none was added; the example records observations instead
+  of restoring focus. Impact: browser-specific behavior is not a framework
+  guarantee and should be audited before richer editing interactions.
+
+- Expected: nested detail state is independent of item movement. Actual: each
+  item owns a conditional detail region, and moving an expanded item preserves
+  its item and detail nodes. Removing that item disposes the nested branch and
+  its listener; another item's detail region is unaffected. Workaround: use the
+  shared application-owned expanded-item scalar selector and explicit
+  dependency. Impact: no blocker; item-local application state remains limited
+  to supported scalar selectors.
+
+- Expected: drag-and-drop can be added as soon as `onDragStart` compiles.
+  Actual: the installed compiler accepts a minimal native drag event syntax,
+  but this consumer does not claim safe cross-browser drag semantics or add a
+  manual movement fallback. Workaround: use the keyboard-accessible movement
+  buttons. Impact: drag-and-drop remains deferred to a focused interaction
+  investigation.
+
+- Expected: a reorder action count measures native DOM movement count. Actual:
+  the metrics panel reports application reorder actions and setup calls only;
+  it does not expose private host mutation counts. Workaround: inspect native
+  node identity in the browser harness. Impact: metrics are educational and
+  must not be read as a performance benchmark.

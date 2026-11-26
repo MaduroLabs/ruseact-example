@@ -504,7 +504,340 @@ try {
     throw new Error(`Conditional application disposal failed: ${JSON.stringify(conditionalDisposal)}`);
   }
 
-  console.log(`Real Chromium consumer verification passed: Hello World, Counter, conditional lazy branches, nested ownership, explicit flush, DOM identity, listener cleanup, and application disposal.`);
+  await evaluate(webSocketUrl, `location.href = "http://127.0.0.1:4173/todo.html?test=1"; true`);
+  const todoPage = await waitForPage(webSocketUrl, "Todo Application");
+  if (!todoPage.text.includes("Todo Application")) {
+    throw new Error(`Todo Application mount failed: ${JSON.stringify(todoPage)}`);
+  }
+  await new Promise((resolvePromise) => setTimeout(resolvePromise, 200));
+
+  const initialTodo = await evaluate(webSocketUrl, `(() => {
+    const items = [...document.querySelectorAll('[data-testid="todo-item"]')];
+    window.__todoRefs = Object.fromEntries(items.map((item) => [item.getAttribute('data-task-key'), item]));
+    return {
+      ids: items.map((item) => Number(item.getAttribute('data-task-key'))),
+      titles: items.map((item) => item.querySelector('.todo-title')?.textContent?.trim()),
+      checked: items.map((item) => item.querySelector('input[type="checkbox"]')?.checked),
+      summary: [
+        document.querySelector('[data-testid="total-count"]')?.textContent?.trim(),
+        document.querySelector('[data-testid="active-count"]')?.textContent?.trim(),
+        document.querySelector('[data-testid="completed-count"]')?.textContent?.trim(),
+      ],
+      parentSetupCount: window.__ruseactTodoTest.getSnapshot().parentSetupCount,
+      itemSetupCount: window.__ruseactTodoTest.getSnapshot().itemSetupCount,
+      empty: document.querySelector('[data-testid="todo-empty"]') !== null,
+    };
+  })()`);
+  if (
+    JSON.stringify(initialTodo.ids) !== JSON.stringify([1, 2, 3]) ||
+    JSON.stringify(initialTodo.checked) !== JSON.stringify([false, true, false]) ||
+    JSON.stringify(initialTodo.summary) !== JSON.stringify(["3", "2", "1"]) ||
+    initialTodo.parentSetupCount !== 1 ||
+    initialTodo.itemSetupCount !== 3 ||
+    initialTodo.empty
+  ) {
+    throw new Error(`Initial Todo state failed: ${JSON.stringify(initialTodo)}`);
+  }
+
+  const addedTodo = await evaluate(webSocketUrl, `(() => {
+    const oldOne = window.__todoRefs['1'];
+    const oldThree = window.__todoRefs['3'];
+    const input = document.querySelector('[data-testid="todo-input"]');
+    input.value = 'Finish the keyed example';
+    document.querySelector('[data-testid="todo-add"]').click();
+    const items = [...document.querySelectorAll('[data-testid="todo-item"]')];
+    window.__todoRefs = Object.fromEntries(items.map((item) => [item.getAttribute('data-task-key'), item]));
+    const snapshot = window.__ruseactTodoTest.getSnapshot();
+    return {
+      ids: items.map((item) => Number(item.getAttribute('data-task-key'))),
+      retainedOne: oldOne === items.find((item) => item.getAttribute('data-task-key') === '1'),
+      retainedThree: oldThree === items.find((item) => item.getAttribute('data-task-key') === '3'),
+      title: items.find((item) => item.getAttribute('data-task-key') === '4')?.querySelector('.todo-title')?.textContent?.trim(),
+      snapshot,
+    };
+  })()`);
+  if (
+    JSON.stringify(addedTodo.ids) !== JSON.stringify([1, 2, 3, 4]) ||
+    !addedTodo.retainedOne ||
+    !addedTodo.retainedThree ||
+    addedTodo.title !== "Finish the keyed example" ||
+    addedTodo.snapshot.todos.length !== 4
+  ) {
+    throw new Error(`Todo insertion or retained identity failed: ${JSON.stringify(addedTodo)}`);
+  }
+
+  const whitespaceRejected = await evaluate(webSocketUrl, `(() => {
+    const input = document.querySelector('[data-testid="todo-input"]');
+    input.value = '   ';
+    document.querySelector('[data-testid="todo-add"]').click();
+    return window.__ruseactTodoTest.getSnapshot().todos.length;
+  })()`);
+  if (whitespaceRejected !== 4) throw new Error(`Whitespace task was not rejected: ${whitespaceRejected}`);
+
+  await evaluate(webSocketUrl, `(() => {
+    const input = document.querySelector('[data-testid="todo-input"]');
+    input.value = 'Keyboard-created task';
+    input.focus();
+    return true;
+  })()`);
+  await sendCommand(webSocketUrl, "Input.dispatchKeyEvent", { type: "keyDown", key: "Enter", code: "Enter", text: "\r", unmodifiedText: "\r", windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });
+  await sendCommand(webSocketUrl, "Input.dispatchKeyEvent", { type: "keyUp", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });
+  const keyboardTodo = await evaluate(webSocketUrl, `(() => {
+    const snapshot = window.__ruseactTodoTest.getSnapshot();
+    const items = [...document.querySelectorAll('[data-testid="todo-item"]')];
+    window.__todoRefs = Object.fromEntries(items.map((item) => [item.getAttribute('data-task-key'), item]));
+    return { ids: items.map((item) => Number(item.getAttribute('data-task-key'))), snapshot };
+  })()`);
+  if (JSON.stringify(keyboardTodo.ids) !== JSON.stringify([1, 2, 3, 4, 5]) || keyboardTodo.snapshot.todos.length !== 5) {
+    throw new Error(`Keyboard task submission failed: ${JSON.stringify(keyboardTodo)}`);
+  }
+
+  const toggledTodo = await evaluate(webSocketUrl, `(() => {
+    const item = window.__todoRefs['1'];
+    const title = item.querySelector('.todo-title');
+    item.querySelector('input[type="checkbox"]').click();
+    return {
+      sameItem: item === document.querySelector('[data-testid="todo-item"][data-task-key="1"]'),
+      sameTitle: title === document.querySelector('[data-testid="todo-item"][data-task-key="1"] .todo-title'),
+      checked: item.querySelector('input[type="checkbox"]').checked,
+      completedClass: item.classList.contains('is-completed'),
+      itemSetupCount: window.__ruseactTodoTest.getSnapshot().itemSetupCount,
+    };
+  })()`);
+  if (!toggledTodo.sameItem || !toggledTodo.sameTitle || !toggledTodo.checked || !toggledTodo.completedClass || toggledTodo.itemSetupCount !== 5) {
+    throw new Error(`Retained completion update failed: ${JSON.stringify(toggledTodo)}`);
+  }
+
+  const editStarted = await evaluate(webSocketUrl, `(() => {
+    const item = window.__todoRefs['1'];
+    item.querySelector('[data-testid="todo-edit"]').click();
+    return {
+      sameItem: item === document.querySelector('[data-testid="todo-item"][data-task-key="1"]'),
+      editorValue: document.querySelector('[data-testid="todo-edit-input"]')?.value,
+      itemSetupCount: window.__ruseactTodoTest.getSnapshot().itemSetupCount,
+    };
+  })()`);
+  if (!editStarted.sameItem || editStarted.editorValue !== "Read the Ruseact docs" || editStarted.itemSetupCount !== 5) {
+    throw new Error(`Todo edit activation failed: ${JSON.stringify(editStarted)}`);
+  }
+
+  const editSaved = await evaluate(webSocketUrl, `(() => {
+    const input = document.querySelector('[data-testid="todo-edit-input"]');
+    input.value = 'Read the retained item docs';
+    document.querySelector('[data-testid="todo-save"]').click();
+    const item = document.querySelector('[data-testid="todo-item"][data-task-key="1"]');
+    return {
+      title: item.querySelector('.todo-title')?.textContent?.trim(),
+      sameItem: item === window.__todoRefs['1'],
+      editorRemoved: document.querySelector('[data-testid="todo-edit-input"]') === null,
+      itemSetupCount: window.__ruseactTodoTest.getSnapshot().itemSetupCount,
+    };
+  })()`);
+  if (editSaved.title !== "Read the retained item docs" || !editSaved.sameItem || !editSaved.editorRemoved || editSaved.itemSetupCount !== 5) {
+    throw new Error(`Retained title edit failed: ${JSON.stringify(editSaved)}`);
+  }
+
+  const editCancelled = await evaluate(webSocketUrl, `(() => {
+    const item = document.querySelector('[data-testid="todo-item"][data-task-key="1"]');
+    item.querySelector('[data-testid="todo-edit"]').click();
+    const input = document.querySelector('[data-testid="todo-edit-input"]');
+    input.value = 'This edit is cancelled';
+    document.querySelector('[data-testid="todo-cancel"]').click();
+    return {
+      title: item.querySelector('.todo-title')?.textContent?.trim(),
+      editorRemoved: document.querySelector('[data-testid="todo-edit-input"]') === null,
+    };
+  })()`);
+  if (editCancelled.title !== "Read the retained item docs" || !editCancelled.editorRemoved) {
+    throw new Error(`Todo edit cancellation failed: ${JSON.stringify(editCancelled)}`);
+  }
+
+  const emptyEdit = await evaluate(webSocketUrl, `(() => {
+    const item = document.querySelector('[data-testid="todo-item"][data-task-key="1"]');
+    item.querySelector('[data-testid="todo-edit"]').click();
+    document.querySelector('[data-testid="todo-edit-input"]').value = '   ';
+    document.querySelector('[data-testid="todo-save"]').click();
+    const snapshot = window.__ruseactTodoTest.getSnapshot();
+    return {
+      editorStillMounted: document.querySelector('[data-testid="todo-edit-input"]') !== null,
+      title: item.querySelector('[data-testid="todo-edit-input"]')?.value,
+      modelTitle: snapshot.todos.find((todo) => todo.id === 1)?.title,
+    };
+  })()`);
+  if (!emptyEdit.editorStillMounted || emptyEdit.title !== "   " || emptyEdit.modelTitle !== "Read the retained item docs") {
+    throw new Error(`Empty Todo edit was not rejected: ${JSON.stringify(emptyEdit)}`);
+  }
+  await evaluate(webSocketUrl, `document.querySelector('[data-testid="todo-cancel"]').click(); true`);
+
+  const removedTodo = await evaluate(webSocketUrl, `(() => {
+    const oldItem = window.__todoRefs['4'];
+    const oldRemove = oldItem.querySelector('[data-testid="todo-remove"]');
+    const eventCountBefore = window.__ruseactTodoTest.getSnapshot().managedEventCount;
+    oldRemove.click();
+    const eventCountAfterRemoval = window.__ruseactTodoTest.getSnapshot().managedEventCount;
+    oldRemove.click();
+    const items = [...document.querySelectorAll('[data-testid="todo-item"]')];
+    return {
+      oldDetached: !oldItem.isConnected,
+      detachedListenerRemoved: window.__ruseactTodoTest.getSnapshot().managedEventCount === eventCountAfterRemoval,
+      eventCountAfterRemoval,
+      eventCountBefore,
+      ids: items.map((item) => Number(item.getAttribute('data-task-key'))),
+      retainedThree: window.__todoRefs['3'] === items.find((item) => item.getAttribute('data-task-key') === '3'),
+    };
+  })()`);
+  if (
+    !removedTodo.oldDetached ||
+    !removedTodo.detachedListenerRemoved ||
+    removedTodo.eventCountAfterRemoval !== removedTodo.eventCountBefore + 1 ||
+    JSON.stringify(removedTodo.ids) !== JSON.stringify([1, 2, 3, 5]) ||
+    !removedTodo.retainedThree
+  ) {
+    throw new Error(`Todo removal or listener cleanup failed: ${JSON.stringify(removedTodo)}`);
+  }
+
+  const activeFilter = await evaluate(webSocketUrl, `(() => {
+    [...document.querySelectorAll('.filter-button')].find((button) => button.textContent.trim() === 'Active').click();
+    const items = [...document.querySelectorAll('[data-testid="todo-item"]')];
+    const detachedCompleted = !window.__todoRefs['1'].isConnected && !window.__todoRefs['2'].isConnected;
+    return {
+      ids: items.map((item) => Number(item.getAttribute('data-task-key'))),
+      retainedThree: window.__todoRefs['3'] === items.find((item) => item.getAttribute('data-task-key') === '3'),
+      detachedCompleted,
+      selected: document.querySelector('.filter-button.is-selected')?.textContent?.trim(),
+    };
+  })()`);
+  if (JSON.stringify(activeFilter.ids) !== JSON.stringify([3, 5]) || !activeFilter.retainedThree || !activeFilter.detachedCompleted || activeFilter.selected !== "Active") {
+    throw new Error(`Active filtering failed: ${JSON.stringify(activeFilter)}`);
+  }
+
+  const allFilter = await evaluate(webSocketUrl, `(() => {
+    [...document.querySelectorAll('.filter-button')].find((button) => button.textContent.trim() === 'All').click();
+    const items = [...document.querySelectorAll('[data-testid="todo-item"]')];
+    return {
+      ids: items.map((item) => Number(item.getAttribute('data-task-key'))),
+      freshOne: window.__todoRefs['1'] !== items.find((item) => item.getAttribute('data-task-key') === '1'),
+      freshTwo: window.__todoRefs['2'] !== items.find((item) => item.getAttribute('data-task-key') === '2'),
+      retainedThree: window.__todoRefs['3'] === items.find((item) => item.getAttribute('data-task-key') === '3'),
+      selected: document.querySelector('.filter-button.is-selected')?.textContent?.trim(),
+    };
+  })()`);
+  if (JSON.stringify(allFilter.ids) !== JSON.stringify([1, 2, 3, 5]) || !allFilter.freshOne || !allFilter.freshTwo || !allFilter.retainedThree || allFilter.selected !== "All") {
+    throw new Error(`All filtering or fresh activation failed: ${JSON.stringify(allFilter)}`);
+  }
+
+  const completedFilter = await evaluate(webSocketUrl, `(() => {
+    [...document.querySelectorAll('.filter-button')].find((button) => button.textContent.trim() === 'Completed').click();
+    return {
+      ids: [...document.querySelectorAll('[data-testid="todo-item"]')].map((item) => Number(item.getAttribute('data-task-key'))),
+      empty: document.querySelector('[data-testid="todo-empty"]') !== null,
+    };
+  })()`);
+  if (JSON.stringify(completedFilter.ids) !== JSON.stringify([1, 2]) || completedFilter.empty) {
+    throw new Error(`Completed filtering failed: ${JSON.stringify(completedFilter)}`);
+  }
+  await evaluate(webSocketUrl, `([...document.querySelectorAll('.filter-button')].find((button) => button.textContent.trim() === 'All').click(), true)`);
+
+  const reversedTodo = await evaluate(webSocketUrl, `(() => {
+    const before = Object.fromEntries([...document.querySelectorAll('[data-testid="todo-item"]')].map((item) => [item.getAttribute('data-task-key'), item]));
+    document.querySelector('[data-testid="todo-reverse"]').click();
+    const items = [...document.querySelectorAll('[data-testid="todo-item"]')];
+    return {
+      ids: items.map((item) => Number(item.getAttribute('data-task-key'))),
+      retained: items.every((item) => before[item.getAttribute('data-task-key')] === item),
+      modelIds: window.__ruseactTodoTest.getSnapshot().todos.map((todo) => todo.id),
+    };
+  })()`);
+  if (JSON.stringify(reversedTodo.ids) !== JSON.stringify([5, 3, 2, 1]) || JSON.stringify(reversedTodo.modelIds) !== JSON.stringify([5, 3, 2, 1]) || !reversedTodo.retained) {
+    throw new Error(`Keyed reverse movement failed: ${JSON.stringify(reversedTodo)}`);
+  }
+
+  const clearedTodo = await evaluate(webSocketUrl, `(() => {
+    const itemThree = document.querySelector('[data-testid="todo-item"][data-task-key="3"]');
+    const itemFive = document.querySelector('[data-testid="todo-item"][data-task-key="5"]');
+    document.querySelector('[data-testid="todo-clear-completed"]').click();
+    const items = [...document.querySelectorAll('[data-testid="todo-item"]')];
+    return {
+      ids: items.map((item) => Number(item.getAttribute('data-task-key'))),
+      retainedThree: itemThree === document.querySelector('[data-testid="todo-item"][data-task-key="3"]'),
+      retainedFive: itemFive === document.querySelector('[data-testid="todo-item"][data-task-key="5"]'),
+      summary: [
+        document.querySelector('[data-testid="total-count"]')?.textContent?.trim(),
+        document.querySelector('[data-testid="active-count"]')?.textContent?.trim(),
+        document.querySelector('[data-testid="completed-count"]')?.textContent?.trim(),
+      ],
+    };
+  })()`);
+  if (JSON.stringify(clearedTodo.ids) !== JSON.stringify([5, 3]) || !clearedTodo.retainedThree || !clearedTodo.retainedFive || JSON.stringify(clearedTodo.summary) !== JSON.stringify(["2", "2", "0"])) {
+    throw new Error(`Clear completed failed: ${JSON.stringify(clearedTodo)}`);
+  }
+
+  const emptyFilter = await evaluate(webSocketUrl, `(() => {
+    [...document.querySelectorAll('.filter-button')].find((button) => button.textContent.trim() === 'Completed').click();
+    return {
+      listEmpty: document.querySelectorAll('[data-testid="todo-item"]').length === 0,
+      hasEmptyState: document.querySelector('[data-testid="todo-empty"]') !== null,
+    };
+  })()`);
+  if (!emptyFilter.listEmpty || !emptyFilter.hasEmptyState) throw new Error(`Conditional empty state failed: ${JSON.stringify(emptyFilter)}`);
+  await evaluate(webSocketUrl, `([...document.querySelectorAll('.filter-button')].find((button) => button.textContent.trim() === 'All').click(), true)`);
+
+  const manualFlush = await evaluate(webSocketUrl, `(() => {
+    const item = document.querySelector('[data-testid="todo-item"][data-task-key="3"]');
+    const checkbox = item.querySelector('input[type="checkbox"]');
+    const before = checkbox.checked;
+    window.__ruseactTodoTest.toggleWithoutFlush(3);
+    const afterWrite = checkbox.checked;
+    window.__ruseactTodoTest.flush();
+    const afterStructuralFlush = checkbox.checked;
+    window.__ruseactTodoTest.flush();
+    const afterFollowUpFlush = checkbox.checked;
+    return { before, afterWrite, afterStructuralFlush, afterFollowUpFlush };
+  })()`);
+  if (manualFlush.before || manualFlush.afterWrite || manualFlush.afterStructuralFlush || !manualFlush.afterFollowUpFlush) {
+    throw new Error(`Deferred retained-item flush semantics failed: ${JSON.stringify(manualFlush)}`);
+  }
+  await evaluate(webSocketUrl, `(() => {
+    window.__ruseactTodoTest.toggleWithoutFlush(3);
+    window.__ruseactTodoTest.flush();
+    window.__ruseactTodoTest.flush();
+    return true;
+  })()`);
+
+  const nestedItemConditional = await evaluate(webSocketUrl, `(() => {
+    const item = document.querySelector('[data-testid="todo-item"][data-task-key="3"]');
+    const setupBefore = window.__ruseactTodoTest.getSnapshot().itemSetupCount;
+    item.querySelector('[data-testid="todo-edit"]').click();
+    const editor = item.querySelector('[data-testid="todo-editor"]');
+    const otherEditor = document.querySelector('[data-testid="todo-item"][data-task-key="5"] [data-testid="todo-editor"]');
+    const setupAfter = window.__ruseactTodoTest.getSnapshot().itemSetupCount;
+    return { editor: editor !== null, otherEditor: otherEditor !== null, setupBefore, setupAfter };
+  })()`);
+  if (!nestedItemConditional.editor || nestedItemConditional.otherEditor || nestedItemConditional.setupBefore !== nestedItemConditional.setupAfter) {
+    throw new Error(`Nested keyed-item conditional failed: ${JSON.stringify(nestedItemConditional)}`);
+  }
+  await evaluate(webSocketUrl, `document.querySelector('[data-testid="todo-cancel"]').click(); true`);
+
+  const todoDisposal = await evaluate(webSocketUrl, `(() => {
+    const oldButton = document.querySelector('[data-testid="todo-item"][data-task-key="3"] [data-testid="todo-remove"]');
+    const eventCountBefore = window.__ruseactTodoTest.getSnapshot().managedEventCount;
+    window.__ruseactTodoTest.dispose();
+    window.__ruseactTodoTest.dispose();
+    oldButton?.click();
+    const snapshot = window.__ruseactTodoTest.getSnapshot();
+    return {
+      signalsDisposed: window.__ruseactTodoTest.isApplicationSignalsDisposed(),
+      appChildren: document.querySelector('#app').childElementCount,
+      eventCountBefore,
+      eventCountAfter: snapshot.managedEventCount,
+      statusStillPresent: document.querySelector('[data-status]') !== null,
+    };
+  })()`);
+  if (!todoDisposal.signalsDisposed || todoDisposal.appChildren !== 0 || todoDisposal.eventCountAfter !== todoDisposal.eventCountBefore || !todoDisposal.statusStillPresent) {
+    throw new Error(`Todo application disposal failed: ${JSON.stringify(todoDisposal)}`);
+  }
+
+  console.log(`Real Chromium consumer verification passed: Hello World, Counter, Conditional Playground, keyed Todo insertion, retained updates, editing, filtering, reordering, cleanup, nested item conditionals, and explicit follow-up flush semantics.`);
 } finally {
   await stopProcess(browser);
   await stopProcess(preview);

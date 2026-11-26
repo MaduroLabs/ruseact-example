@@ -1,10 +1,11 @@
 # Ruseact Example
 
-This repository is the independent consumer bootstrap for [Ruseact](https://github.com/MaduroLabs/ruseact). It demonstrates the experimental framework through three small applications:
+This repository is the independent consumer bootstrap for [Ruseact](https://github.com/MaduroLabs/ruseact). It demonstrates the experimental framework through four small applications:
 
 - `/hello.html` — static Hello World mounting.
 - `/counter.html` — an explicit scalar signal, native event handlers, and manual `root.flush()`.
 - `/conditional.html` — nested conditional regions, one-shot component setup, and branch-local DOM lifetimes.
+- `/todo.html` — a JavaScript-owned Todo collection rendered with keyed items, retained field signals, filtering, and explicit flushes.
 
 The repository is public. The package artifacts remain private and are not published to npm.
 
@@ -51,8 +52,44 @@ Open:
 - `http://127.0.0.1:5173/hello.html` — Hello World.
 - `http://127.0.0.1:5173/counter.html` — Counter.
 - `http://127.0.0.1:5173/conditional.html` — Conditional Playground.
+- `http://127.0.0.1:5173/todo.html` — Todo Application.
 
 The `dev` wrapper verifies the artifacts, compiles supported TSX into ignored `.generated/` modules, starts Vite, and reruns the consumer-local precompiler when example TSX changes. It is not an official Ruseact Vite plugin and does not provide framework HMR.
+
+## Todo Application
+
+The Todo Application uses the installed version 4 keyed-list marker:
+
+```tsx
+ruseact.keyed(
+  [revision],
+  ({ runtime: currentRuntime }) => ({
+    ok: true,
+    value: getVisibleTodos().map((todo) => ({
+      key: todo.id,
+      fields: { taskKey: todo.id, title: todo.title, completed: todo.completed },
+    })),
+  }),
+  ({ fields }) => <TodoItem taskKey={fields.taskKey} title={fields.title} completed={fields.completed} />,
+)
+```
+
+Todo records remain in JavaScript. The application publishes a new immutable
+collection and increments the explicit revision signal after each collection
+operation. The renderer owns the scalar field signals passed to retained
+`TodoItem` instances, so title and completion updates do not rerun retained
+component setup or replace retained item nodes. Keys are stable task IDs, never
+array indexes, and removed IDs are not reused during the application lifetime.
+
+Filtering removes excluded items from the keyed region; an item that becomes
+visible again receives a fresh activation. Reversing the collection moves the
+existing native ranges. The edit form is an explicit nested conditional region
+inside each keyed item, so its input is intentionally branch-local.
+
+Most operations complete with one explicit `root.flush()`. Toggle and save
+operations make retained field writes during structural reconciliation visible
+with a second explicit `root.flush()`. This is a deliberate bounded use of the
+one-snapshot contract, not recursive draining or an automatic scheduler.
 
 ## Build and test
 
@@ -108,4 +145,4 @@ artifacts/ruseact/...        Reviewed package tarballs and provenance
 
 This is an experimental package and consumer environment, not a production-ready distribution and not a full React compatibility layer. Packages are private and must remain a matching set. The current consumer-local JSX declaration is provisional, compiler support is intentionally narrow, and the dev wrapper uses full-page reload semantics rather than HMR. No automatic dependency tracking, automatic scheduling, runtime TSX compilation, deployment, npm publication, or application collection is included.
 
-M4.5.3.1 now demonstrates the supported conditional marker, lazy branch initialization, nested component ownership, stable parent setup, explicit flushing, and persistent versus branch-local DOM state. The framework-level duplicate-local-ID blocker was resolved in the promoted alpha.1 distribution. M4.5.3.2 can build the Todo Application on this foundation; it should reuse the verified artifact procedure, generated-module boundary, explicit WASM bootstrap, manual flush contract, and browser harness without silently introducing new framework semantics.
+M4.5.3.1 demonstrates the supported conditional marker, lazy branch initialization, nested component ownership, stable parent setup, explicit flushing, and persistent versus branch-local DOM state. The framework-level duplicate-local-ID blocker was resolved in the promoted alpha.1 distribution. M4.5.3.2 adds a Todo Application on this foundation using the provisional `ruseact.keyed([revision], collectionEvaluator, itemFactory)` marker. Todo data remains in JavaScript; the revision signal explicitly invalidates the list, and retained item fields are renderer-owned scalar signals. Toggle and edit operations may use a second explicit flush for deferred retained-field bindings; no flush-until-empty scheduler is added.

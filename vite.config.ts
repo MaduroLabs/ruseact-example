@@ -8,6 +8,7 @@ export default defineConfig({
         hello: "hello.html",
         counter: "counter.html",
         conditional: "conditional.html",
+        todo: "todo.html",
       },
     },
   },

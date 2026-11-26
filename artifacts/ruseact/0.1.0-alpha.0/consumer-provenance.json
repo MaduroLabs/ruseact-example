@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "frameworkRepository": "MaduroLabs/ruseact",
+  "artifactSourceCommit": "1cd9a19200d3faea2d3f84f5a162a2e7b8e3c3d5",
+  "promotedFrameworkMainCommit": "ef4ffdc46e4f3be98c270db7ac1a428573780afe",
+  "distributionPullRequest": 60,
+  "promotionPullRequest": 61,
+  "distributionWorkflowRun": "45653769047",
+  "packageVersion": "0.1.0-alpha.0",
+  "supportedTemplateProtocols": [1, 2, 3, 4],
+  "artifactPolicy": "Vendored reviewed tarballs; replacements require an explicit checksum and provenance update."
+}

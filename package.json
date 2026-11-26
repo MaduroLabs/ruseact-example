@@ -1,0 +1,33 @@
+{
+  "name": "ruseact-example",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.16.1",
+  "engines": {
+    "node": ">=24.22.3 <25",
+    "pnpm": ">=12.16.1 <13"
+  },
+  "scripts": {
+    "artifacts:verify": "node scripts/verify-artifacts.mjs",
+    "compile": "node scripts/precompile.mjs",
+    "runtime:smoke": "node scripts/runtime-smoke.mjs",
+    "pretypecheck": "corepack pnpm compile",
+    "typecheck": "tsc --noEmit",
+    "dev": "node scripts/dev.mjs",
+    "build": "corepack pnpm artifacts:verify && corepack pnpm compile && corepack pnpm typecheck && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
+    "pretest": "corepack pnpm build",
+    "test": "node scripts/test.mjs"
+  },
+  "dependencies": {
+    "ruseact": "file:artifacts/ruseact/0.1.0-alpha.0/ruseact-0.1.0-alpha.0.tgz",
+    "ruseact-dom": "file:artifacts/ruseact/0.1.0-alpha.0/ruseact-dom-0.1.0-alpha.0.tgz"
+  },
+  "devDependencies": {
+    "ruseact-compiler": "file:artifacts/ruseact/0.1.0-alpha.0/ruseact-compiler-0.1.0-alpha.0.tgz",
+    "@types/node": "24.19.4",
+    "typescript": "5.9.3",
+    "vite": "8.3.8"
+  }
+}

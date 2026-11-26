@@ -9,6 +9,7 @@ const generatedRoot = resolve(projectRoot, ".generated/examples");
 const sourceFiles = [
   resolve(sourceRoot, "hello-world/App.tsx"),
   resolve(sourceRoot, "counter/App.tsx"),
+  resolve(sourceRoot, "conditional/App.tsx"),
 ];
 
 function formatDiagnostic(diagnostic) {

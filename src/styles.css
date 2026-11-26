@@ -57,10 +57,15 @@ h2 {
 }
 
 .example-links,
-.controls {
+.controls,
+.conditional-controls {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
+}
+
+.conditional-controls {
+  margin: 1.5rem 0;
 }
 
 a,
@@ -115,4 +120,67 @@ button:focus-visible {
   margin-top: 1.25rem;
   color: #55708d;
   font-size: 0.9rem;
+}
+
+.persistent-field,
+.conditional-panel label,
+.conditional-advanced label {
+  display: block;
+  margin: 1rem 0 0.4rem;
+  color: #315d86;
+  font-weight: 650;
+}
+
+.conditional-panel,
+.conditional-advanced,
+.observations {
+  margin: 1.5rem 0;
+  border: 1px solid #d8e1eb;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  background: #f8fbff;
+}
+
+.conditional-panel h2,
+.conditional-advanced h3,
+.observations h2 {
+  margin-bottom: 0.75rem;
+}
+
+.conditional-panel input[type="text"],
+.persistent-field + input,
+.conditional-advanced input[type="checkbox"] {
+  font: inherit;
+}
+
+.conditional-panel input[type="text"],
+.persistent-field + input {
+  width: 100%;
+  max-width: 28rem;
+  border: 1px solid #9db3ca;
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  color: #17202a;
+  background: #fff;
+}
+
+.conditional-panel button {
+  margin-top: 1rem;
+}
+
+.observations dl {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.5fr) 1fr;
+  gap: 0.5rem 1rem;
+  margin: 1rem 0 0;
+}
+
+.observations dt {
+  color: #55708d;
+  font-weight: 700;
+}
+
+.observations dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
 }

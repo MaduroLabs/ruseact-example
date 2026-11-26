@@ -71,3 +71,54 @@ This document records observations from the independent Hello World and Counter 
 - Actual: the packaged `ruseact/wasm/web` loader resolves its sibling binary through Vite's installed-package graph.
 - Workaround: package verification and production browser tests exercise the relocated package assets.
 - Impact: no external CDN or Rust toolchain is required for the consumer.
+
+## M4.5.3.1 Conditional Playground
+
+- Expected: independently installed packages should support nested conditional
+  regions even when separate compiler plans reuse the local region ID `r0`.
+  Actual: the alpha.0 package set failed during nested activation because the
+  renderer treated template-local IDs as one global structural namespace.
+  Workaround: none was added in the consumer; the framework fixed the identity
+  model by scoping structural registration to the owning region and published
+  the fix in alpha.1. Impact: this was a framework blocker and prevented the
+  original example from running until the matching artifacts were refreshed.
+  Future improvement: keep installed-package nested-ownership coverage in the
+  consumer regression suite.
+
+- Expected: a conditional marker should read like a normal JSX conditional.
+  Actual: the supported form requires an explicit selector dependency, a
+  boolean evaluator, and lazy true/false factories. Workaround: the
+  Conditional Playground keeps those callbacks small and source-local.
+  Impact: it is teachable but narrower than ordinary React-style JSX.
+  Future improvement: improve authoring diagnostics without adding implicit
+  dependency tracking.
+
+- Expected: opening a panel should preserve all nearby DOM and component state.
+  Actual: the persistent input outside the region retains its native node and
+  uncontrolled value, while the branch-local input is intentionally recreated
+  after branch disposal. Workaround: document the two lifetimes explicitly.
+  Impact: no consumer blocker; automatic branch-local state restoration is not
+  part of the contract.
+  Future improvement: evaluate state-preservation APIs only through a separate
+  approved framework decision.
+
+- Expected: lifecycle metrics can directly report every internal cleanup.
+  Actual: the public consumer boundary exposes setup counts and observable DOM
+  and listener behavior, but not a general component cleanup callback or owner
+  registry. Workaround: label the example's metrics as observable behavior and
+  avoid fabricated disposal counts. Impact: internal cleanup remains verified
+  by framework and installed-package tests rather than an invented API.
+  Future improvement: consider a narrowly scoped diagnostic contract only if
+  lifecycle observability becomes an approved framework capability.
+
+- Expected: a source edit should preserve application state during development.
+  Actual: the consumer-local watcher recompiles supported TSX and relies on a
+  full-page reload; it does not provide framework HMR. Workaround: reload after
+  setup changes. Impact: acceptable for this playground; state-preserving HMR
+  remains out of scope.
+
+- Expected: the package version and artifact source should be obvious during
+  review. Actual: the consumer now pins alpha.1 tarballs, the promoted main
+  commit, PR provenance, independent checksums, and package license notices.
+  Workaround: run `pnpm artifacts:verify` before every build. Impact: the
+  matching-set procedure is explicit but more involved than registry install.

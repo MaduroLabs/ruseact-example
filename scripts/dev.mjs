@@ -46,6 +46,7 @@ const scheduleCompile = () => {
 const watchers = [
   watch(resolve(projectRoot, "src/examples/hello-world"), scheduleCompile),
   watch(resolve(projectRoot, "src/examples/counter"), scheduleCompile),
+  watch(resolve(projectRoot, "src/examples/conditional"), scheduleCompile),
 ];
 
 const shutdown = () => {

@@ -1,27 +1,30 @@
 # Ruseact Example
 
-This repository is the independent consumer bootstrap for [Ruseact](https://github.com/MaduroLabs/ruseact). It demonstrates the experimental framework through two small applications:
+This repository is the independent consumer bootstrap for [Ruseact](https://github.com/MaduroLabs/ruseact). It demonstrates the experimental framework through three small applications:
 
 - `/hello.html` — static Hello World mounting.
 - `/counter.html` — an explicit scalar signal, native event handlers, and manual `root.flush()`.
+- `/conditional.html` — nested conditional regions, one-shot component setup, and branch-local DOM lifetimes.
 
 The repository is public. The package artifacts remain private and are not published to npm.
 
 ## Pinned distribution
 
-The examples consume the reviewed Ruseact `0.1.0-alpha.0` artifact set from framework source commit `1cd9a19200d3faea2d3f84f5a162a2e7b8e3c3d5`, whose tree is represented by promoted framework `main` commit `ef4ffdc46e4f3be98c270db7ac1a428573780afe`.
+The examples consume the authoritative promoted Ruseact `0.1.0-alpha.1` artifact set built from framework `main` commit `2a0ab7781b6c56fde643bf6bc8ed3f550097209c`. The distribution refresh was reviewed in framework PR #67 and promoted by PR #68. It includes the owner-scoped structural identity fix from PRs #62/#66 and the benchmark calibration hardening from PRs #64/#65.
 
 The artifact set supports renderer template protocols 1–4 and contains:
 
 | Package | Tarball bytes | SHA-256 |
 | --- | ---: | --- |
-| `ruseact` | 78,248 | `baa47209ece2a943f3990eff4a0e4ca527c84a88c3fd0124cae0d0b73b3bb0c2` |
-| `ruseact-dom` | 74,898 | `ab799f42890ddd5dcd313af27fd71a25caf9be8d96da1889f86601cac8073296` |
-| `ruseact-compiler` | 22,072 | `1017c2888fb7e1f69d07de480e182169a21785bc4db56c4b24156f09331f52e1` |
+| `ruseact` | 78,819 | `2101d2a8c038fbefbfcb091b5a337462dbbb67a8b1d253398679eca551663867` |
+| `ruseact-dom` | 76,434 | `7323748f727057476d6282c7e40ff01537767e1108f903554a88a3b0c078c8e3` |
+| `ruseact-compiler` | 22,832 | `bb180975b41099cea8ce428126b04aec28dc9d08bb569f4805b705f374ef06d1` |
 
-`artifacts/ruseact/0.1.0-alpha.0/distribution-manifest.json` records the framework-generated measurements; `consumer-provenance.json` records the promotion relationship. `pnpm artifacts:verify` checks both files, package metadata, sizes, and checksums.
+`artifacts/ruseact/0.1.0-alpha.1/distribution-manifest.json` records the framework-generated measurements; `consumer-provenance.json` records the reviewed distribution and promotion relationship. `pnpm artifacts:verify` independently checks both files, package metadata, sizes, checksums, source provenance, runtime dependency, protocols, and license contents.
 
-The vendored artifact set is accompanied by `LICENSE` and `NOTICE.md`. The reviewed tarball payloads do not currently contain standalone license entries, so the exact MIT license and attribution notice are kept beside the immutable tarballs and verified as part of the complete vendored set.
+The vendored artifact set is accompanied by `LICENSE` and `NOTICE.md`. Each alpha.1 tarball also contains the framework MIT license at `package/LICENSE`, and the exact license and attribution notices are verified as part of the complete vendored set.
+
+The previous alpha.0 artifact record remains available in Git history. Its source and checksums were `1cd9a19200d3faea2d3f84f5a162a2e7b8e3c3d5` / `ef4ffdc46e4f3be98c270db7ac1a428573780afe`, with tarball checksums recorded by the original bootstrap commit; it is not an active dependency of this checkout.
 
 ## Requirements
 
@@ -47,6 +50,7 @@ Open:
 - `http://127.0.0.1:5173/` — example index.
 - `http://127.0.0.1:5173/hello.html` — Hello World.
 - `http://127.0.0.1:5173/counter.html` — Counter.
+- `http://127.0.0.1:5173/conditional.html` — Conditional Playground.
 
 The `dev` wrapper verifies the artifacts, compiles supported TSX into ignored `.generated/` modules, starts Vite, and reruns the consumer-local precompiler when example TSX changes. It is not an official Ruseact Vite plugin and does not provide framework HMR.
 
@@ -68,7 +72,7 @@ Run the real-WASM Chromium acceptance test with:
 corepack pnpm test
 ```
 
-The test covers Hello World, Counter interactions, explicit no-update-before-flush behavior, stable output-node identity, keyboard activation, persisted pagehide handling, explicit disposal, listener cleanup, application-owned signal disposal, repeated disposal, production WASM loading, and missing-error checks. It uses the local Chromium executable or `CHROMIUM=/path/to/chromium`.
+The test covers Hello World, Counter interactions, explicit no-update-before-flush behavior, stable output-node identity, keyboard activation, persisted pagehide handling, explicit disposal, listener cleanup, application-owned signal disposal, repeated disposal, Conditional Playground nested branches, branch-local and persistent input identity, production WASM loading, and missing-error checks. It uses the local Chromium executable or `CHROMIUM=/path/to/chromium`.
 
 ## How the bootstrap works
 
@@ -104,4 +108,4 @@ artifacts/ruseact/...        Reviewed package tarballs and provenance
 
 This is an experimental package and consumer environment, not a production-ready distribution and not a full React compatibility layer. Packages are private and must remain a matching set. The current consumer-local JSX declaration is provisional, compiler support is intentionally narrow, and the dev wrapper uses full-page reload semantics rather than HMR. No automatic dependency tracking, automatic scheduling, runtime TSX compilation, deployment, npm publication, or application collection is included.
 
-M4.5.3 can build richer consumer examples on this foundation. It should reuse the verified artifact procedure, generated-module boundary, explicit WASM bootstrap, manual flush contract, and browser harness. It should not silently introduce new framework semantics while adding conditional panels, todo flows, or reorderable examples.
+M4.5.3.1 now demonstrates the supported conditional marker, lazy branch initialization, nested component ownership, stable parent setup, explicit flushing, and persistent versus branch-local DOM state. The framework-level duplicate-local-ID blocker was resolved in the promoted alpha.1 distribution. M4.5.3.2 can build the Todo Application on this foundation; it should reuse the verified artifact procedure, generated-module boundary, explicit WASM bootstrap, manual flush contract, and browser harness without silently introducing new framework semantics.

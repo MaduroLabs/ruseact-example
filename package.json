@@ -21,11 +21,11 @@
     "test": "node scripts/test.mjs"
   },
   "dependencies": {
-    "ruseact": "file:artifacts/ruseact/0.1.0-alpha.0/ruseact-0.1.0-alpha.0.tgz",
-    "ruseact-dom": "file:artifacts/ruseact/0.1.0-alpha.0/ruseact-dom-0.1.0-alpha.0.tgz"
+    "ruseact": "file:artifacts/ruseact/0.1.0-alpha.1/ruseact-0.1.0-alpha.1.tgz",
+    "ruseact-dom": "file:artifacts/ruseact/0.1.0-alpha.1/ruseact-dom-0.1.0-alpha.1.tgz"
   },
   "devDependencies": {
-    "ruseact-compiler": "file:artifacts/ruseact/0.1.0-alpha.0/ruseact-compiler-0.1.0-alpha.0.tgz",
+    "ruseact-compiler": "file:artifacts/ruseact/0.1.0-alpha.1/ruseact-compiler-0.1.0-alpha.1.tgz",
     "@types/node": "24.19.4",
     "typescript": "5.9.3",
     "vite": "8.3.8"

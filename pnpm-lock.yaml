@@ -163,25 +163,25 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  ruseact: file:./artifacts/ruseact/0.1.0-alpha.0/ruseact-0.1.0-alpha.0.tgz
+  ruseact: file:./artifacts/ruseact/0.1.0-alpha.1/ruseact-0.1.0-alpha.1.tgz
 
 importers:
 
   .:
     dependencies:
       ruseact:
-        specifier: file:artifacts/ruseact/0.1.0-alpha.0/ruseact-0.1.0-alpha.0.tgz
-        version: file:artifacts/ruseact/0.1.0-alpha.0/ruseact-0.1.0-alpha.0.tgz
+        specifier: file:artifacts/ruseact/0.1.0-alpha.1/ruseact-0.1.0-alpha.1.tgz
+        version: file:artifacts/ruseact/0.1.0-alpha.1/ruseact-0.1.0-alpha.1.tgz
       ruseact-dom:
-        specifier: file:artifacts/ruseact/0.1.0-alpha.0/ruseact-dom-0.1.0-alpha.0.tgz
-        version: file:artifacts/ruseact/0.1.0-alpha.0/ruseact-dom-0.1.0-alpha.0.tgz
+        specifier: file:artifacts/ruseact/0.1.0-alpha.1/ruseact-dom-0.1.0-alpha.1.tgz
+        version: file:artifacts/ruseact/0.1.0-alpha.1/ruseact-dom-0.1.0-alpha.1.tgz
     devDependencies:
       '@types/node':
         specifier: 24.19.4
         version: 24.19.4
       ruseact-compiler:
-        specifier: file:artifacts/ruseact/0.1.0-alpha.0/ruseact-compiler-0.1.0-alpha.0.tgz
-        version: file:artifacts/ruseact/0.1.0-alpha.0/ruseact-compiler-0.1.0-alpha.0.tgz
+        specifier: file:artifacts/ruseact/0.1.0-alpha.1/ruseact-compiler-0.1.0-alpha.1.tgz
+        version: file:artifacts/ruseact/0.1.0-alpha.1/ruseact-compiler-0.1.0-alpha.1.tgz
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -433,17 +433,17 @@ packages:
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
 
-  ruseact-compiler@file:artifacts/ruseact/0.1.0-alpha.0/ruseact-compiler-0.1.0-alpha.0.tgz:
-    resolution: {integrity: sha512-G+gpIQjysxqcubRy38onl3UHirJ3UbQTMO9Gdc4WGWCby6l0NiJGIWFUjNBf2+AckRQfvhmQlI97bEjIQZeEnA==, tarball: file:artifacts/ruseact/0.1.0-alpha.0/ruseact-compiler-0.1.0-alpha.0.tgz}
-    version: 0.1.0-alpha.0
+  ruseact-compiler@file:artifacts/ruseact/0.1.0-alpha.1/ruseact-compiler-0.1.0-alpha.1.tgz:
+    resolution: {integrity: sha512-WzziUqHUDDi0oWDEDzBp9tBo4kXWoC2N3w6WOL7iczspvPb5EA24LkRChe4f4DIPWJVx5oWMqH6H90428FgWrQ==, tarball: file:artifacts/ruseact/0.1.0-alpha.1/ruseact-compiler-0.1.0-alpha.1.tgz}
+    version: 0.1.0-alpha.1
 
-  ruseact-dom@file:artifacts/ruseact/0.1.0-alpha.0/ruseact-dom-0.1.0-alpha.0.tgz:
-    resolution: {integrity: sha512-Ejimvkn4aj8bbxkq86doUv9/Y7Lv+GQBxNA8efOsC/dqfqN9pagJvnwCRHNb2f5f7fnbgtIRoHo0EWzjLyj4uw==, tarball: file:artifacts/ruseact/0.1.0-alpha.0/ruseact-dom-0.1.0-alpha.0.tgz}
-    version: 0.1.0-alpha.0
+  ruseact-dom@file:artifacts/ruseact/0.1.0-alpha.1/ruseact-dom-0.1.0-alpha.1.tgz:
+    resolution: {integrity: sha512-QsPAfwoxR939cOOHJ7gOqcm1stsK3e2046l5wCh5nurLhPllc5M0LeFvXOHHtBVU6pvs2t7EtWdcvLGUKU4jjQ==, tarball: file:artifacts/ruseact/0.1.0-alpha.1/ruseact-dom-0.1.0-alpha.1.tgz}
+    version: 0.1.0-alpha.1
 
-  ruseact@file:artifacts/ruseact/0.1.0-alpha.0/ruseact-0.1.0-alpha.0.tgz:
-    resolution: {integrity: sha512-S40/0aj8zGDPQYcQWFSEl14hvNfnphehpMkxPBP1QN/zDZ9dD7ucYHEGHZA6yKPl0RhPgxD8HQFwy9mJrerZUg==, tarball: file:artifacts/ruseact/0.1.0-alpha.0/ruseact-0.1.0-alpha.0.tgz}
-    version: 0.1.0-alpha.0
+  ruseact@file:artifacts/ruseact/0.1.0-alpha.1/ruseact-0.1.0-alpha.1.tgz:
+    resolution: {integrity: sha512-2o+8R1kurvnokoiU7HC0DR3Kj3eeZj4QJ9ktXcu+xlVuW5MvVLH/39ElHJglIGfn1jWLPj1T3gQLjob11hznww==, tarball: file:artifacts/ruseact/0.1.0-alpha.1/ruseact-0.1.0-alpha.1.tgz}
+    version: 0.1.0-alpha.1
 
   source-map-js@1.2.4:
     resolution: {integrity: sha512-J7ZjMvHd9O1fcT/5V09QWaaSl2BbWx3F6O08spde82Namf9UB0GxRVIPiNbVsdKkoizHiSpTodo3vp2bAy91MA==}
@@ -689,15 +689,15 @@ snapshots:
       '@rolldown/binding-win32-arm64-msvc': 1.2.19
       '@rolldown/binding-win32-x64-msvc': 1.2.19
 
-  ruseact-compiler@file:artifacts/ruseact/0.1.0-alpha.0/ruseact-compiler-0.1.0-alpha.0.tgz:
+  ruseact-compiler@file:artifacts/ruseact/0.1.0-alpha.1/ruseact-compiler-0.1.0-alpha.1.tgz:
     dependencies:
       typescript: 5.9.3
 
-  ruseact-dom@file:artifacts/ruseact/0.1.0-alpha.0/ruseact-dom-0.1.0-alpha.0.tgz:
+  ruseact-dom@file:artifacts/ruseact/0.1.0-alpha.1/ruseact-dom-0.1.0-alpha.1.tgz:
     dependencies:
-      ruseact: file:artifacts/ruseact/0.1.0-alpha.0/ruseact-0.1.0-alpha.0.tgz
+      ruseact: file:artifacts/ruseact/0.1.0-alpha.1/ruseact-0.1.0-alpha.1.tgz
 
-  ruseact@file:artifacts/ruseact/0.1.0-alpha.0/ruseact-0.1.0-alpha.0.tgz: {}
+  ruseact@file:artifacts/ruseact/0.1.0-alpha.1/ruseact-0.1.0-alpha.1.tgz: {}
 
   source-map-js@1.2.4: {}
 

@@ -1,4 +1,4 @@
 minimumReleaseAgeExclude:
   - '@types/node@24.19.4'
 overrides:
-  ruseact: file:./artifacts/ruseact/0.1.0-alpha.0/ruseact-0.1.0-alpha.0.tgz
+  ruseact: file:./artifacts/ruseact/0.1.0-alpha.1/ruseact-0.1.0-alpha.1.tgz

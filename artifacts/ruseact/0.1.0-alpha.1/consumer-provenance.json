@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "frameworkRepository": "MaduroLabs/ruseact",
+  "artifactSourceCommit": "2a0ab7781b6c56fde643bf6bc8ed3f550097209c",
+  "distributionSourceCommit": "149c3bb1147c1e9baf311cd8a7eb77189f516055",
+  "promotedFrameworkMainCommit": "2a0ab7781b6c56fde643bf6bc8ed3f550097209c",
+  "structuralIdentityFixPullRequest": 62,
+  "structuralIdentityPromotionPullRequest": 66,
+  "benchmarkCalibrationPullRequest": 64,
+  "benchmarkCalibrationPromotionPullRequest": 65,
+  "distributionPullRequest": 67,
+  "promotionPullRequest": 68,
+  "promotionWorkflowRun": "45784238078",
+  "packageVersion": "0.1.0-alpha.1",
+  "supportedTemplateProtocols": [1, 2, 3, 4],
+  "artifactChecksums": {
+    "ruseact": "2101d2a8c038fbefbfcb091b5a337462dbbb67a8b1d253398679eca551663867",
+    "ruseact-dom": "7323748f727057476d6282c7e40ff01537767e1108f903554a88a3b0c078c8e3",
+    "ruseact-compiler": "bb180975b41099cea8ce428126b04aec28dc9d08bb569f4805b705f374ef06d1"
+  },
+  "artifactPolicy": "Vendored reviewed tarballs; replacements require an explicit checksum and provenance update."
+}

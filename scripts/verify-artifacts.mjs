@@ -9,6 +9,9 @@ const artifactRoot = resolve(projectRoot, "artifacts/ruseact/0.1.0-alpha.0");
 const version = "0.1.0-alpha.0";
 const manifest = JSON.parse(await readFile(resolve(artifactRoot, "distribution-manifest.json"), "utf8"));
 const provenance = JSON.parse(await readFile(resolve(artifactRoot, "consumer-provenance.json"), "utf8"));
+const projectLicense = await readFile(resolve(projectRoot, "LICENSE"), "utf8");
+const artifactLicense = await readFile(resolve(artifactRoot, "LICENSE"), "utf8");
+const artifactNotice = await readFile(resolve(artifactRoot, "NOTICE.md"), "utf8");
 
 const expectedHashes = {
   ruseact: "baa47209ece2a943f3990eff4a0e4ca527c84a88c3fd0124cae0d0b73b3bb0c2",
@@ -46,6 +49,12 @@ assert(manifest.packageVersion === version, "unexpected package version");
 assert(JSON.stringify(manifest.supportedTemplateProtocols) === JSON.stringify([1, 2, 3, 4]), "protocol range mismatch");
 assert(provenance.promotedFrameworkMainCommit === "ef4ffdc46e4f3be98c270db7ac1a428573780afe", "unexpected promoted main provenance");
 assert(provenance.packageVersion === version, "consumer provenance version mismatch");
+assert(artifactLicense === projectLicense, "vendored artifact license does not match the repository MIT license");
+assert(artifactLicense.includes("MIT License"), "vendored artifact license is not MIT");
+assert(artifactLicense.includes("Copyright (c) 2026 MaduroLabs"), "vendored artifact copyright notice is missing");
+assert(artifactLicense.includes("Permission is hereby granted"), "vendored artifact permission notice is missing");
+assert(artifactNotice.includes("MaduroLabs/ruseact"), "vendored artifact provenance notice is missing");
+assert(artifactNotice.includes("MIT license"), "vendored artifact license notice is missing");
 
 const packageManifests = new Map();
 for (const packageRecord of manifest.packages ?? []) {
@@ -69,6 +78,7 @@ assert(packageManifests.get("ruseact-dom")?.dependencies?.ruseact === version, "
 assert(packageManifests.get("ruseact-compiler")?.dependencies?.typescript === "5.9.3", "compiler TypeScript dependency mismatch");
 
 console.log(`Verified Ruseact ${version} artifacts from ${manifest.sourceCommit}.`);
+console.log("- MIT license and copyright sidecar: verified");
 for (const packageRecord of manifest.packages) {
   console.log(`- ${packageRecord.name}: ${packageRecord.bytes} bytes, sha256:${packageRecord.sha256}`);
 }

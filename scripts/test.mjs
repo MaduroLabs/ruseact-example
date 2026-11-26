@@ -63,31 +63,38 @@ async function waitForTarget(debugPort) {
   throw new Error("Timed out waiting for Chromium DevTools target");
 }
 
-async function evaluate(webSocketUrl, expression) {
+async function sendCommand(webSocketUrl, method, params = {}) {
   const socket = new WebSocket(webSocketUrl);
   await new Promise((resolvePromise, reject) => {
     socket.addEventListener("open", resolvePromise, { once: true });
     socket.addEventListener("error", reject, { once: true });
   });
-  let nextId = 1;
   const result = await new Promise((resolvePromise, reject) => {
-    const id = nextId++;
+    const id = 1;
     const onMessage = (event) => {
       const message = JSON.parse(event.data);
       if (message.id !== id) return;
       socket.removeEventListener("message", onMessage);
       if (message.error) reject(new Error(JSON.stringify(message.error)));
-      else resolvePromise(message.result?.result?.value);
+      else resolvePromise(message.result);
     };
     socket.addEventListener("message", onMessage);
-    socket.send(JSON.stringify({
-      id,
-      method: "Runtime.evaluate",
-      params: { expression, awaitPromise: true, returnByValue: true },
-    }));
+    socket.send(JSON.stringify({ id, method, params }));
   });
   socket.close();
   return result;
+}
+
+async function evaluate(webSocketUrl, expression) {
+  const result = await sendCommand(webSocketUrl, "Runtime.evaluate", {
+    expression,
+    awaitPromise: true,
+    returnByValue: true,
+  });
+  if (result?.exceptionDetails) {
+    throw new Error(result.exceptionDetails.exception?.description ?? result.exceptionDetails.text ?? "browser evaluation failed");
+  }
+  return result?.result?.value;
 }
 
 async function waitForPage(webSocketUrl, expectedText) {
@@ -181,7 +188,65 @@ try {
   if (clicks.incremented !== "8" || clicks.decremented !== "7" || clicks.reset !== "0" || !clicks.sameNode) {
     throw new Error(`Counter interaction verification failed: ${JSON.stringify(clicks)}`);
   }
-  console.log("Real Chromium consumer verification passed for Hello World, Counter, explicit flush, and DOM identity.");
+
+  const persistedDispatch = await evaluate(webSocketUrl, `(() => {
+    window.dispatchEvent(new PageTransitionEvent("pagehide", { persisted: true }));
+    window.__ruseactCounterTest.setWithoutFlush(9);
+    window.__ruseactCounterTest.flush();
+    return {
+      value: document.querySelector('output')?.textContent?.trim(),
+      signalDisposed: window.__ruseactCounterTest.isApplicationSignalDisposed(),
+    };
+  })()`);
+  if (persistedDispatch.value !== "9" || persistedDispatch.signalDisposed) {
+    throw new Error(`Persisted pagehide incorrectly disposed the application: ${JSON.stringify(persistedDispatch)}`);
+  }
+
+  await evaluate(webSocketUrl, `location.href = "http://127.0.0.1:4173/hello.html?from=counter"; true`);
+  await waitForPage(webSocketUrl, "Hello, world!");
+  await evaluate(webSocketUrl, "history.back(); true");
+  const returnedCounter = await waitForPage(webSocketUrl, "Counter");
+  if (!returnedCounter.text.includes("Counter")) throw new Error(`Counter BFCache return failed: ${JSON.stringify(returnedCounter)}`);
+  await new Promise((resolvePromise) => setTimeout(resolvePromise, 200));
+  const bfcacheState = await evaluate(webSocketUrl, `({
+    value: document.querySelector('output')?.textContent?.trim(),
+    persisted: window.__ruseactCounterTest.wasPersistedPageShown(),
+  })`);
+  if (bfcacheState.persisted && bfcacheState.value !== "9") {
+    throw new Error(`Persisted BFCache navigation lost application state: ${JSON.stringify(bfcacheState)}`);
+  }
+
+  const keyboard = await evaluate(webSocketUrl, `document.querySelector('button:nth-of-type(2)').focus(); document.activeElement === document.querySelector('button:nth-of-type(2)')`);
+  if (!keyboard) throw new Error("Counter increment control did not receive focus");
+  await sendCommand(webSocketUrl, "Input.dispatchKeyEvent", { type: "keyDown", key: "Enter", code: "Enter", text: "\r", unmodifiedText: "\r", windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });
+  await sendCommand(webSocketUrl, "Input.dispatchKeyEvent", { type: "keyUp", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });
+  const keyboardState = await evaluate(webSocketUrl, `({
+    value: document.querySelector('output')?.textContent?.trim(),
+    handled: window.__ruseactCounterTest.getHandledEventCount(),
+  })`);
+  const expectedKeyboardValue = String(Number(bfcacheState.value ?? "0") + 1);
+  if (keyboardState.value !== expectedKeyboardValue || keyboardState.handled < 1) {
+    throw new Error(`Keyboard activation failed: ${JSON.stringify({ keyboardState, expectedKeyboardValue })}`);
+  }
+
+  const disposal = await evaluate(webSocketUrl, `(() => {
+    const oldButton = document.querySelector('button:nth-of-type(2)');
+    const handledBefore = window.__ruseactCounterTest.getHandledEventCount();
+    window.__ruseactCounterTest.dispose();
+    window.__ruseactCounterTest.dispose();
+    oldButton?.click();
+    return {
+      signalDisposed: window.__ruseactCounterTest.isApplicationSignalDisposed(),
+      handledBefore,
+      handledAfter: window.__ruseactCounterTest.getHandledEventCount(),
+      outputStillMounted: document.querySelector('output') !== null,
+    };
+  })()`);
+  if (!disposal.signalDisposed || disposal.handledAfter !== disposal.handledBefore || disposal.outputStillMounted) {
+    throw new Error(`Explicit disposal or listener cleanup failed: ${JSON.stringify(disposal)}`);
+  }
+
+  console.log(`Real Chromium consumer verification passed: explicit flush, keyboard activation, persisted pagehide (${bfcacheState.persisted}), explicit disposal, listener cleanup, signal disposal, and repeated disposal.`);
 } finally {
   await stopProcess(browser);
   await stopProcess(preview);

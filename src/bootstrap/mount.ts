@@ -9,7 +9,31 @@ export interface ApplicationViewContext {
 
 type CreateView = (context: ApplicationViewContext) => ViewDescription;
 
+export class ApplicationOperationError extends Error {
+  readonly diagnostic: unknown;
+
+  constructor(diagnostic: unknown) {
+    super(describeError(diagnostic));
+    this.name = "ApplicationOperationError";
+    this.diagnostic = diagnostic;
+  }
+}
+
+export class ApplicationLifecycleError extends Error {
+  readonly originalError: unknown;
+  readonly cleanupError: unknown;
+
+  constructor(message: string, originalError: unknown, cleanupError: unknown) {
+    super(message);
+    this.name = "ApplicationLifecycleError";
+    this.originalError = originalError;
+    this.cleanupError = cleanupError;
+  }
+}
+
 function describeError(error: unknown): string {
+  if (error instanceof ApplicationOperationError) return describeError(error.diagnostic);
+  if (error instanceof ApplicationLifecycleError) return error.message;
   if (typeof error === "object" && error !== null && "error" in error) {
     const nested = (error as { error?: unknown }).error;
     if (typeof nested === "object" && nested !== null && "code" in nested) {
@@ -22,7 +46,7 @@ function describeError(error: unknown): string {
 }
 
 function throwResultError(result: { readonly ok: false; readonly error: unknown }): never {
-  throw new Error(describeError(result));
+  throw new ApplicationOperationError(result.error);
 }
 
 /**
@@ -46,18 +70,38 @@ export async function mountApplication(
 
   const container = document.querySelector<HTMLElement>("#app");
   if (!container) {
-    runtime.dispose();
-    throw new Error("Expected an #app container.");
+    const originalError = new Error("Expected an #app container.");
+    const cleanupResult = runtime.dispose();
+    if (!cleanupResult.ok) {
+      throw new ApplicationLifecycleError(
+        "Application initialization failed and runtime cleanup failed.",
+        originalError,
+        new ApplicationOperationError(cleanupResult.error),
+      );
+    }
+    throw originalError;
   }
 
   const rootResult = createRoot(container, runtime);
   if (!rootResult.ok) {
-    runtime.dispose();
-    throwResultError(rootResult);
+    const originalError = new ApplicationOperationError(rootResult.error);
+    const cleanupResult = runtime.dispose();
+    if (!cleanupResult.ok) {
+      throw new ApplicationLifecycleError(
+        "Renderer root initialization failed and runtime cleanup failed.",
+        originalError,
+        new ApplicationOperationError(cleanupResult.error),
+      );
+    }
+    throw originalError;
   }
+
   const root = rootResult.value;
   let applicationResourcesCleaned = false;
-  let disposed = false;
+  let rootDisposed = false;
+  let runtimeDisposed = false;
+  let disposalInProgress = false;
+  let onPageHide: (event: PageTransitionEvent) => void = () => undefined;
 
   const cleanupApplicationResourcesOnce = (): void => {
     if (applicationResourcesCleaned) return;
@@ -74,39 +118,95 @@ export async function mountApplication(
     const mountResult = root.mount(createView({ runtime, flush }));
     if (!mountResult.ok) throwResultError(mountResult);
   } catch (error) {
-    const rootCleanup = root.dispose();
+    let cleanupError: unknown;
     try {
+      const rootCleanup = root.dispose();
+      if (!rootCleanup.ok) throwResultError(rootCleanup);
+      rootDisposed = true;
       cleanupApplicationResourcesOnce();
-    } finally {
-      runtime.dispose();
+    } catch (failure) {
+      cleanupError = failure;
     }
-    if (!rootCleanup.ok) {
-      throw new Error(`${describeError(error)}; cleanup: ${describeError(rootCleanup)}`);
+
+    if (cleanupError !== undefined) {
+      throw new ApplicationLifecycleError(
+        "Application mount failed and renderer/application cleanup failed.",
+        error,
+        cleanupError,
+      );
     }
+
+    const runtimeCleanup = runtime.dispose();
+    if (!runtimeCleanup.ok) {
+      throw new ApplicationLifecycleError(
+        "Application mount failed and runtime cleanup failed.",
+        error,
+        new ApplicationOperationError(runtimeCleanup.error),
+      );
+    }
+    runtimeDisposed = true;
     throw error;
   }
 
   const dispose = (): void => {
-    if (disposed) return;
-    const rootResult = root.dispose();
-    if (!rootResult.ok) throwResultError(rootResult);
-    cleanupApplicationResourcesOnce();
-    const runtimeResult = runtime.dispose();
-    if (!runtimeResult.ok) throwResultError(runtimeResult);
-    disposed = true;
+    if (runtimeDisposed) return;
+    if (disposalInProgress) {
+      throw new ApplicationLifecycleError(
+        "Application disposal was re-entered.",
+        undefined,
+        new Error("dispose is already in progress"),
+      );
+    }
+
+    disposalInProgress = true;
+    try {
+      if (!rootDisposed) {
+        const rootResult = root.dispose();
+        if (!rootResult.ok) {
+          throw new ApplicationLifecycleError(
+            "Renderer cleanup failed; application-owned resources were retained.",
+            undefined,
+            new ApplicationOperationError(rootResult.error),
+          );
+        }
+        rootDisposed = true;
+      }
+
+      try {
+        cleanupApplicationResourcesOnce();
+      } catch (error) {
+        throw new ApplicationLifecycleError(
+          "Application-owned resource cleanup failed; the runtime was retained.",
+          undefined,
+          error,
+        );
+      }
+
+      const runtimeResult = runtime.dispose();
+      if (!runtimeResult.ok) {
+        throw new ApplicationLifecycleError(
+          "Runtime cleanup failed after renderer and application cleanup.",
+          undefined,
+          new ApplicationOperationError(runtimeResult.error),
+        );
+      }
+      runtimeDisposed = true;
+      window.removeEventListener("pagehide", onPageHide);
+    } finally {
+      disposalInProgress = false;
+    }
   };
 
-  window.addEventListener(
-    "pagehide",
-    () => {
-      try {
-        dispose();
-      } catch (error) {
-        console.error("Ruseact cleanup failed", error);
-      }
-    },
-    { once: true },
-  );
+  onPageHide = (event: PageTransitionEvent): void => {
+    if (event.persisted) return;
+    try {
+      dispose();
+    } catch (error) {
+      console.error("Ruseact cleanup failed", error);
+    }
+  };
+
+  window.addEventListener("pagehide", onPageHide);
 
   return { runtime, root, dispose };
 }

@@ -6,6 +6,15 @@ import type { ReactiveCore, SignalHandle } from "ruseact";
 let applicationRuntime: ReactiveCore | undefined;
 let count: SignalHandle<number> | undefined;
 let application: Awaited<ReturnType<typeof mountApplication>> | undefined;
+let handledEventCount = 0;
+let applicationSignalDisposed = false;
+let pageShowPersisted = false;
+
+if (new URLSearchParams(window.location.search).has("test")) {
+  window.addEventListener("pageshow", (event) => {
+    if (event.persisted) pageShowPersisted = true;
+  });
+}
 
 void mountApplication(
   ({ runtime, flush }) => {
@@ -13,13 +22,21 @@ void mountApplication(
     const signalResult = runtime.createSignal(0);
     if (!signalResult.ok) throw new Error(signalResult.error.code);
     count = signalResult.value;
-    return createView({ count, runtime, flush });
+    return createView({
+      count,
+      runtime,
+      flush,
+      onEvent: () => {
+        handledEventCount += 1;
+      },
+    });
   },
   () => {
     if (!applicationRuntime || !count) return;
     const result = applicationRuntime.disposeSignal(count);
     if (!result.ok) throw new Error(result.error.code);
     count = undefined;
+    applicationSignalDisposed = true;
   },
 )
   .then((mounted) => {
@@ -28,6 +45,10 @@ void mountApplication(
       __ruseactCounterTest?: {
         setWithoutFlush(value: number): void;
         flush(): void;
+        dispose(): void;
+        getHandledEventCount(): number;
+        isApplicationSignalDisposed(): boolean;
+        wasPersistedPageShown(): boolean;
       };
     };
     if (new URLSearchParams(window.location.search).has("test")) {
@@ -39,6 +60,18 @@ void mountApplication(
         },
         flush() {
           application?.root.flush();
+        },
+        dispose() {
+          application?.dispose();
+        },
+        getHandledEventCount() {
+          return handledEventCount;
+        },
+        isApplicationSignalDisposed() {
+          return applicationSignalDisposed;
+        },
+        wasPersistedPageShown() {
+          return pageShowPersisted;
         },
       };
     }

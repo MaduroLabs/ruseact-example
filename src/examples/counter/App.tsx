@@ -5,12 +5,14 @@ export interface CounterViewContext {
   readonly count: SignalHandle<number>;
   readonly runtime: ReactiveCore;
   readonly flush: () => void;
+  readonly onEvent?: () => void;
 }
 
 function changeCount(
   view: CounterViewContext,
   update: (current: number) => number,
 ): void {
+  view.onEvent?.();
   const currentResult = view.runtime.get(view.count);
   if (!currentResult.ok) throw new Error(currentResult.error.code);
   const setResult = view.runtime.set(view.count, update(currentResult.value));

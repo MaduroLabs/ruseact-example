@@ -5,7 +5,7 @@ This repository is the independent consumer bootstrap for [Ruseact](https://gith
 - `/hello.html` — static Hello World mounting.
 - `/counter.html` — an explicit scalar signal, native event handlers, and manual `root.flush()`.
 
-The repository is currently private. No visibility change was made as part of this bootstrap, and the package artifacts are not published to npm.
+The repository is public. The package artifacts remain private and are not published to npm.
 
 ## Pinned distribution
 
@@ -20,6 +20,8 @@ The artifact set supports renderer template protocols 1–4 and contains:
 | `ruseact-compiler` | 22,072 | `1017c2888fb7e1f69d07de480e182169a21785bc4db56c4b24156f09331f52e1` |
 
 `artifacts/ruseact/0.1.0-alpha.0/distribution-manifest.json` records the framework-generated measurements; `consumer-provenance.json` records the promotion relationship. `pnpm artifacts:verify` checks both files, package metadata, sizes, and checksums.
+
+The vendored artifact set is accompanied by `LICENSE` and `NOTICE.md`. The reviewed tarball payloads do not currently contain standalone license entries, so the exact MIT license and attribution notice are kept beside the immutable tarballs and verified as part of the complete vendored set.
 
 ## Requirements
 
@@ -66,7 +68,7 @@ Run the real-WASM Chromium acceptance test with:
 corepack pnpm test
 ```
 
-The test covers Hello World, Counter interactions, explicit no-update-before-flush behavior, stable output-node identity, production WASM loading, and missing-error checks. It uses the local Chromium executable or `CHROMIUM=/path/to/chromium`.
+The test covers Hello World, Counter interactions, explicit no-update-before-flush behavior, stable output-node identity, keyboard activation, persisted pagehide handling, explicit disposal, listener cleanup, application-owned signal disposal, repeated disposal, production WASM loading, and missing-error checks. It uses the local Chromium executable or `CHROMIUM=/path/to/chromium`.
 
 ## How the bootstrap works
 

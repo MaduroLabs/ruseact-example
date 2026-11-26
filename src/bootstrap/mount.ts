@@ -34,6 +34,17 @@ export class ApplicationLifecycleError extends Error {
 function describeError(error: unknown): string {
   if (error instanceof ApplicationOperationError) return describeError(error.diagnostic);
   if (error instanceof ApplicationLifecycleError) return error.message;
+  if (typeof error === "object" && error !== null && "code" in error) {
+    const detail = error as {
+      code: unknown;
+      operation?: unknown;
+      message?: unknown;
+      causeCode?: unknown;
+      causeOperation?: unknown;
+    };
+    const cause = detail.causeCode ? `; cause ${String(detail.causeCode)}${detail.causeOperation ? ` (${String(detail.causeOperation)})` : ""}` : "";
+    return `${String(detail.code)}${detail.operation ? ` (${String(detail.operation)})` : ""}${detail.message ? `: ${String(detail.message)}` : ""}${cause}`;
+  }
   if (typeof error === "object" && error !== null && "error" in error) {
     const nested = (error as { error?: unknown }).error;
     if (typeof nested === "object" && nested !== null && "code" in nested) {

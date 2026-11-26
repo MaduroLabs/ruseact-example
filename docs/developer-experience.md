@@ -122,3 +122,52 @@ This document records observations from the independent Hello World and Counter 
   commit, PR provenance, independent checksums, and package license notices.
   Workaround: run `pnpm artifacts:verify` before every build. Impact: the
   matching-set procedure is explicit but more involved than registry install.
+
+## M4.5.3.2 Todo Application
+
+- Expected: a collection can be rendered with ordinary JSX array operations.
+  Actual: the supported keyed subset requires `ruseact.keyed([revision],
+  collectionEvaluator, itemFactory)`, one explicit scalar revision dependency,
+  scalar item fields, and a lazy item factory. Workaround: keep the authoritative
+  `TodoRecord[]` in JavaScript and publish a revision after each collection
+  change. Impact: this is a consumer authoring constraint, but it does not block
+  the Todo example. Future improvement: provide clearer editor and compiler
+  diagnostics for the provisional marker.
+
+- Expected: retained task data can be updated through mutable component props.
+  Actual: component props are immutable; the renderer-owned `fields` handles
+  are passed as explicit signal props to `TodoItem`. Retained title and checked
+  bindings update without rerunning item setup. Workaround: include every
+  supported scalar item field in the stable descriptor schema. Impact: no blocker
+  for scalar task data; array/object fields remain unsupported.
+
+- Expected: one flush drains every consequence of a collection update.
+  Actual: keyed reconciliation can write retained item field signals after the
+  current pending snapshot has been taken. Toggle and save therefore perform a
+  second explicit flush at the event boundary. Workaround: document the exact
+  operations that use the bounded second call. Impact: no hidden scheduler is
+  introduced, but application authors must understand one-pass semantics.
+
+- Expected: filtering only changes visibility while preserving every item.
+  Actual: filtered-out items leave the keyed region and their renderer-owned
+  resources are disposed; returning items receive fresh activation identities.
+  Workaround: use stable task IDs and treat filtered-out uncontrolled state as
+  intentionally discarded. Impact: expected structural behavior, not a blocker.
+
+- Expected: item event closures can safely capture a task object from initial
+  setup. Actual: retained item data changes without component rerendering, so
+  the Todo item reads its stable renderer-owned task-key signal at event time.
+  Workaround: never capture mutable array positions or stale records in item
+  listeners. Impact: no blocker, but this is an important keyed-list discipline.
+
+- Expected: nested edit regions expose general component lifecycle callbacks.
+  Actual: the public consumer boundary exposes setup counts and observable DOM
+  and listener behavior, not an internal owner registry or cleanup hook.
+  Workaround: verify nested conditional removal through detached-node listener
+  behavior and application disposal. Impact: internal cleanup remains an
+  implementation contract rather than a fabricated application metric.
+
+- Expected: the Todo application can persist data between page visits.
+  Actual: the example keeps data in memory only. Workaround: none in this
+  milestone. Impact: persistence, backend integration, and localStorage are
+  deferred to later consumer work.

@@ -10,6 +10,7 @@ const sourceFiles = [
   resolve(sourceRoot, "hello-world/App.tsx"),
   resolve(sourceRoot, "counter/App.tsx"),
   resolve(sourceRoot, "conditional/App.tsx"),
+  resolve(sourceRoot, "todo/App.tsx"),
 ];
 
 function formatDiagnostic(diagnostic) {
@@ -35,7 +36,7 @@ for (const sourceFile of sourceFiles) {
   await writeFile(outputFile, `${result.code}\n//# sourceURL=${fileName}\n`, "utf8");
   await writeFile(
     outputFile.replace(/\.mjs$/, ".d.mts"),
-    `import type { ViewDescription } from "ruseact-dom";\nexport declare function createView(context?: Record<string, unknown>): ViewDescription;\n`,
+    `import type { ViewDescription } from "ruseact-dom";\nexport declare function createView(context?: unknown): ViewDescription;\n`,
     "utf8",
   );
   console.log(`Compiled ${fileName} -> ${relative(projectRoot, outputFile)}`);

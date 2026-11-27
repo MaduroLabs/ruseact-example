@@ -1,8 +1,12 @@
 # Public Demo Deployment Preparation
 
-This document prepares the consumer repository for a separately authorized
-static deployment. It does not create a hosting project, add credentials, or
-deploy the site.
+This document records the verified static deployment of the consumer showcase.
+It does not contain deployment credentials or configure a hosting project.
+
+Live demo: <https://ruseact-example.vercel.app/>
+
+Deployment platform: Vercel static hosting. The deployment was authorized and
+performed outside this repository change.
 
 ## Recommended hosting settings
 
@@ -89,14 +93,36 @@ expected MIME type, the public bundle contains no test-control tokens, no
 console or asset errors occur, and the hosting build uses `dist`, never
 `dist-test`.
 
-## Post-deployment smoke test
+## Post-deployment verification
 
-After a separately authorized deployment, manually visit the root and each
-HTML route in a fresh browser session. Repeat the public smoke flow: open each
-page with and without `?test=1&benchmark=1`, exercise Counter, Conditional,
-Todo, and Reorderable controls, and inspect the browser console and network
-panel. Record the actual deployed URL and browser version in a follow-up
-change; no deployment URL is claimed here.
+Verified on 2026-11-27 against the deployed URL using Chromium
+154.0.8037.57 in headless CDP mode on the InstaBox Linux environment. The
+verification used the public deployment, not the framework checkout.
+
+| Route | HTTPS response | Render/control check | WASM |
+| --- | ---: | --- | --- |
+| `/` | 200 | Landing navigation and refresh passed | Not required |
+| `/hello.html` | 200 | Initial render and refresh passed | Loaded |
+| `/counter.html` | 200 | Increment control passed | Loaded |
+| `/conditional.html` | 200 | Panel and nested branch controls passed | Loaded |
+| `/todo.html` | 200 | Add-task control passed | Loaded |
+| `/reorderable.html` | 200 | Move-down control passed | Loaded |
+
+Additional verified behavior:
+
+- HTTP redirected to the HTTPS deployment and ended with status 200.
+- The WASM response was HTTP 200 with `Content-Type: application/wasm` and
+  `Content-Length: 94054`.
+- Direct navigation and page refresh passed for every route.
+- No unexpected runtime errors, console errors, or failed asset requests were
+  observed.
+- Desktop layout had no horizontal overflow. A 390×844 mobile viewport also
+  loaded every route without horizontal overflow.
+- Visiting every route with `?test=1&benchmark=1` left all test and benchmark
+  globals unavailable.
+
+Firefox, WebKit, and Safari were not tested and remain unverified. These
+observations are not cross-browser guarantees.
 
 ## Known limitations
 

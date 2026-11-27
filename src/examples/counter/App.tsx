@@ -23,6 +23,10 @@ function changeCount(
 export function createView(view: CounterViewContext): ViewDescription {
   return (
     <main class="example-page">
+      <nav class="site-nav" aria-label="Example navigation">
+        <a class="brand" href="/"><span class="brand-mark">R</span> Ruseact</a>
+        <span class="page-index">Example 02 / 05</span>
+      </nav>
       <section class="example-card" aria-labelledby="counter-title">
         <p class="eyebrow">Explicit signals and flush</p>
         <h1 id="counter-title">Counter</h1>
@@ -43,6 +47,7 @@ export function createView(view: CounterViewContext): ViewDescription {
         <p class="manual-flush-note" data-status>
           Each event writes the signal and then calls root.flush() explicitly.
         </p>
+        <p class="source-note">Explore <a href="https://github.com/MaduroLabs/ruseact-example/blob/main/src/examples/counter/App.tsx">the Counter source</a> and try a keyboard-activated control.</p>
         <a href="/">Back to examples</a>
       </section>
     </main>

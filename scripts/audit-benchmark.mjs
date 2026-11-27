@@ -11,6 +11,7 @@ import { fileURLToPath } from "node:url";
 const projectRoot = resolve(fileURLToPath(new URL("..", import.meta.url)));
 const outputRoot = resolve(projectRoot, "target/consumer-audit");
 const chromium = process.env.CHROMIUM ?? "chromium";
+const previewDirectory = process.env.RUSEACT_TEST_DIST ?? "dist-test";
 const chromiumVersion = execFileSync(chromium, ["--version"], { encoding: "utf8" }).trim();
 const configuration = {
   warmupSamples: 1,
@@ -283,7 +284,7 @@ async function runIndependentRun(runIndex) {
   }
 }
 
-const preview = start(process.execPath, [resolve(projectRoot, "node_modules/vite/bin/vite.js"), "preview", "--host", "127.0.0.1", "--port", "4173", "--strictPort"]);
+const preview = start(process.execPath, [resolve(projectRoot, "node_modules/vite/bin/vite.js"), "preview", "--outDir", previewDirectory, "--host", "127.0.0.1", "--port", "4173", "--strictPort"]);
 try {
   await waitForHttpPort(4173);
   const runs = [];

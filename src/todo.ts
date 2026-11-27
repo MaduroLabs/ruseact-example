@@ -25,7 +25,7 @@ let itemSetupCount = 0;
 let managedEventCount = 0;
 let applicationContext: TodoViewContext | undefined;
 
-const isTest = new URLSearchParams(window.location.search).has("test");
+const isTest = __RUSEACT_INSTRUMENTED__ && new URLSearchParams(window.location.search).has("test");
 
 function fail(result: { readonly ok: false; readonly error: { readonly code: string } }): never {
   throw new Error(result.error.code);

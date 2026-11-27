@@ -25,15 +25,23 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Verify reviewed artifacts
         run: pnpm artifacts:verify
+      - name: Runtime smoke
+        run: pnpm runtime:smoke
       - name: Typecheck
         run: pnpm typecheck
-      - name: Build production assets
+      - name: Build public production assets
         run: pnpm build
       - name: Install Chromium
         uses: browser-actions/setup-chrome@v1
         with:
           chrome-version: stable
-      - name: Run consumer browser verification
+      - name: Public Chromium smoke
+        run: pnpm smoke:public
+        env:
+          CHROMIUM: chrome
+      - name: Build instrumented test assets
+        run: pnpm build:test
+      - name: Run instrumented consumer browser verification
         run: pnpm test
         env:
           CHROMIUM: chrome

@@ -28,7 +28,7 @@ let detailEventCount = 0;
 let ownedSignals: SignalHandle<number | boolean>[] = [];
 let applicationSignalsDisposed = false;
 
-const isTest = new URLSearchParams(window.location.search).has("test");
+const isTest = __RUSEACT_INSTRUMENTED__ && new URLSearchParams(window.location.search).has("test");
 
 function fail(result: { readonly ok: false; readonly error: { readonly code: string } }): never {
   throw new Error(result.error.code);

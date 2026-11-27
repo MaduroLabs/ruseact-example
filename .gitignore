@@ -1,6 +1,7 @@
 node_modules/
 .generated/
 dist/
+dist-test/
 .vite/
 coverage/
 *.log

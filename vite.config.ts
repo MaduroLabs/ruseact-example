@@ -1,7 +1,13 @@
 import { defineConfig } from "vite";
 
+const instrumented = process.env.RUSEACT_INSTRUMENTED === "1";
+
 export default defineConfig({
+  define: {
+    __RUSEACT_INSTRUMENTED__: instrumented,
+  },
   build: {
+    outDir: instrumented ? "dist-test" : "dist",
     rollupOptions: {
       input: {
         index: "index.html",

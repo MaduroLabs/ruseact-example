@@ -2,7 +2,7 @@ import initializeWasm, * as wasm from "ruseact/wasm/web";
 import { createReactiveCore, type ReactiveCore } from "ruseact";
 import { createRoot, type RendererRoot, type ViewDescription } from "ruseact-dom";
 
-const auditMountStartedAt = new URLSearchParams(window.location.search).has("benchmark")
+const auditMountStartedAt = __RUSEACT_INSTRUMENTED__ && new URLSearchParams(window.location.search).has("benchmark")
   ? performance.now()
   : undefined;
 

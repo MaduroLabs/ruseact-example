@@ -11,9 +11,18 @@
 ## During review
 
 - Capture real browser screenshots at a named desktop and mobile viewport.
+- For served applications, prove that stylesheets/assets loaded, the expected
+  application mounted, and the declared ready state was reached. An empty or
+  failed mount is not a clean audit.
 - Review typography, copywriting, hierarchy, accessibility, responsiveness, and
   second-order anti-slop separately.
 - Run the computed-style audit and record exact element-level evidence.
+- Preserve requested and observed viewport metadata, including device-pixel
+  ratio and whether the values matched. Do not replace observed values with
+  requested values.
+- Treat ambiguous contrast (transparency, gradients, ancestor opacity,
+  unsupported backgrounds, and disabled states) as manual review. Treat
+  intentional scroll containers separately from document overflow.
 - Run Impeccable detection/audit where applicable. Detector findings are
   advisory; a clean result is not approval.
 - Record ERROR, WARNING, and OBSERVATION separately.

@@ -244,6 +244,13 @@ The dependency-free computed-style audit and its fixtures can be run with:
 node .agents/skills/frontend-design-guardian/scripts/test-audit-design.mjs
 node .agents/skills/frontend-design-guardian/scripts/audit-design.mjs \
   --json --viewport=1440x900 path/to/static-page.html
+node .agents/skills/frontend-design-guardian/scripts/test-audit-app.mjs
+# For a served, initialized application:
+node .agents/skills/frontend-design-guardian/scripts/audit-design.mjs \
+  --json --viewport=1440x900 \
+  --url=http://127.0.0.1:4173/hello.html \
+  --ready-text="Hello, world!" \
+  --ready-expression='Boolean(window.__ruseactAuditMount)'
 ~~~
 
 The policy, research evidence, and review of the three unapproved temporary

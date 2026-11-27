@@ -54,8 +54,10 @@ critique `DEGRADED: single-context` rather than implying independent review.
    heuristic is not automatically an accessibility defect.
 4. Run the project audit. It reports visible text runs, semantic elements,
    computed styles, measurable contrast, repeated structures, and responsive
-   overflow. It deliberately excludes hidden text, code blocks, and obvious
-   technical identifiers from casing heuristics.
+   overflow. It deliberately excludes hidden text, code blocks, and contextual
+   technical identifiers from casing heuristics. Ambiguous contrast and
+   intentional scroll regions are reported for manual review rather than
+   treated as objective failures.
 5. Run Impeccable's detector separately. Treat its result as advisory and
    reconcile it with screenshots, task clarity, and human judgment.
 6. Review second-order patterns: a style can be valid in isolation and still
@@ -74,13 +76,38 @@ node .agents/skills/frontend-design-guardian/scripts/audit-design.mjs \
 node .agents/skills/frontend-design-guardian/scripts/test-audit-design.mjs
 ```
 
-The tool loads a temporary instrumented copy in installed Chromium and emits
-findings plus element evidence. It is intentionally small and dependency-free;
-it can audit static local HTML even when browser-to-localhost networking is
-blocked. Use a second invocation at `390x844` for mobile review; record
-the browser's observed viewport if the headless runtime imposes a minimum size.
-Output is review evidence and should remain outside commits unless the task
-calls for a report artifact.
+Static mode loads a temporary instrumented copy in installed Chromium and
+emits findings plus element evidence. It is intentionally small and
+dependency-free, and preserves static-fixture support even when browser-to-
+localhost networking is blocked. For an initialized application, audit the
+served route instead of copying its HTML:
+
+```sh
+node .agents/skills/frontend-design-guardian/scripts/audit-design.mjs \
+  --json --viewport=1440x900 \
+  --url=http://127.0.0.1:4173/hello.html \
+  --ready-text="Hello, world!" \
+  --ready-expression='Boolean(window.__ruseactAuditMount)'
+node .agents/skills/frontend-design-guardian/scripts/test-audit-app.mjs
+```
+
+Served mode uses Chromium CDP device metrics override, waits for the declared
+application-ready state, and fails closed when the mount marker, application
+container, stylesheets, or asset loading evidence is incomplete. It reports
+`requestedViewport`, `observedViewport` (including `devicePixelRatio`), and
+`viewportMatched` separately. Use a second invocation at `390x844` for mobile
+review; if the observed CSS viewport differs, report the mismatch rather than
+claiming exact mobile measurements. Output is review evidence and should remain
+outside commits unless the task calls for a report artifact.
+
+The audit's typography findings are role-aware: body, navigation, labels,
+metadata, controls, headings, and semantic emphasis are reviewed separately.
+Uppercase classification is contextual, so ordinary single-word labels can be
+flagged while legitimate acronyms, code symbols, version strings, and
+technical keys remain exceptions. Solid opaque contrast is measured; alpha,
+gradients, disabled states, and unsupported backgrounds are manual-review
+observations. Document-level overflow is separated from intentional accessible
+scroll containers.
 
 Run Impeccable after the page is available:
 

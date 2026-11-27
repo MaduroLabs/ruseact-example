@@ -1,0 +1,20 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Contrast negative fixture</title>
+<style>
+  :root { font: 16px/1.5 system-ui, sans-serif; color: #222; background: #fff; }
+  .low { color: #777; }
+  .large { font-size: 24px; color: #aaa; }
+  .gradient { color: #fff; background: linear-gradient(90deg, #111, #fff); }
+  .alpha { opacity: .5; }
+  button:disabled { color: #aaa; background: #fff; }
+  @media (max-width: 600px) { .cropped { width: 700px; } }
+</style>
+<main>
+  <p class="low">Normal text below the proposed 4.5:1 threshold.</p>
+  <h1 class="large">Large text with insufficient contrast</h1>
+  <p class="gradient">Text over a gradient requires manual review.</p>
+  <p class="alpha">Text under ancestor opacity requires manual review.</p>
+  <button type="button" disabled>Disabled control</button>
+  <div class="cropped">This element is intentionally outside the narrow viewport for a negative overflow fixture.</div>
+</main>

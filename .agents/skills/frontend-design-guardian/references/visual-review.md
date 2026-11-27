@@ -4,10 +4,14 @@ Use rendered evidence rather than source inspection alone.
 
 ## Capture
 
-Record the browser executable/version, URL or local file, viewport, device
-scale, commit, and screenshot path. Capture at least 1440x900 and 390x844 when
-the surface has responsive behavior. Inspect the actual image; do not infer
-that a screenshot exists from a successful command.
+Record the browser executable/version, URL or local file, requested viewport,
+observed CSS viewport, device-pixel ratio, match status, commit, and screenshot
+path. For a served application also record the readiness signal, stylesheet and
+asset evidence, and mount marker. Capture at least 1440x900 and 390x844 when the
+surface has responsive behavior. Inspect the actual image; do not infer that a
+screenshot exists from a successful command. If the browser cannot produce the
+requested CSS viewport, report the mismatch and do not present it as exact
+mobile evidence.
 
 ## Review order
 

@@ -26,12 +26,17 @@ Browser evidence:
 - Desktop review target: 1440x900.
 - Existing mobile screenshots: 390x844 and treated as the authoritative mobile
   visual evidence.
-- The dependency-free audit uses a temporary instrumented file and Chromium's
-  DOM dump because this environment blocks browser-to-localhost networking.
-- Headless Chromium enforces a 500px minimum CSS viewport in the local audit;
-  the mobile audit therefore observed 500x701. Exact 390px conclusions below
-  are supported by the captured 390x844 screenshots and source inspection, not
-  misrepresented as 390px computed-style output.
+- Static fixture audits use a temporary instrumented file and Chromium's DOM
+  dump because this environment blocks browser-to-localhost networking.
+- The audit now also supports served application routes through Chromium CDP.
+  The authoritative mounted Ruseact route is exercised in hosted CI, where the
+  local HTTP server is reachable from Chromium.
+- Headless Chromium enforces a 500px minimum CSS viewport for the local static
+  audit; the mobile fixture therefore observed 500x701 for a requested 390x844.
+  The report preserves both requested and observed values instead of replacing
+  the observation. Exact 390x844 prototype conclusions below are supported by
+  the captured screenshots and source inspection, not misrepresented as local
+  390px computed-style output.
 
 The critique is marked DEGRADED: single-context: independent sub-agents were
 not explicitly authorized. Human approval remains required.
@@ -113,42 +118,92 @@ direct functional language such as Preview, Source, and Runtime state.
 
 ## Audit implementation and tests
 
-Added:
+Added or corrected:
 
 - .agents/skills/frontend-design-guardian/scripts/audit-design.mjs
 - .agents/skills/frontend-design-guardian/scripts/test-audit-design.mjs
+- .agents/skills/frontend-design-guardian/scripts/test-audit-app.mjs
 - .agents/skills/frontend-design-guardian/fixtures/design-audit/positive.html
 - .agents/skills/frontend-design-guardian/fixtures/design-audit/negative.html
+- focused uppercase, semantic typography, contrast, overflow, and viewport
+  regression fixtures
 
-The audit uses a temporary instrumented copy, installed Chromium, and no new
-dependency. It collects visible direct text runs, semantic headings and
-controls, font family/size/weight, casing, tracking, line-height, solid-color
-contrast, border radii, shadows, repeated text, element rectangles, and
-viewport cropping. It excludes hidden elements, code/pre blocks, and obvious
-technical identifiers from casing checks. It emits exact element evidence and
-separates ERROR, WARNING, and OBSERVATION categories.
+The audit uses installed Chromium and no new dependency. Static mode uses a
+temporary instrumented copy; served mode uses CDP against an actual initialized
+route. Served mode requires a declared ready text and expression, a mounted
+`#app`, at least one stylesheet, no failed resource entries, and no application
+error marker. It collects visible direct text runs, semantic headings and
+controls, role-aware font family/size/weight, casing, tracking, line-height,
+solid-color contrast, border radii, shadows, repeated text, element rectangles,
+and viewport cropping. It excludes hidden elements and code/pre blocks. The
+uppercase classifier excludes contextual technical identifiers rather than all
+single-word uppercase labels. Ambiguous color alpha, gradients, disabled states,
+and unsupported backgrounds are manual-review observations; intentional
+accessible scroll containers are not treated as document overflow. It emits
+exact element evidence and separates ERROR, WARNING, and OBSERVATION categories.
 
-The thresholds are documented in the tool output as proposed project
-heuristics:
+The thresholds and role rules are documented in the tool output as proposed
+project heuristics:
 
-- ERROR for at least six visible runs with at least 75% at weight 700 or more.
-- ERROR for at least three ordinary uppercase runs.
+- ERROR for any ordinary body, metadata, navigation, label, or control run at
+  weight 700 or more; headings and semantic emphasis are contextual exceptions.
+- WARNING for repeated semibold body text and heavy navigation; this is role-
+  aware rather than a page-wide 75% threshold.
+- WARNING for one ordinary uppercase run and ERROR for repeated or tracked
+  ordinary uppercase runs.
 - WARNING for headings at least 56px.
-- ERROR for named controls below 12px or measurable contrast below 4.5:1.
-- ERROR for document, body, or visible-element horizontal cropping.
+- ERROR for named non-disabled controls below 12px or measurable contrast below
+  4.5:1 (3:1 for large text); ambiguous contrast is manual review.
+- ERROR for document or visible-element horizontal cropping outside an
+  intentional scroll container.
 
 These thresholds are not accessibility law and do not replace review.
 
-Fixture command and result:
+Fixture commands and results:
 
 ~~~sh
 node .agents/skills/frontend-design-guardian/scripts/test-audit-design.mjs
 ~~~
 
-Result: PASS. The positive fixture produced zero errors and the negative
-fixture produced the expected TYPO-01, TYPO-03, TYPO-04, TYPO-05, LAY-03,
-COPY-01, COPY-02, A11Y-01, and COLOR-01 findings. A technical Uint32Array
-identifier did not produce a false uppercase finding.
+`node .agents/skills/frontend-design-guardian/scripts/test-audit-design.mjs`
+passes. The positive fixture produced zero errors. The negative fixture
+produced the expected findings, including TYPO-01, TYPO-03, TYPO-04, TYPO-05,
+LAY-03, COPY-01, COPY-02, A11Y-01, and COLOR-01. Focused fixtures pass for
+ordinary single-word uppercase labels (literal and CSS-transformed), technical
+acronym exclusions, bold body text, repeated semibold body text, heavy
+navigation, tracked uppercase labels, eyebrow headings, monospace prose,
+ambiguous/large-text contrast, intentional scroll containers, and mismatched
+viewport metadata. A technical Uint32Array identifier did not produce a false
+uppercase finding.
+
+The served application check is:
+
+```sh
+corepack pnpm build:test
+node .agents/skills/frontend-design-guardian/scripts/test-audit-app.mjs
+```
+
+It audits the actual `dist-test/hello.html` route after the Hello World app
+reports `window.__ruseactAuditMount`. It verifies the response served styles,
+the mount marker, `#app`, no failed asset entries, visible content, and exact
+1440x900 CDP viewport evidence. The same deterministic checks run after
+Chromium installation in hosted CI; the local result is recorded below after
+execution.
+
+Local served-route result:
+
+- `corepack pnpm build:test` completed and produced the instrumented Vite
+  assets, including the Rust WASM module.
+- `node .agents/skills/frontend-design-guardian/scripts/test-audit-app.mjs`
+  passed against the actual `/hello.html` route in Chromium 154.0.8037.57.
+- Both requested viewports, 1440x900 and 390x844, matched their observed CSS
+  viewports at device-pixel ratio 1. Each run returned one stylesheet, no
+  failed asset entries, a live `#app`, visible Hello World content, and
+  `window.__ruseactAuditMount`. This is a real mounted application audit, not
+  an HTML copy audit.
+- The same command is a required hosted-CI check because the InstaBox browser
+  cannot reach its local HTTP server reliably; the hosted job is the
+  authoritative browser-network verification.
 
 ## Impeccable detector results
 
@@ -168,7 +223,8 @@ rendered screenshots still found policy and responsive issues.
 
 ### Tracebench
 
-Desktop computed evidence at 1440x900:
+Desktop screenshot target 1440x900; corrected static-audit request observed
+1440x757 locally:
 
 - 29 visible text runs, 9 uppercase runs, and 2 bold runs.
 - The h1 Tracebench is 56px/600 with -2.8px tracking and 53.2px line-height.
@@ -180,8 +236,14 @@ Desktop computed evidence at 1440x900:
   and body-like metadata. Contrast was measurable and strong for sampled
   controls; the issue is hierarchy and readability context, not automatically
   an accessibility failure.
+- Corrected role-aware audit findings include TYPO-01 on the uppercase brand
+  run, TYPO-05 on ordinary labels, TYPO-07 on mono navigation/metadata, TYPO-03
+  on the 56px heading, and TYPO-04 on its negative tracking. The repeated
+  uppercase treatment is now reported per evidence run rather than only through
+  an aggregate page threshold.
 
-Mobile evidence:
+Mobile screenshot evidence is 390x844; corrected static-audit request observed
+500x701 locally:
 
 - The captured 390x844 screenshot shows the horizontal experiment navigation
   cropped on the right.
@@ -201,7 +263,8 @@ Independent critique:
 
 ### Field Guide
 
-Desktop computed evidence at 1440x900:
+Desktop screenshot target 1440x900; corrected static-audit request observed
+1440x757 locally:
 
 - 24 visible text runs, 4 uppercase runs, 5 bold runs, and 3 headings.
 - The page heading See the update, not the machinery. is 86px/700 with
@@ -211,8 +274,13 @@ Desktop computed evidence at 1440x900:
 - The nav controls 02 Conditional, 03 Todo, and 04 Reorder measured at 4.16:1
   against the page background, triggering the project audit COLOR-01 and
   matching Impeccable's low-contrast advisory.
+- Corrected role-aware audit findings add TYPO-01 for the heavy brand/nav runs,
+  TYPO-08 for repeated heavy navigation, TYPO-05 for ordinary tracked labels,
+  TYPO-07 for the monospace source link, TYPO-03/04 for the heading, and
+  COLOR-01 for the measurable low-contrast text/state cases.
 
-Mobile evidence:
+Mobile screenshot evidence is 390x844; corrected static-audit request observed
+500x701 locally:
 
 - The captured 390x844 screenshot shows the long horizontal navigation cropped.
 - The audit found RESP-01: the nav rect exceeded the observed mobile viewport
@@ -231,7 +299,8 @@ Independent critique:
 
 ### Signal Atlas
 
-Desktop computed evidence at 1440x900:
+Desktop screenshot target 1440x900; corrected static-audit request observed
+1440x757 locally:
 
 - 27 visible text runs, 6 uppercase runs, 11 bold runs, and 2 headings.
 - The h1 Read the signal path. is 129.6px/900 with -14.256px tracking and
@@ -240,10 +309,15 @@ Desktop computed evidence at 1440x900:
   project audit records LAY-03 because the numbers are not presented as a
   semantic ordered list or explicit step sequence.
 - Impeccable measured 2.8:1 orange text on the cream background for one text
-  case; this is an objective contrast concern even though the custom audit's
-  control-only check did not flag that element.
+  case. The corrected custom audit also records COLOR-01 for the measurable
+  `R` text, while retaining manual review for unsupported color configurations.
+- Corrected role-aware audit findings add TYPO-01 for heavy navigation, TYPO-08
+  for repeated heavy navigation, TYPO-05 for ordinary uppercase labels,
+  TYPO-07 for mono navigation, TYPO-03/04 for the heading, and LAY-03 for the
+  decorative numbered navigation.
 
-Mobile evidence:
+Mobile screenshot evidence is 390x844; corrected static-audit request observed
+500x701 locally:
 
 - The captured 390x844 screenshot shows the map navigation extending beyond the
   viewport and the title wrapping under very tight tracking.

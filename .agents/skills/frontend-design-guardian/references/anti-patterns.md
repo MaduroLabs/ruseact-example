@@ -1,38 +1,52 @@
-# Anti-pattern review for Ruseact Example
+# Anti-pattern catalog
 
-Use this as a decision filter, not a universal style ban. A finding is valid
-when the pattern makes the example less legible, less credible, less useful to
-a developer evaluating an experimental framework, or less accessible.
+This catalog is a review register, not a style blacklist. `ERROR` means an
+objective defect or an explicit Ruseact policy violation. `WARNING` means a
+pattern that needs contextual review. `OBSERVATION` records a characteristic
+without claiming harm. Evidence labels are defined in
+[research-sources.md](research-sources.md): `E1` established system guidance,
+`E2` practitioner/tool methodology, `E3` community observation, and `E4`
+project-owner policy.
 
-## Reject unless justified
+| ID | Pattern and harm | Bad example | Better alternative | Valid exception | Detection | Severity / evidence |
+|---|---|---|---|---|---|---|
+| TYPO-01 | Defaulting to heavy type makes hierarchy loud and reduces scanability. | A paragraph set at 700. | Body 400; reserve 500–600 for hierarchy. | A short alert or true emphasis. | Computed `font-weight` on visible text runs. | WARNING, E1/E4 |
+| TYPO-02 | Many near-identical weights create noise rather than hierarchy. | 400, 500, 600, 700, 800 all used in one view. | Use a small semantic ramp. | A data visualization with a documented legend. | Count weights by semantic region. | WARNING, E1/E4 |
+| TYPO-03 | Huge headings manufacture importance and push the task below the fold. | 96px title for a small utility. | Size to task and viewport; use 26–32px page headings as a starting point. | A deliberate editorial cover. | Computed heading size and screenshot evidence. | WARNING, E2/E4 |
+| TYPO-04 | Tight tracking, especially in body text, damages legibility. | `letter-spacing:-.11em` on a heading or prose. | Keep body tracking normal; tune display type sparingly. | Large display type with tested wrapping. | Computed letter-spacing/font-size ratio. | WARNING, E1/E4 |
+| TYPO-05 | All-caps or tracked micro-labels make ordinary navigation feel like decoration. | `EXPERIENCE THE POWER` above every heading. | Sentence case and direct labels. | Acronyms, codes, status tokens, short category tags. | Visible text case plus letter spacing; exclude code/identifiers. | ERROR when repeated policy violation, E1/E4 |
+| TYPO-06 | Missing semantic heading levels makes hierarchy hard to navigate. | Several visual headings are `div`s or jump from h1 to h4. | Use one meaningful h1 and ordered sections. | A non-document canvas with an equivalent accessible structure. | DOM heading/role inspection. | ERROR, E1 |
+| TYPO-07 | Monospace everywhere makes prose and controls read like code. | Body copy and nav in `ui-monospace`. | Use a readable UI/text face; reserve mono for code/data. | A tool whose primary task is editing code. | Computed font families by semantic role. | WARNING, E2/E4 |
+| DENS-01 | Long lines and low leading fatigue reading. | 120-character body lines at 1.1 line-height. | 45–90 characters, around 1.5 leading for long text. | Short labels or dense data tables with compensating structure. | Client rects, line-height, and text length. | WARNING, E1 |
+| COPY-01 | Decorative copy consumes attention without helping a task. | `A NEW ERA OF REACTIVITY` above a control. | Name the actual capability or remove it. | A campaign surface with an approved brand brief. | Phrase register plus manual review. | ERROR for explicit project-policy violation, E4 |
+| COPY-02 | Repeating a heading in its description adds no information. | “Preview” followed by “A preview of the result.” | Add state, action, or consequence. | SEO or onboarding context with a clear purpose. | Token overlap of adjacent heading/description. | WARNING, E2/E4 |
+| COPY-03 | Forced three-part slogans and rhetorical contrasts obscure the user task. | “Build faster. Think bigger. Ship better.” | Use a factual sentence or task label. | Approved campaign copy. | Manual copy review; phrase heuristics are advisory. | WARNING, E2/E4 |
+| IA-01 | Generic centered hero delays the useful path. | Centered slogan, subtitle, CTA, then identical cards. | Lead with the user's decision or working surface. | A known marketing landing page with tested conversion goals. | Screenshot/layout review. | WARNING, E2/E3 |
+| IA-02 | Repeating the same information in nav, eyebrow, title, and card label wastes attention. | `Signals` appears in four stacked labels. | Keep one primary label and add new information only. | Accessibility or disambiguation. | Visible text similarity and manual review. | WARNING, E2/E4 |
+| LAY-01 | Repetitive card grids flatten priority. | Six equal cards for unequal tasks. | Use a primary surface and supporting links. | Actual equal-choice collections. | Repeated DOM signatures and screenshot review. | WARNING, E2/E3 |
+| LAY-02 | Nested cards and containers create visual bureaucracy. | Card inside card inside card, each with padding/shadow. | Use one grouping surface and spacing. | A genuinely nested data model with clear parent/child roles. | DOM ancestor/container count plus computed borders/shadows. | WARNING, E2 |
+| LAY-03 | Decorative numbered sections imply an invented process. | `01 / THE EXPERIMENT` before every section. | Use a descriptive heading. | A real sequence, stepper, or indexed reference. | Text-pattern scan plus semantic list check. | ERROR for decorative use under E4; otherwise WARNING |
+| SPACE-01 | Excessive whitespace is used to stage a slogan rather than support scanning. | A viewport of blank space around one sentence. | Group related content and expose the next action. | Editorial cover or intentional pause. | Screenshot/rect coverage; never a fixed score alone. | WARNING, E2/E4 |
+| SPACE-02 | Inconsistent spacing rhythm makes grouping arbitrary. | 7px, 19px, 31px, 43px without a rationale. | Use a documented spacing scale. | Data-dense exceptions with local rationale. | Computed gap/padding clustering. | OBSERVATION, E1/E4 |
+| CONT-01 | Cards are used for every block, so no block is primary. | Card around heading, card around paragraph, card around card. | Use typography, whitespace, and one surface. | Independent actionable objects. | Border/radius/shadow repetition. | WARNING, E2/E3 |
+| CONT-02 | Rounded corners, hairlines, and shadows are stacked as decoration. | 24px radius + border + diffuse shadow on every block. | Use the least chrome needed to group content. | Existing product language with tested affordance. | Computed radius/border/shadow counts. | WARNING, E2/E4 |
+| COLOR-01 | Contrast or color hierarchy is too weak for text and controls. | Gray text on a tinted panel at 3:1. | Meet WCAG-relevant contrast for the text size and state. | Disabled content, with clear non-interactive semantics. | Measurable solid-color contrast plus browser review. | ERROR when objectively failing, E1 |
+| COLOR-02 | Gradients, glows, or accent colors appear without a product job. | Neon glow behind a plain status label. | Use color for state, grouping, or identity with rationale. | Approved illustration/brand surface. | Computed backgrounds plus visual review. | WARNING, E2/E4 |
+| BADGE-01 | Badges become visual filler or duplicate a nearby label. | `ALPHA`, `LIVE`, and `READY` all beside the same output. | Keep only status that changes a decision. | Real, current status with a defined meaning. | Repeated short labels and adjacent-copy review. | WARNING, E2/E4 |
+| ICON-01 | Icon tiles add ceremony without improving recognition. | Decorative icon above every heading. | Use a familiar icon only with a label/task benefit. | Icon-only control with accessible name and tooltip. | DOM role/name and repeated tile structures. | WARNING, E1/E2 |
+| NAV-01 | Navigation uses stylized labels instead of information scent. | `EXPLORE THE SOURCE` for a link to source. | `Source`. | Brand voice where task meaning remains clear. | Link text and casing review. | WARNING, E1/E4 |
+| FORM-01 | Controls look like pills/cards and hide their state or focus. | Rounded text div acting as a button. | Native semantic control, visible focus, clear state. | A custom control with equivalent semantics tested. | Role/tab/focus audit and computed styles. | ERROR if semantics/focus fail, E1 |
+| MOTION-01 | Gratuitous animation creates distraction or motion burden. | Constant pulsing dots beside static content. | Animate state change only, with reduced-motion handling. | Progress/status where motion conveys ongoing work. | Animation/computed-style scan plus manual review. | WARNING, E1/E3 |
+| IMAGE-01 | Decorative imagery competes with the task or lacks meaning. | Stock 3D shapes around a developer tool. | Use evidence-bearing imagery or omit it. | Approved product illustration. | Screenshot and alt-text review. | WARNING, E2/E4 |
+| RESP-01 | Mobile layout overflows or crops navigation/content. | Horizontal nav cuts off the selected item. | Wrap, scroll intentionally with affordance, or prioritize. | A documented horizontal data surface. | `scrollWidth > clientWidth` and screenshot. | ERROR when content is inaccessible, E1 |
+| A11Y-01 | Tiny/low-contrast functional text excludes users. | 10px gray button label. | Use readable size/contrast and focus state. | Non-functional metadata adjacent to accessible control. | Computed control style and contrast. | ERROR, E1 |
+| A11Y-02 | Visual emphasis replaces semantic emphasis or accessible names. | Bold span used instead of a heading; icon-only link without name. | Semantic headings/strong/labels and accessible names. | Rich canvas UI with parallel accessibility tree. | DOM roles, headings, accessible-name checks. | ERROR, E1 |
+| META-01 | Decorative metrics imply evidence the product does not collect. | `99.9% faster` or arbitrary `03` used as ornament. | Show measured data with source or remove it. | A real, dated metric with methodology. | Text register plus manual evidence check. | ERROR for unsupported claim, E4 |
+| SECOND-01 | A fashionable visual style is applied mechanically. | Beige editorial, italic accent, serif headline used for a runtime tool without reason. | Choose style from task, content, and product identity. | A documented brand or audience rationale. | Cross-pattern review, never one detector threshold. | WARNING, E2/E3/E4 |
+| SECOND-02 | Anti-slop treatment becomes its own template. | Removing cards but replacing them with identical numbered panels everywhere. | Use varied composition only when information structure varies. | A deliberate system for truly repeated content. | Repetition and screenshot review. | WARNING, E2/E3 |
 
-- Generic SaaS hero language or a hero that makes an experimental developer
-  showcase look like a funded product launch.
-- Repetitive card grids when a simple index, comparison, or narrative flow is
-  clearer.
-- Nested cards, excessive rounded containers, repeated badges, and decorative
-  icon tiles that add chrome without hierarchy.
-- Gradients, glows, glassmorphism, grid backgrounds, or animation used as
-  decoration rather than to explain state, focus, or navigation.
-- Oversized headings, excessive whitespace, cramped controls, low-contrast
-  secondary text, or inconsistent type scales.
-- Redundant explanatory copy that repeats the page title or hides the actual
-  interaction.
-- Meaningless motion, auto-playing effects, or motion that competes with the
-  native interaction being demonstrated.
+## Review record
 
-## Ruseact-specific checks
-
-- Preserve visible distinctions between framework facts, experiment notes,
-  controls, and observed browser behavior.
-- Do not imply automatic scheduling, React compatibility, production
-  readiness, or cross-browser guarantees.
-- Do not hide a functional state behind CSS-only presentation when the example
-  is intended to demonstrate structural rendering.
-- Keep native focus indicators visible and do not restore focus manually just
-  to satisfy a screenshot.
-- Do not fabricate lifecycle, performance, or adoption metrics.
-
-For each finding, record the affected surface, evidence, user impact, severity,
-and the smallest safe remedy. If the pattern is intentional, document why in
-the review rather than silently suppressing it.
+For each finding record: ID, element or screenshot region, exact computed/source
+evidence, category, evidence label, severity, user/task impact, exception
+considered, and disposition. Do not collapse all findings into a single score.

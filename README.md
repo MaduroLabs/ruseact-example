@@ -229,3 +229,25 @@ sub-millisecond benchmark rows remain explicitly unresolved; they are not
 reported as zero-cost results. The reports distinguish verified behavior from
 intentional architectural limitations, consumer tooling friction, and browser-
 specific observations.
+
+## Frontend design quality policy
+
+The custom Frontend Design Guardian now requires evidence-based review before
+accepting a visual direction: separate typography, copywriting, hierarchy,
+accessibility, responsive, computed-style, second-order anti-slop, and human
+review gates. Impeccable detection is used as an advisory signal; a clean
+detector result is not design approval.
+
+The dependency-free computed-style audit and its fixtures can be run with:
+
+~~~sh
+node .agents/skills/frontend-design-guardian/scripts/test-audit-design.mjs
+node .agents/skills/frontend-design-guardian/scripts/audit-design.mjs \
+  --json --viewport=1440x900 path/to/static-page.html
+~~~
+
+The policy, research evidence, and review of the three unapproved temporary
+design prototypes are recorded in
+[docs/anti-slop-quality-review.md](docs/anti-slop-quality-review.md).
+This policy task does not change production UI, approve Tracebench, Field
+Guide, or Signal Atlas, or begin M5.

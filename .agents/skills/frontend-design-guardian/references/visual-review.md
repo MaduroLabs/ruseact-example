@@ -1,47 +1,34 @@
-# Screenshot-based visual review
+# Visual review protocol
 
-## Capture protocol
+Use rendered evidence rather than source inspection alone.
 
-1. Run the documented consumer build/server without changing application code
-   for a critique-only task.
-2. Capture the landing page and representative application surfaces at a
-   desktop viewport and a mobile viewport. Include the first viewport and the
-   key interactive state when relevant.
-3. Record browser/version, viewport dimensions, route, build mode, and whether
-   the screenshot is from a local or deployed page.
-4. Inspect the actual pixels: hierarchy, alignment, density, contrast, focus,
-   copy rhythm, responsive overflow, and whether the intended Ruseact behavior
-   is visually understandable.
+## Capture
 
-## Independent critique format
+Record the browser executable/version, URL or local file, viewport, device
+scale, commit, and screenshot path. Capture at least 1440x900 and 390x844 when
+the surface has responsive behavior. Inspect the actual image; do not infer
+that a screenshot exists from a successful command.
 
-For each finding include:
+## Review order
 
-- severity: blocker, high, medium, or polish;
-- screenshot and region;
-- observed evidence;
-- user/developer impact;
-- safe recommendation;
-- whether it requires human direction approval.
+1. Review the page without reading its concept pitch first.
+2. Identify task clarity, information hierarchy, and first useful action.
+3. Review typography separately: casing, weights, scale, tracking, leading,
+   measure, and semantic headings.
+4. Review copy separately: redundancy, puffery, labels, claims, and technical
+   accuracy.
+5. Review layout, spacing, containers, color, borders, shadows, icons, motion,
+   responsive overflow, and accessibility.
+6. Run the computed-style audit and Impeccable detector.
+7. Record subjective concerns that tools cannot establish.
 
-Review before reading an implementation summary when possible. A screenshot
-can reveal hierarchy and responsive failures that source review misses.
+## Finding format
 
-## Impeccable pass
+    [ERROR|WARNING|OBSERVATION] RULE-ID
+    Evidence: element selector or screenshot region; exact text/style/value.
+    Impact: task, readability, accessibility, or trust consequence.
+    Exception considered: why the pattern is or is not justified.
+    Disposition: fix, document, defer, or human decision.
 
-Run the installed Impeccable command appropriate to the stage:
-
-```sh
-.agents/skills/impeccable/scripts/impeccable critique <target>
-.agents/skills/impeccable/scripts/impeccable audit <target>
-.agents/skills/impeccable/scripts/impeccable detect <target>
-```
-
-Use `critique` for design judgment, `audit` for technical quality, and
-`detect` for deterministic anti-pattern evidence. A detector finding is not an
-approval decision. Reconcile false positives with a narrow, documented reason;
-do not broadly suppress rules to obtain a clean result.
-
-After any approved refinement, recapture both viewport classes and inspect the
-new images. Keep review captures ignored unless the task explicitly requires
-durable visual evidence.
+A detector finding is not an independent critique. If no separate reviewer or
+sub-agent was authorized, state that the critique is single-context.

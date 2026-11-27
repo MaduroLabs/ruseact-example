@@ -175,3 +175,18 @@ artifacts/ruseact/...        Reviewed package tarballs and provenance
 This is an experimental package and consumer environment, not a production-ready distribution and not a full React compatibility layer. Packages are private and must remain a matching set. The current consumer-local JSX declaration is provisional, compiler support is intentionally narrow, and the dev wrapper uses full-page reload semantics rather than HMR. No automatic dependency tracking, automatic scheduling, runtime TSX compilation, deployment, npm publication, or application collection is included.
 
 M4.5.3.1 demonstrates the supported conditional marker, lazy branch initialization, nested component ownership, stable parent setup, explicit flushing, and persistent versus branch-local DOM state. M4.5.3.2 adds the Todo Application using the provisional keyed marker. M4.5.3.3 adds Reorderable List movement and records actual Chromium focus/selection behavior without promising restoration. The framework-level duplicate-local-ID blocker was resolved in the promoted alpha.1 distribution. No automatic scheduler, manual DOM reconciliation, or drag-and-drop fallback is added.
+
+## M4.5.4 validation audit
+
+The consumer validation and developer-experience audit is recorded in:
+
+- [`docs/m4.5.4-consumer-validation.md`](docs/m4.5.4-consumer-validation.md) — correctness, cleanup, diagnostics, browser, accessibility, deployment readiness, and reproduction evidence.
+- [`docs/m4.5.4-dx-audit.md`](docs/m4.5.4-dx-audit.md) — authoring measurements, stable DX finding register, and prioritized follow-up.
+- [`docs/m4.5.4-benchmark-baseline.md`](docs/m4.5.4-benchmark-baseline.md) — reproducible application-level baseline and retained raw evidence.
+- [`docs/m5-scheduling-proposal.md`](docs/m5-scheduling-proposal.md) — proposed scheduler alternatives and human approval questions. No M5 implementation is included.
+
+The audit uses installed alpha.1 packages and real Chromium. Unresolved
+sub-millisecond benchmark rows remain explicitly unresolved; they are not
+reported as zero-cost results. The reports distinguish verified behavior from
+intentional architectural limitations, consumer tooling friction, and browser-
+specific observations.

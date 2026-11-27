@@ -1,6 +1,6 @@
 # Ruseact Example
 
-This repository is the independent consumer bootstrap for [Ruseact](https://github.com/MaduroLabs/ruseact). It demonstrates the experimental framework through five small applications:
+This repository is the independent consumer bootstrap and public demonstration surface for [Ruseact](https://github.com/MaduroLabs/ruseact). It demonstrates the experimental framework through five small applications:
 
 - `/hello.html` — static Hello World mounting.
 - `/counter.html` — an explicit scalar signal, native event handlers, and manual `root.flush()`.
@@ -9,6 +9,10 @@ This repository is the independent consumer bootstrap for [Ruseact](https://gith
 - `/reorderable.html` — native keyed range movement, uncontrolled input state, browser focus observations, and nested item ownership.
 
 The repository is public. The package artifacts remain private and are not published to npm.
+
+Ruseact is experimental and is not presented as production-ready. The default
+production build is a static, instrument-free showcase; correctness and
+benchmark controls are kept in a separate instrumented build.
 
 ## Pinned distribution
 
@@ -57,6 +61,29 @@ Open:
 - `http://127.0.0.1:5173/reorderable.html` — Reorderable List.
 
 The `dev` wrapper verifies the artifacts, compiles supported TSX into ignored `.generated/` modules, starts Vite, and reruns the consumer-local precompiler when example TSX changes. It is not an official Ruseact Vite plugin and does not provide framework HMR.
+
+## Public and instrumented builds
+
+The public build is the default and emits `dist/`:
+
+```sh
+corepack pnpm build
+corepack pnpm smoke:public
+```
+
+The correctness and benchmark harnesses use a separate instrumented build in
+`dist-test/`:
+
+```sh
+corepack pnpm build:test
+corepack pnpm test
+corepack pnpm audit:benchmark
+corepack pnpm audit:benchmark:validate
+```
+
+Test-control globals and benchmark mount markers are compile-time excluded from
+the public build. Query parameters such as `?test=1` and `?benchmark=1` do not
+enable those interfaces in `dist/`.
 
 ## Todo Application
 
@@ -127,6 +154,7 @@ corepack pnpm artifacts:verify
 corepack pnpm compile
 corepack pnpm typecheck
 corepack pnpm build
+corepack pnpm smoke:public
 corepack pnpm preview
 ```
 
@@ -139,6 +167,10 @@ corepack pnpm test
 ```
 
 The test covers Hello World, Counter interactions, explicit no-update-before-flush behavior, stable output-node identity, keyboard activation, persisted pagehide handling, explicit disposal, listener cleanup, application-owned signal disposal, repeated disposal, Conditional Playground nested branches, branch-local and persistent input identity, production WASM loading, and missing-error checks. It uses the local Chromium executable or `CHROMIUM=/path/to/chromium`.
+
+The recommended static-hosting settings and pre-deployment checklist are in
+[`docs/public-demo-deployment.md`](docs/public-demo-deployment.md). No public
+deployment has been performed and no deployment domain is assumed.
 
 ## How the bootstrap works
 

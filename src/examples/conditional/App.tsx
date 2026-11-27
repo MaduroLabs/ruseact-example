@@ -106,6 +106,10 @@ export function createView(view: ConditionalViewContext): ViewDescription {
       ok: true,
       value: (
         <main class="example-page">
+          <nav class="site-nav" aria-label="Example navigation">
+            <a class="brand" href="/"><span class="brand-mark">R</span> Ruseact</a>
+            <span class="page-index">Example 03 / 05</span>
+          </nav>
           <section class="example-card" aria-labelledby="conditional-title">
             <p class="eyebrow">Conditional structural rendering</p>
             <h1 id="conditional-title">Conditional Playground</h1>
@@ -169,6 +173,7 @@ export function createView(view: ConditionalViewContext): ViewDescription {
               <p class="manual-flush-note">Signal writes stay invisible until the application calls root.flush().</p>
             </section>
 
+            <p class="source-note">Explore <a href="https://github.com/MaduroLabs/ruseact-example/blob/main/src/examples/conditional/App.tsx">the Conditional Playground source</a>. Branch-local inputs are intentionally recreated after removal.</p>
             <a href="/">Back to examples</a>
           </section>
         </main>

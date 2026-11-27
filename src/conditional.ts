@@ -13,7 +13,7 @@ let advancedSetupCount = 0;
 let managedEventCount = 0;
 let applicationSignalsDisposed = false;
 
-const isTest = new URLSearchParams(window.location.search).has("test");
+const isTest = __RUSEACT_INSTRUMENTED__ && new URLSearchParams(window.location.search).has("test");
 
 void mountApplication(
   ({ runtime, flush }) => {

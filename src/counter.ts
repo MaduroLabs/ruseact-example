@@ -9,8 +9,9 @@ let application: Awaited<ReturnType<typeof mountApplication>> | undefined;
 let handledEventCount = 0;
 let applicationSignalDisposed = false;
 let pageShowPersisted = false;
+const isInstrumented = __RUSEACT_INSTRUMENTED__;
 
-if (new URLSearchParams(window.location.search).has("test")) {
+if (isInstrumented && new URLSearchParams(window.location.search).has("test")) {
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) pageShowPersisted = true;
   });
@@ -51,7 +52,7 @@ void mountApplication(
         wasPersistedPageShown(): boolean;
       };
     };
-    if (new URLSearchParams(window.location.search).has("test")) {
+    if (isInstrumented && new URLSearchParams(window.location.search).has("test")) {
       globalWindow.__ruseactCounterTest = {
         setWithoutFlush(value) {
           if (!applicationRuntime || !count) throw new Error("Counter is not mounted.");

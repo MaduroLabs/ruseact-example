@@ -253,6 +253,10 @@ export function createView(view: TodoViewContext): unknown {
       ok: true,
       value: (
         <main class="example-page">
+          <nav class="site-nav" aria-label="Example navigation">
+            <a class="brand" href="/"><span class="brand-mark">R</span> Ruseact</a>
+            <span class="page-index">Example 04 / 05</span>
+          </nav>
           <section class="example-card todo-card" aria-labelledby="todo-title">
             <p class="eyebrow">Version 4 keyed reconciliation</p>
             <h1 id="todo-title">Todo Application</h1>
@@ -389,6 +393,7 @@ export function createView(view: TodoViewContext): unknown {
               Writes invalidate explicit dependencies; retained item field updates may require a separate follow-up
               flush because each root.flush() drains one pending snapshot.
             </p>
+            <p class="source-note">Explore <a href="https://github.com/MaduroLabs/ruseact-example/blob/main/src/examples/todo/App.tsx">the Todo source</a>. Keyed items retain scalar fields and native nodes while their JavaScript collection changes.</p>
             <a href="/">Back to examples</a>
           </section>
         </main>

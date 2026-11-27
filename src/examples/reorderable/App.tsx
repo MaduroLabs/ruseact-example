@@ -205,6 +205,10 @@ export function createView(view: ReorderableViewContext): unknown {
       ok: true,
       value: (
         <main class="example-page">
+          <nav class="site-nav" aria-label="Example navigation">
+            <a class="brand" href="/"><span class="brand-mark">R</span> Ruseact</a>
+            <span class="page-index">Example 05 / 05</span>
+          </nav>
           <section class="example-card reorder-card" aria-labelledby="reorder-title">
             <p class="eyebrow">Version 4 native keyed movement</p>
             <h1 id="reorder-title">Reorderable List</h1>
@@ -283,6 +287,7 @@ export function createView(view: ReorderableViewContext): unknown {
               Movement changes the JavaScript order and calls root.flush(). No application code moves DOM nodes or
               restores browser focus and selection.
             </p>
+            <p class="source-note">Explore <a href="https://github.com/MaduroLabs/ruseact-example/blob/main/src/examples/reorderable/App.tsx">the Reorderable List source</a>. Focus and selection notes describe tested Chromium behavior, not a universal guarantee.</p>
             <a href="/">Back to examples</a>
           </section>
         </main>

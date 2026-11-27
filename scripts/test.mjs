@@ -7,6 +7,7 @@ import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
 const chromium = process.env.CHROMIUM ?? "chromium";
+const previewDirectory = process.env.RUSEACT_TEST_DIST ?? "dist-test";
 
 function waitForHttpPort(port, timeout = 15_000) {
   const started = Date.now();
@@ -128,7 +129,7 @@ async function stopProcess(child) {
   await Promise.race([exited, new Promise((resolvePromise) => setTimeout(resolvePromise, 2_000))]);
 }
 
-const preview = start(process.execPath, [resolve(root, "node_modules/vite/bin/vite.js"), "preview", "--host", "127.0.0.1", "--port", "4173", "--strictPort"]);
+const preview = start(process.execPath, [resolve(root, "node_modules/vite/bin/vite.js"), "preview", "--outDir", previewDirectory, "--host", "127.0.0.1", "--port", "4173", "--strictPort"]);
 let browser;
 let profile;
 try {

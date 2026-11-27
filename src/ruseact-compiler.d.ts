@@ -7,6 +7,8 @@ import type {
 } from "ruseact-dom";
 
 declare global {
+  const __RUSEACT_INSTRUMENTED__: boolean;
+
   const ruseact: {
     bindText<T extends SupportedScalar, D extends SupportedScalar>(
       dependencies: readonly SignalHandle<D>[],

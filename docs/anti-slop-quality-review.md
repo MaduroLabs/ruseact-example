@@ -201,6 +201,11 @@ Local served-route result:
   failed asset entries, a live `#app`, visible Hello World content, and
   `window.__ruseactAuditMount`. This is a real mounted application audit, not
   an HTML copy audit.
+- Hosted PR validation run `46046001634` also passed on `ubuntu-latest` with
+  Google Chrome 158.0.8127.88. Its `Run design audit regression tests` and
+  `Audit mounted Ruseact page` steps both completed successfully, alongside
+  the existing consumer browser verification. This confirms that the browser
+  reached the served route in the network environment used for CI.
 - The same command is a required hosted-CI check because the InstaBox browser
   cannot reach its local HTTP server reliably; the hosted job is the
   authoritative browser-network verification.

@@ -7,6 +7,9 @@
   .large { font-size: 24px; color: #aaa; }
   .gradient { color: #fff; background: linear-gradient(90deg, #111, #fff); }
   .alpha { opacity: .5; }
+  .metadata-low { color: #777; background: #fff; }
+  .dimmed { opacity: .5; }
+  .opaque-local { color: #111; background: #fff; }
   button:disabled { color: #aaa; background: #fff; }
   @media (max-width: 600px) { .cropped { width: 700px; } }
 </style>
@@ -15,6 +18,8 @@
   <h1 class="large">Large text with insufficient contrast</h1>
   <p class="gradient">Text over a gradient requires manual review.</p>
   <p class="alpha">Text under ancestor opacity requires manual review.</p>
+  <small class="metadata-low">Metadata below the contrast threshold.</small>
+  <div class="dimmed"><small class="opaque-local">Metadata with an opaque local background under ancestor opacity.</small></div>
   <button type="button" disabled>Disabled control</button>
   <div class="cropped">This element is intentionally outside the narrow viewport for a negative overflow fixture.</div>
 </main>

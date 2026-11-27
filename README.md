@@ -244,13 +244,23 @@ The dependency-free computed-style audit and its fixtures can be run with:
 node .agents/skills/frontend-design-guardian/scripts/test-audit-design.mjs
 node .agents/skills/frontend-design-guardian/scripts/audit-design.mjs \
   --json --viewport=1440x900 path/to/static-page.html
+corepack pnpm build:test
 node .agents/skills/frontend-design-guardian/scripts/test-audit-app.mjs
-# For a served, initialized application:
+# Instrumented served application, including its test-only mount marker:
+corepack pnpm exec vite preview --outDir dist-test --host 127.0.0.1 --port 4173 --strictPort
 node .agents/skills/frontend-design-guardian/scripts/audit-design.mjs \
   --json --viewport=1440x900 \
-  --url=http://127.0.0.1:4173/hello.html \
+  --url='http://127.0.0.1:4173/hello.html?benchmark=1&design-audit=1' \
   --ready-text="Hello, world!" \
   --ready-expression='Boolean(window.__ruseactAuditMount)'
+# Public served application, without test-only globals:
+corepack pnpm build
+# Serve dist on port 4173 in another shell, then run:
+corepack pnpm exec vite preview --outDir dist --host 127.0.0.1 --port 4173 --strictPort
+RUSEACT_AUDIT_DIST=dist RUSEACT_AUDIT_QUERY= \
+RUSEACT_AUDIT_READY_TEXT="Hello, world!" \
+RUSEACT_AUDIT_READY_EXPRESSION='Boolean(document.querySelector("#app")?.textContent?.includes("Hello, world!"))' \
+node .agents/skills/frontend-design-guardian/scripts/test-audit-app.mjs
 ~~~
 
 The policy, research evidence, and review of the three unapproved temporary

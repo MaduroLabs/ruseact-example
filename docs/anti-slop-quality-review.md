@@ -137,10 +137,13 @@ controls, role-aware font family/size/weight, casing, tracking, line-height,
 solid-color contrast, border radii, shadows, repeated text, element rectangles,
 and viewport cropping. It excludes hidden elements and code/pre blocks. The
 uppercase classifier excludes contextual technical identifiers rather than all
-single-word uppercase labels. Ambiguous color alpha, gradients, disabled states,
-and unsupported backgrounds are manual-review observations; intentional
-accessible scroll containers are not treated as document overflow. It emits
-exact element evidence and separates ERROR, WARNING, and OBSERVATION categories.
+single-word uppercase labels. Text runs inherit semantic roles through nested
+inline ancestors, including navigation, labels, controls, body text, and
+semantic emphasis. Contrast is reviewed for metadata as well as other text;
+ambiguous color alpha, gradients, ancestor opacity, disabled states, and
+unsupported backgrounds are manual-review observations. Intentional accessible
+scroll containers are not treated as document overflow. It emits exact element
+evidence and separates ERROR, WARNING, and OBSERVATION categories.
 
 The thresholds and role rules are documented in the tool output as proposed
 project heuristics:
@@ -172,11 +175,12 @@ LAY-03, COPY-01, COPY-02, A11Y-01, and COLOR-01. Focused fixtures pass for
 ordinary single-word uppercase labels (literal and CSS-transformed), technical
 acronym exclusions, bold body text, repeated semibold body text, heavy
 navigation, tracked uppercase labels, eyebrow headings, monospace prose,
-ambiguous/large-text contrast, intentional scroll containers, and mismatched
-viewport metadata. A technical Uint32Array identifier did not produce a false
-uppercase finding.
+nested inline role inheritance, semantic emphasis exceptions, metadata
+contrast, ancestor opacity over an opaque local background, ambiguous/large-
+text contrast, intentional scroll containers, and mismatched viewport metadata.
+A technical Uint32Array identifier did not produce a false uppercase finding.
 
-The served application check is:
+The instrumented served application check is:
 
 ```sh
 corepack pnpm build:test
@@ -184,11 +188,22 @@ node .agents/skills/frontend-design-guardian/scripts/test-audit-app.mjs
 ```
 
 It audits the actual `dist-test/hello.html` route after the Hello World app
-reports `window.__ruseactAuditMount`. It verifies the response served styles,
-the mount marker, `#app`, no failed asset entries, visible content, and exact
-1440x900 CDP viewport evidence. The same deterministic checks run after
-Chromium installation in hosted CI; the local result is recorded below after
-execution.
+reports `window.__ruseactAuditMount`; the helper verifies both 1440x900 and
+390x844. It verifies the response served styles, the marker, `#app`, no failed
+asset entries, visible content, and exact CDP viewport evidence. The same
+deterministic checks run after Chromium installation in hosted CI.
+
+The public served application check does not use the test-only global:
+
+```sh
+corepack pnpm build
+RUSEACT_AUDIT_DIST=dist RUSEACT_AUDIT_QUERY= \
+RUSEACT_AUDIT_READY_TEXT="Hello, world!" \
+RUSEACT_AUDIT_READY_EXPRESSION='Boolean(document.querySelector("#app")?.textContent?.includes("Hello, world!"))' \
+node .agents/skills/frontend-design-guardian/scripts/test-audit-app.mjs
+```
+
+It uses non-empty mounted `#app` content as readiness and mount evidence.
 
 Local served-route result:
 
@@ -201,6 +216,10 @@ Local served-route result:
   failed asset entries, a live `#app`, visible Hello World content, and
   `window.__ruseactAuditMount`. This is a real mounted application audit, not
   an HTML copy audit.
+- The public `dist` build was also audited with
+  `RUSEACT_AUDIT_READY_EXPRESSION` based only on non-empty `#app` content and
+  no benchmark query or test-only global. Both requested viewports matched and
+  the same stylesheet, asset, mount, and visible-content checks passed.
 - Hosted PR validation run `46046001634` also passed on `ubuntu-latest` with
   Google Chrome 158.0.8127.88. Its `Run design audit regression tests` and
   `Audit mounted Ruseact page` steps both completed successfully, alongside

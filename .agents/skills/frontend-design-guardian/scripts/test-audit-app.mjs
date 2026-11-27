@@ -6,6 +6,10 @@ import { resolve } from "node:path";
 const root = resolve(import.meta.dirname, "../../../..");
 const chromium = process.env.CHROMIUM || "chromium";
 const audit = resolve(root, ".agents/skills/frontend-design-guardian/scripts/audit-design.mjs");
+const auditDist = process.env.RUSEACT_AUDIT_DIST ?? "dist-test";
+const auditQuery = process.env.RUSEACT_AUDIT_QUERY ?? "benchmark=1&design-audit=1";
+const auditReadyText = process.env.RUSEACT_AUDIT_READY_TEXT ?? "Hello, world!";
+const auditReadyExpression = process.env.RUSEACT_AUDIT_READY_EXPRESSION ?? "Boolean(window.__ruseactAuditMount)";
 const freePort = () => new Promise((resolvePromise, reject) => {
   const server = createServer();
   server.once("error", reject);
@@ -37,11 +41,11 @@ const stop = async (child) => {
   ]);
 };
 const port = await freePort();
-const preview = spawn(process.execPath, [resolve(root, "node_modules/vite/bin/vite.js"), "preview", "--outDir", "dist-test", "--host", "127.0.0.1", "--port", String(port), "--strictPort"], { cwd: root, stdio: "ignore" });
+const preview = spawn(process.execPath, [resolve(root, "node_modules/vite/bin/vite.js"), "preview", "--outDir", auditDist, "--host", "127.0.0.1", "--port", String(port), "--strictPort"], { cwd: root, stdio: "ignore" });
 let auditProcess;
 try {
   await waitHttp(port);
-  const url = "http://127.0.0.1:" + port + "/hello.html?benchmark=1&design-audit=1";
+  const url = "http://127.0.0.1:" + port + "/hello.html" + (auditQuery ? "?" + auditQuery : "");
   const reports = [];
   for (const viewport of ["1440x900", "390x844"]) {
     auditProcess = spawn(process.execPath, [
@@ -49,8 +53,8 @@ try {
       "--json",
       "--viewport=" + viewport,
       "--url=" + url,
-      "--ready-text=Hello, world!",
-      "--ready-expression=Boolean(window.__ruseactAuditMount)",
+      "--ready-text=" + auditReadyText,
+      "--ready-expression=" + auditReadyExpression,
     ], { cwd: root, env: { ...process.env, CHROMIUM: chromium }, stdio: ["ignore", "pipe", "pipe"] });
     let stdout = "";
     let stderr = "";

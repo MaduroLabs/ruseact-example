@@ -141,22 +141,24 @@ function browserAudit() {
   const background = (element) => {
     let current = element;
     let inheritedOpacity = 1;
+    let color = null;
+    let complexBackground = false;
     while (current) {
       const style = getComputedStyle(current);
-      inheritedOpacity *= Number.parseFloat(style.opacity) || 1;
-      if (style.backgroundImage !== "none") {
-        return { color: null, status: "manual", reason: "background image or gradient" };
-      }
-      const color = parseColor(style.backgroundColor);
-      if (color && color.a > 0) {
-        if (color.a < 1 || inheritedOpacity < 1) {
-          return { color, status: "manual", reason: "transparent background or ancestor opacity" };
-        }
-        return { color, status: "measured", reason: null };
+      const opacity = Number.parseFloat(style.opacity);
+      if (Number.isFinite(opacity)) inheritedOpacity *= opacity;
+      if (!color) {
+        if (style.backgroundImage !== "none") complexBackground = true;
+        const candidate = parseColor(style.backgroundColor);
+        if (candidate && candidate.a > 0) color = candidate;
       }
       current = current.parentElement;
     }
-    return { color: null, status: "manual", reason: "no solid ancestor background" };
+    if (!color) return { color: null, status: "manual", reason: complexBackground ? "background image or gradient" : "no solid ancestor background" };
+    if (complexBackground || color.a < 1 || inheritedOpacity < 1) {
+      return { color, status: "manual", reason: complexBackground ? "background image or gradient" : "transparent background or ancestor opacity" };
+    }
+    return { color, status: "measured", reason: null };
   };
   const luminance = (color) => {
     const channel = (value) => {
@@ -189,15 +191,25 @@ function browserAudit() {
     if (!left.size || !right.size) return 0;
     return [...left].filter((word) => right.has(word)).length / Math.min(left.size, right.size);
   };
-  const roleOf = (element) => {
+  const localRole = (element) => {
     const tag = element.tagName.toLowerCase();
-    if (/^h[1-6]$/.test(tag)) return "heading";
-    if (element.closest("nav") || (tag === "a" && element.hasAttribute("href"))) return "navigation";
-    if (tag === "button" || tag === "input" || tag === "select" || tag === "textarea" || element.getAttribute("role") === "button") return "control";
-    if (tag === "label" || element.classList.contains("label")) return "label";
-    if (element.closest("small,.eyebrow,.meta,.side-label,[data-meta]")) return "metadata";
+    const ariaRole = element.getAttribute("role");
+    if (/^h[1-6]$/.test(tag) || ariaRole === "heading") return "heading";
     if (tag === "strong" || tag === "b" || tag === "em") return "emphasis";
+    if (tag === "button" || tag === "input" || tag === "select" || tag === "textarea" || ["button", "checkbox", "combobox", "listbox", "radio", "slider", "switch"].includes(ariaRole)) return "control";
+    if (tag === "nav" || tag === "a" && element.hasAttribute("href") || ariaRole === "navigation") return "navigation";
+    if (tag === "label" || element.classList.contains("label")) return "label";
+    if (tag === "small" || element.matches(".eyebrow,.meta,.side-label,[data-meta]")) return "metadata";
     if (tag === "p" || tag === "li") return "body";
+    return null;
+  };
+  const roleOf = (element) => {
+    let current = element;
+    while (current) {
+      const role = localRole(current);
+      if (role) return role;
+      current = current.parentElement;
+    }
     return "other";
   };
   const styleOf = (element) => {
@@ -305,7 +317,7 @@ function browserAudit() {
   const contrastRuns = textRuns.filter((run) => run.style.contrastStatus === "measured" && run.style.contrast !== null);
   const lowContrast = contrastRuns.filter((run) => {
     const large = run.style.fontSize >= 24 || (run.style.fontSize >= 18.66 && run.style.fontWeight >= 700);
-    return run.style.contrast < (large ? 3 : 4.5) && run.style.role !== "metadata" && !run.style.disabled;
+    return run.style.contrast < (large ? 3 : 4.5) && !run.style.disabled;
   });
   if (lowContrast.length) add("COLOR-01", "ERROR", "Visible text has measurable contrast below the size-appropriate threshold.", lowContrast.slice(0, 12));
   const ambiguousContrast = textRuns.filter((run) => run.style.contrastStatus === "manual");
@@ -369,7 +381,7 @@ function browserAudit() {
       uppercase: "WARNING for one ordinary uppercase run and ERROR for repeated or tracked ordinary uppercase runs; a contextual technical vocabulary and structured identifiers are excluded.",
       largeHeading: "WARNING at 56px or larger; proposed project heuristic, not a universal limit.",
       smallControl: "ERROR below 12px for named non-disabled controls; proposed project minimum.",
-      contrast: "ERROR only for measured solid opaque colors using 4.5:1 normal text or 3:1 large text; transparent, gradient, alpha, and disabled cases require manual review.",
+      contrast: "ERROR only for measured solid opaque colors for every text role using 4.5:1 normal text or 3:1 large text; transparent, gradient, alpha, ancestor-opacity, and disabled cases require manual review.",
       overflow: "ERROR for visible elements cropped by the viewport unless they are inside an intentionally scrollable container.",
     },
   };
@@ -437,7 +449,7 @@ try {
     if (!readyState || readyState.ready !== "complete" || !readyState.text.includes(readyText) || !readyState.marker) {
       throw new Error("application did not reach the declared ready state: " + JSON.stringify(readyState));
     }
-    const application = await evaluate(webSocketUrl, "(() => ({ styleSheets: document.styleSheets.length, failedAssets: performance.getEntriesByType('resource').filter((entry) => entry.responseStatus >= 400).map((entry) => entry.name), mount: window.__ruseactAuditMount || null, appElement: Boolean(document.querySelector('#app')), error: document.querySelector('[data-state=\"error\"]')?.textContent || null }))()", cdp);
+    const application = await evaluate(webSocketUrl, "(() => ({ styleSheets: document.styleSheets.length, failedAssets: performance.getEntriesByType('resource').filter((entry) => entry.responseStatus >= 400).map((entry) => entry.name), mount: window.__ruseactAuditMount || null, appElement: Boolean(document.querySelector('#app')), appText: document.querySelector('#app')?.textContent?.trim() || '', error: document.querySelector('[data-state=\"error\"]')?.textContent || null }))()", cdp);
     if (!application.styleSheets) throw new Error("application audit found no loaded stylesheets");
     if (application.failedAssets.length) throw new Error("application audit found failed assets: " + JSON.stringify(application.failedAssets));
     if (application.error || !application.appElement) throw new Error("application audit found an invalid mounted page: " + JSON.stringify(application));
@@ -446,8 +458,8 @@ try {
       readyText,
       readyExpression,
       readyState,
-      mounted: Boolean(application.mount),
       ...application,
+      mounted: Boolean(application.appElement && application.appText),
     }));
   } else {
     const source = await readFile(target, "utf8");

@@ -5,18 +5,26 @@
   :root { font: 16px/1.5 system-ui, sans-serif; color: #202124; background: #fff; }
   nav a { font-weight: 700; }
   .bold-body { font-weight: 700; }
+  .bold-nested-body { font-weight: 700; }
+  .bold-nested-control { font-weight: 700; }
+  .bold-nested-label { font-weight: 700; }
   .semibold-body { font-weight: 600; }
   .label { font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; }
   .eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
   .prose-mono { font-family: ui-monospace, monospace; }
 </style>
 <main>
-  <nav><a href="#one">First</a><a href="#two">Second</a></nav>
+  <nav><a href="#one"><span>First</span></a><a href="#two"><span>Second</span></a><a href="#nested"><span>Nested navigation</span></a></nav>
   <p class="label">RUNTIME STATE</p>
   <h1>Runtime state</h1>
   <p class="eyebrow">Current view</p>
   <h2>Preview</h2>
   <p class="bold-body">This paragraph is emphasized without a semantic reason.</p>
+  <p class="bold-nested-body"><span>This nested body text remains body content.</span></p>
+  <button class="bold-nested-control" type="button"><span>Increment</span></button>
+  <label class="bold-nested-label" for="runtime"><span>Runtime state</span></label>
+  <input id="runtime" value="ready">
+  <p><strong><span>Important detail</span></strong> remains intentional emphasis.</p>
   <p class="semibold-body">This body text repeats a semibold treatment.</p>
   <p class="semibold-body">This second body text repeats the same treatment.</p>
   <p class="prose-mono">Ordinary prose should not inherit a code face.</p>

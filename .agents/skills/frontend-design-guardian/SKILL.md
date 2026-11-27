@@ -83,13 +83,37 @@ localhost networking is blocked. For an initialized application, audit the
 served route instead of copying its HTML:
 
 ```sh
+corepack pnpm build:test
+node .agents/skills/frontend-design-guardian/scripts/test-audit-app.mjs
+# The low-level command below assumes dist-test is already served on port 4173:
+corepack pnpm exec vite preview --outDir dist-test --host 127.0.0.1 --port 4173 --strictPort
 node .agents/skills/frontend-design-guardian/scripts/audit-design.mjs \
   --json --viewport=1440x900 \
-  --url=http://127.0.0.1:4173/hello.html \
+  --url=http://127.0.0.1:4173/hello.html?benchmark=1\&design-audit=1 \
   --ready-text="Hello, world!" \
   --ready-expression='Boolean(window.__ruseactAuditMount)'
+```
+
+The instrumented command must use `build:test` and the benchmark query because
+the mount marker is intentionally excluded from the public build. For public
+application auditing, use the application content as readiness evidence rather
+than a test-only global:
+
+```sh
+corepack pnpm build
+# Serve dist on port 4173 in another shell before using the low-level command:
+corepack pnpm exec vite preview --outDir dist --host 127.0.0.1 --port 4173 --strictPort
+RUSEACT_AUDIT_DIST=dist \
+RUSEACT_AUDIT_QUERY= \
+RUSEACT_AUDIT_READY_TEXT="Hello, world!" \
+RUSEACT_AUDIT_READY_EXPRESSION='Boolean(document.querySelector("#app")?.textContent?.includes("Hello, world!"))' \
 node .agents/skills/frontend-design-guardian/scripts/test-audit-app.mjs
 ```
+
+`test-audit-app.mjs` serves the selected `dist` or `dist-test` directory and
+audits both 1440x900 and 390x844. The served audit reports a mount based on
+non-empty `#app` content; the instrumented marker remains an additional
+readiness assertion, not the public application contract.
 
 Served mode uses Chromium CDP device metrics override, waits for the declared
 application-ready state, and fails closed when the mount marker, application
@@ -102,12 +126,16 @@ outside commits unless the task calls for a report artifact.
 
 The audit's typography findings are role-aware: body, navigation, labels,
 metadata, controls, headings, and semantic emphasis are reviewed separately.
+Text runs inherit that context through nested inline ancestors, so a span inside
+a paragraph, link, button, label, or semantic emphasis element is not treated
+as an unrelated `other` role.
 Uppercase classification is contextual, so ordinary single-word labels can be
 flagged while legitimate acronyms, code symbols, version strings, and
-technical keys remain exceptions. Solid opaque contrast is measured; alpha,
-gradients, disabled states, and unsupported backgrounds are manual-review
-observations. Document-level overflow is separated from intentional accessible
-scroll containers.
+technical keys remain exceptions. Solid opaque contrast is measured for every
+text role, including metadata; alpha, gradients, ancestor opacity, disabled
+states, and unsupported backgrounds are manual-review observations.
+Document-level overflow is separated from intentional accessible scroll
+containers.
 
 Run Impeccable after the page is available:
 

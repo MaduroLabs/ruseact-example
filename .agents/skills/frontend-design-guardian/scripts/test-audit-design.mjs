@@ -39,6 +39,13 @@ for (const text of ["PREVIEW", "SOURCE", "FEATURES", "OVERVIEW"]) {
     throw new Error("uppercase fixture did not identify " + text);
   }
 }
+const cssTransformed = uppercase.textRuns.find((run) => run.text === "preview");
+if (!cssTransformed || cssTransformed.style.textTransform !== "uppercase" || !cssTransformed.uppercase) {
+  throw new Error("lowercase CSS-transformed text was not classified as uppercase");
+}
+if (!uppercase.findings.some((finding) => finding.code === "TYPO-05" && finding.evidence.some((item) => item.text === "preview"))) {
+  throw new Error("CSS-transformed lowercase text did not produce uppercase evidence");
+}
 for (const acronym of ["WASM", "API", "DOM", "CSS", "JSX", "TSX", "HTTP"]) {
   if (uppercase.textRuns.some((run) => run.text === acronym && (!run.technical || run.uppercase))) {
     throw new Error("technical acronym was not excluded safely: " + acronym);
@@ -49,8 +56,23 @@ requireCodes(typography, ["TYPO-01", "TYPO-02", "TYPO-05", "TYPO-07", "TYPO-08",
 if (!severities(typography, "TYPO-01").includes("ERROR")) throw new Error("bold body text was not an error");
 if (!severities(typography, "TYPO-02").includes("WARNING")) throw new Error("semibold body text was not a warning");
 if (!severities(typography, "TYPO-08").includes("WARNING")) throw new Error("heavy navigation was not a warning");
+for (const [text, role] of [["Nested navigation", "navigation"], ["This nested body text remains body content.", "body"], ["Increment", "control"], ["Runtime state", "label"]]) {
+  const run = typography.textRuns.find((item) => item.text === text && item.style.role === role);
+  if (!run || run.style.role !== role) throw new Error("nested semantic role was not inherited for " + text + ": " + JSON.stringify(run?.style.role));
+}
+const emphasis = typography.textRuns.find((run) => run.text === "Important detail");
+if (!emphasis || emphasis.style.role !== "emphasis") throw new Error("legitimate nested emphasis was not preserved");
+if (typography.findings.some((finding) => finding.code === "TYPO-01" && finding.evidence.some((item) => item.text === "Important detail"))) {
+  throw new Error("legitimate semantic emphasis was incorrectly reported as ordinary bold text");
+}
 requireCodes(contrast, ["COLOR-01", "COLOR-MANUAL"], "contrast fixture");
 if (!severities(contrast, "COLOR-MANUAL").includes("OBSERVATION")) throw new Error("ambiguous contrast was not manual review");
+if (!contrast.findings.some((finding) => finding.code === "COLOR-01" && finding.evidence.some((item) => item.text === "Metadata below the contrast threshold."))) {
+  throw new Error("metadata contrast was excluded from measurable review");
+}
+if (!contrast.findings.some((finding) => finding.code === "COLOR-MANUAL" && finding.evidence.some((item) => item.text.includes("opaque local background under ancestor opacity")))) {
+  throw new Error("ancestor opacity over an opaque local background was not manual review");
+}
 if (codes(contrast).has("RESP-01")) throw new Error("wide contrast fixture unexpectedly overflowed at desktop");
 if (codes(scroll).has("RESP-01")) throw new Error("intentional scroll container was reported as page overflow");
 if (!scroll.overflow.intentionalScrollContainers.length) throw new Error("intentional scroll container was not recorded");

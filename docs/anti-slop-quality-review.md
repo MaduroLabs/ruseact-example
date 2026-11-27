@@ -252,8 +252,11 @@ Mobile screenshot evidence is 390x844; corrected static-audit request observed
 
 - The captured 390x844 screenshot shows the horizontal experiment navigation
   cropped on the right.
-- The audit found RESP-01 on the nav: the visible nav rect was wider than the
-  observed mobile viewport and the 05 Hello item extended beyond it.
+- The corrected static audit did not claim an exact 390px overflow finding: its
+  observed CSS viewport was 500px wide. The screenshot crop is therefore
+  retained as visual/manual evidence and should be rechecked with an exact
+  served-route or screenshot-capable browser before being classified as an
+  automated responsive error.
 - The h1 reduces to 28px/600 with -1.4px tracking, so the main concern is not
   mobile headline size but the mono/uppercase treatment and navigation access.
 
@@ -288,8 +291,9 @@ Mobile screenshot evidence is 390x844; corrected static-audit request observed
 500x701 locally:
 
 - The captured 390x844 screenshot shows the long horizontal navigation cropped.
-- The audit found RESP-01: the nav rect exceeded the observed mobile viewport
-  and the 05 Hello item extended beyond it.
+- The corrected static audit did not claim an exact 390px overflow finding: its
+  observed CSS viewport was 500px wide. The screenshot crop remains a manual
+  responsive-review finding until an exact served prototype route is available.
 - The mobile h1 is 42px/700 with -3.36px tracking and 37.8px line-height.
 
 Independent critique:
@@ -326,8 +330,9 @@ Mobile screenshot evidence is 390x844; corrected static-audit request observed
 
 - The captured 390x844 screenshot shows the map navigation extending beyond the
   viewport and the title wrapping under very tight tracking.
-- The audit found RESP-01 on visible navigation items beyond the observed
-  viewport; the 04 and 05 items extend past the right edge.
+- The corrected static audit did not claim an exact 390px overflow finding: its
+  observed CSS viewport was 500px wide. The screenshot crop and title wrapping
+  remain manual responsive evidence, not a fabricated exact-viewport metric.
 - The h1 is 48px/900 with -5.28px tracking and 37.44px line-height.
 
 Independent critique:

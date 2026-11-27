@@ -8,3 +8,9 @@ coverage/
 playwright-report/
 test-results/
 target/
+# Impeccable visual-review output is local evidence, not application source.
+**/.impeccable/*.png
+**/.impeccable/review/
+**/.impeccable/questions/
+**/.impeccable/config.local.json
+**/.impeccable/hook.cache.json

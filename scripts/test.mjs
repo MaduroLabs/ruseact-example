@@ -1107,21 +1107,43 @@ try {
       selectionEnd: document.activeElement?.selectionEnd ?? null,
       selectionDirection: document.activeElement?.selectionDirection ?? null,
     });
+    const readInput = (input) => ({
+      connected: input.isConnected,
+      active: document.activeElement === input,
+      value: input.value,
+      selectionStart: input.selectionStart,
+      selectionEnd: input.selectionEnd,
+      selectionDirection: input.selectionDirection,
+    });
     const item8 = focusInput(8, 'focus eight', 1, 5);
+    const moveFocusedBefore = readInput(item8);
+    const moveFocusedCheck = document.querySelector('[data-testid="reorder-item"][data-task-key="8"] [data-testid="reorder-local-check"]');
+    moveFocusedCheck.checked = true;
+    const moveFocusedBeforeCheck = moveFocusedCheck.checked;
+    window.__ruseactReorderableTest.moveFirst(8);
+    observations.moveFocused = { before: moveFocusedBefore, after: readInput(item8), beforeCheck: moveFocusedBeforeCheck, afterCheck: moveFocusedCheck.checked, nodePreserved: item8 === document.querySelector('[data-testid="reorder-item"][data-task-key="8"] [data-testid="reorder-local-input"]'), ...readFocus() };
+    const restoredFocusInput = focusInput(8, 'focus eight', 1, 5);
+    const restoredFocusCheck = document.querySelector('[data-testid="reorder-item"][data-task-key="8"] [data-testid="reorder-local-check"]');
+    restoredFocusCheck.checked = true;
+    const moveAnotherBefore = readInput(restoredFocusInput);
     window.__ruseactReorderableTest.moveFirst(9);
-    observations.moveAnother = { beforeNodePreserved: item8 === document.querySelector('[data-testid="reorder-item"][data-task-key="8"] [data-testid="reorder-local-input"]'), value: item8.value, ...readFocus() };
+    observations.moveAnother = { before: moveAnotherBefore, after: readInput(restoredFocusInput), beforeCheck: true, afterCheck: restoredFocusCheck.checked, nodePreserved: restoredFocusInput === document.querySelector('[data-testid="reorder-item"][data-task-key="8"] [data-testid="reorder-local-input"]'), ...readFocus() };
     const focusedForInsert = focusInput(8, 'insert focus', 2, 6);
+    const insertBefore = readInput(focusedForInsert);
     window.__ruseactReorderableTest.prepend('Inserted before focus');
-    observations.insertBefore = { nodePreserved: focusedForInsert === document.querySelector('[data-testid="reorder-item"][data-task-key="8"] [data-testid="reorder-local-input"]'), value: focusedForInsert.value, ...readFocus() };
+    observations.insertBefore = { before: insertBefore, after: readInput(focusedForInsert), nodePreserved: focusedForInsert === document.querySelector('[data-testid="reorder-item"][data-task-key="8"] [data-testid="reorder-local-input"]'), ...readFocus() };
     const focusedForRemove = focusInput(8, 'remove neighbor', 1, 4);
+    const removeUnrelatedBefore = readInput(focusedForRemove);
     window.__ruseactReorderableTest.remove(7);
-    observations.removeUnrelated = { nodePreserved: focusedForRemove === document.querySelector('[data-testid="reorder-item"][data-task-key="8"] [data-testid="reorder-local-input"]'), value: focusedForRemove.value, ...readFocus() };
+    observations.removeUnrelated = { before: removeUnrelatedBefore, after: readInput(focusedForRemove), nodePreserved: focusedForRemove === document.querySelector('[data-testid="reorder-item"][data-task-key="8"] [data-testid="reorder-local-input"]'), ...readFocus() };
     const focusedForUpdate = focusInput(8, 'update focus', 1, 3);
+    const retainedUpdateBefore = readInput(focusedForUpdate);
     window.__ruseactReorderableTest.updateTitle(8);
-    observations.retainedUpdate = { nodePreserved: focusedForUpdate === document.querySelector('[data-testid="reorder-item"][data-task-key="8"] [data-testid="reorder-local-input"]'), value: focusedForUpdate.value, ...readFocus() };
+    observations.retainedUpdate = { before: retainedUpdateBefore, after: readInput(focusedForUpdate), nodePreserved: focusedForUpdate === document.querySelector('[data-testid="reorder-item"][data-task-key="8"] [data-testid="reorder-local-input"]'), ...readFocus() };
     const focusedForRemoval = focusInput(8, 'removed focus', 1, 3);
+    const removeFocusedBefore = readInput(focusedForRemoval);
     window.__ruseactReorderableTest.remove(8);
-    observations.removeFocused = { nodeConnected: focusedForRemoval.isConnected, ...readFocus() };
+    observations.removeFocused = { before: removeFocusedBefore, after: readInput(focusedForRemoval), ...readFocus() };
     return observations;
   })()`);
   for (const observation of Object.values(focusObservations)) {

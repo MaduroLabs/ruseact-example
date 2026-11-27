@@ -2,6 +2,10 @@ import initializeWasm, * as wasm from "ruseact/wasm/web";
 import { createReactiveCore, type ReactiveCore } from "ruseact";
 import { createRoot, type RendererRoot, type ViewDescription } from "ruseact-dom";
 
+const auditMountStartedAt = new URLSearchParams(window.location.search).has("benchmark")
+  ? performance.now()
+  : undefined;
+
 export interface ApplicationViewContext {
   readonly runtime: ReactiveCore;
   readonly flush: () => void;
@@ -218,6 +222,16 @@ export async function mountApplication(
   };
 
   window.addEventListener("pagehide", onPageHide);
+
+  if (auditMountStartedAt !== undefined) {
+    const auditWindow = window as Window & {
+      __ruseactAuditMount?: { readonly startedAt: number; readonly mountedAt: number };
+    };
+    auditWindow.__ruseactAuditMount = {
+      startedAt: auditMountStartedAt,
+      mountedAt: performance.now(),
+    };
+  }
 
   return { runtime, root, dispose };
 }

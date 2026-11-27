@@ -1,0 +1,5118 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-27T02:32:26.238Z",
+  "repository": "MaduroLabs/ruseact-example",
+  "consumerCommit": "3e072edd5996198dada68c437f7384aa7d10c732",
+  "artifactSourceCommit": "2a0ab7781b6c56fde643bf6bc8ed3f550097209c",
+  "packageVersion": "0.1.0-alpha.1",
+  "configuration": {
+    "warmupSamples": 1,
+    "samples": 5,
+    "independentRuns": 3,
+    "listSizes": [
+      10,
+      100
+    ],
+    "timer": "performance.now() inside the production preview page",
+    "executionMode": "Chromium headless=new, one fresh profile per independent run"
+  },
+  "browser": {
+    "executable": "chromium",
+    "version": "Chromium 154.0.8037.57",
+    "execution": "Chromium headless=new, one fresh profile per independent run"
+  },
+  "workloads": [
+    "hello.initial-mount",
+    "counter.initial-mount",
+    "conditional.initial-mount",
+    "todo.initial-mount",
+    "reorderable.initial-mount",
+    "counter.scalar-update-flush",
+    "counter.repeated-scalar-updates",
+    "counter.multiple-writes-one-flush",
+    "counter.equality-write",
+    "conditional.mount-branch",
+    "conditional.nested-activation",
+    "todo.append-10",
+    "todo.remove-10",
+    "todo.toggle-retained-10",
+    "todo.filter-10",
+    "todo.reverse-10",
+    "todo.edit-retained-10",
+    "todo.clear-completed-10",
+    "reorderable.append-10",
+    "reorderable.prepend-10",
+    "reorderable.remove-10",
+    "reorderable.reverse-10",
+    "reorderable.shuffle-10",
+    "reorderable.no-op-10",
+    "reorderable.retained-title-10",
+    "todo.append-100",
+    "todo.remove-100",
+    "todo.toggle-retained-100",
+    "todo.filter-100",
+    "todo.reverse-100",
+    "todo.edit-retained-100",
+    "todo.clear-completed-100",
+    "reorderable.append-100",
+    "reorderable.prepend-100",
+    "reorderable.remove-100",
+    "reorderable.reverse-100",
+    "reorderable.shuffle-100",
+    "reorderable.no-op-100",
+    "reorderable.retained-title-100"
+  ],
+  "runs": [
+    {
+      "runIndex": 1,
+      "results": [
+        {
+          "id": "hello.initial-mount",
+          "samples": [
+            {
+              "durationMs": 6.5,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 4.600000023841858,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 4.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 5.199999988079071,
+            "iqrMs": 0.5999999642372131,
+            "dispersionRatio": 0.11538460877167402,
+            "measurementStatus": "valid"
+          },
+          "boundary": "module script start through successful root.mount; excludes network fetch and browser paint"
+        },
+        {
+          "id": "counter.initial-mount",
+          "samples": [
+            {
+              "durationMs": 5.099999964237213,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 11.400000035762787,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.5,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 10.099999964237213,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 9.600000023841858,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 9.600000023841858,
+            "iqrMs": 3.599999964237213,
+            "dispersionRatio": 0.3749999953433871,
+            "measurementStatus": "valid"
+          },
+          "boundary": "module script start through successful root.mount; excludes network fetch and browser paint"
+        },
+        {
+          "id": "conditional.initial-mount",
+          "samples": [
+            {
+              "durationMs": 5.600000023841858,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 10.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 5,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 7,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 6.899999976158142,
+            "iqrMs": 1.399999976158142,
+            "dispersionRatio": 0.20289854797037976,
+            "measurementStatus": "valid"
+          },
+          "boundary": "module script start through successful root.mount; excludes network fetch and browser paint"
+        },
+        {
+          "id": "todo.initial-mount",
+          "samples": [
+            {
+              "durationMs": 5.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.5,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 11,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 9.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 6.399999976158142,
+            "iqrMs": 3.699999988079071,
+            "dispersionRatio": 0.5781250002910383,
+            "measurementStatus": "valid"
+          },
+          "boundary": "module script start through successful root.mount; excludes network fetch and browser paint"
+        },
+        {
+          "id": "reorderable.initial-mount",
+          "samples": [
+            {
+              "durationMs": 6.799999952316284,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 10,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 10.5,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 9.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 9.100000023841858,
+            "iqrMs": 3.200000047683716,
+            "dispersionRatio": 0.3516483559670072,
+            "measurementStatus": "valid"
+          },
+          "boundary": "module script start through successful root.mount; excludes network fetch and browser paint"
+        },
+        {
+          "id": "counter.scalar-update-flush",
+          "samples": [
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.2999999523162842,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.2999999523162842,
+            "iqrMs": 0.10000002384185791,
+            "dispersionRatio": 0.33333346578812056,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "counter.repeated-scalar-updates",
+          "samples": [
+            {
+              "durationMs": 0.5,
+              "operationCount": 20,
+              "flushCalls": 20,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.3999999761581421,
+              "operationCount": 20,
+              "flushCalls": 20,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.3999999761581421,
+              "operationCount": 20,
+              "flushCalls": 20,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 20,
+              "flushCalls": 20,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.3999999761581421,
+              "operationCount": 20,
+              "flushCalls": 20,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.3999999761581421,
+            "iqrMs": 0.10000002384185791,
+            "dispersionRatio": 0.2500000745058104,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "counter.multiple-writes-one-flush",
+          "samples": [
+            {
+              "durationMs": 0.2999999523162842,
+              "operationCount": 3,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 3,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 3,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 3,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 3,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.30000001192092896,
+            "iqrMs": 5.960464477539063e-8,
+            "dispersionRatio": 1.9868214135638312e-7,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "counter.equality-write",
+          "samples": [
+            {
+              "durationMs": 0.20000004768371582,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.20000004768371582,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.20000004768371582,
+            "iqrMs": 5.960464477539063e-8,
+            "dispersionRatio": 2.980231528226965e-7,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "conditional.mount-branch",
+          "samples": [
+            {
+              "durationMs": 0.8999999761581421,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.8999999761581421,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1,
+            "iqrMs": 0.20000004768371582,
+            "dispersionRatio": 0.20000004768371582,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "conditional.nested-activation",
+          "samples": [
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.4000000357627869,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.5,
+            "iqrMs": 0.30000001192092896,
+            "dispersionRatio": 0.6000000238418579,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.append-10",
+          "samples": [
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.9000000357627869,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.9000000357627869,
+            "iqrMs": 0.5,
+            "dispersionRatio": 0.555555533479762,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.remove-10",
+          "samples": [
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.5999999642372131,
+            "iqrMs": 0.19999992847442627,
+            "dispersionRatio": 0.3333332339922528,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.toggle-retained-10",
+          "samples": [
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.20000004768371582,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.2999999523162842,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.2999999523162842,
+            "iqrMs": 0.19999998807907104,
+            "dispersionRatio": 0.6666667328940603,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.filter-10",
+          "samples": [
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.8999999761581421,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.7999999523162842,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1,
+            "iqrMs": 0.5,
+            "dispersionRatio": 0.5,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.reverse-10",
+          "samples": [
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.3999999761581421,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.6000000238418579,
+            "iqrMs": 0.19999998807907104,
+            "dispersionRatio": 0.3333333002196431,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.edit-retained-10",
+          "samples": [
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.10000002384185791,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.19999998807907104,
+            "iqrMs": 0,
+            "dispersionRatio": 0,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.clear-completed-10",
+          "samples": [
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.8999999761581421,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.7000000476837158,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.7000000476837158,
+            "iqrMs": 0.19999998807907104,
+            "dispersionRatio": 0.28571424922164856,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.append-10",
+          "samples": [
+            {
+              "durationMs": 1.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 2.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1.199999988079071,
+            "iqrMs": 0.6000000238418579,
+            "dispersionRatio": 0.500000024835269,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.prepend-10",
+          "samples": [
+            {
+              "durationMs": 1.4000000357627869,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1.4000000357627869,
+            "iqrMs": 0.40000003576278687,
+            "dispersionRatio": 0.2857143039606051,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.remove-10",
+          "samples": [
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.699999988079071,
+            "iqrMs": 0.09999996423721313,
+            "dispersionRatio": 0.14285709420028916,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.reverse-10",
+          "samples": [
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.9000000357627869,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.7000000476837158,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.7000000476837158,
+            "iqrMs": 0.10000002384185791,
+            "dispersionRatio": 0.14285716718556765,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.shuffle-10",
+          "samples": [
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.8999999761581421,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1,
+            "iqrMs": 0.19999998807907104,
+            "dispersionRatio": 0.19999998807907104,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.no-op-10",
+          "samples": [
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0,
+            "iqrMs": 0,
+            "dispersionRatio": null,
+            "measurementStatus": "unresolved"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.retained-title-10",
+          "samples": [
+            {
+              "durationMs": 0.3999999761581421,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.3999999761581421,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.3999999761581421,
+            "iqrMs": 5.960464477539063e-8,
+            "dispersionRatio": 1.490116208202613e-7,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.append-100",
+          "samples": [
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.2999999523162842,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.2000000476837158,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1.199999988079071,
+            "iqrMs": 0.40000003576278687,
+            "dispersionRatio": 0.3333333664470252,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.remove-100",
+          "samples": [
+            {
+              "durationMs": 1.0999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 2,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1.399999976158142,
+            "iqrMs": 0.30000001192092896,
+            "dispersionRatio": 0.21428572644992772,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.toggle-retained-100",
+          "samples": [
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.8999999761581421,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1,
+            "iqrMs": 0.10000002384185791,
+            "dispersionRatio": 0.10000002384185791,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.filter-100",
+          "samples": [
+            {
+              "durationMs": 5.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.599999964237213,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 7.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 7,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 6.599999964237213,
+            "iqrMs": 1,
+            "dispersionRatio": 0.15151515233615215,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.reverse-100",
+          "samples": [
+            {
+              "durationMs": 3,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 3.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 3.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 3.600000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 3.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 3.399999976158142,
+            "iqrMs": 0.30000001192092896,
+            "dispersionRatio": 0.088235298242536,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.edit-retained-100",
+          "samples": [
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.9000000357627869,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.5,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.699999988079071,
+            "iqrMs": 0.40000003576278687,
+            "dispersionRatio": 0.5714286322496386,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.clear-completed-100",
+          "samples": [
+            {
+              "durationMs": 6.400000035762787,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 7,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.600000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 7.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 6.400000035762787,
+            "iqrMs": 0.8999999761581421,
+            "dispersionRatio": 0.1406249954889063,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.append-100",
+          "samples": [
+            {
+              "durationMs": 2.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.4000000357627869,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.7000000476837158,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1.7000000476837158,
+            "iqrMs": 0.10000002384185791,
+            "dispersionRatio": 0.058823541786431094,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.prepend-100",
+          "samples": [
+            {
+              "durationMs": 8.599999964237213,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 9.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 9.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 9.600000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 10.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 9.600000023841858,
+            "iqrMs": 0.30000001192092896,
+            "dispersionRatio": 0.03125000116415322,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.remove-100",
+          "samples": [
+            {
+              "durationMs": 2.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 2.099999964237213,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 2.400000035762787,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 2.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 2.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 2.199999988079071,
+            "iqrMs": 0.19999998807907104,
+            "dispersionRatio": 0.09090908598308718,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.reverse-100",
+          "samples": [
+            {
+              "durationMs": 5.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.799999952316284,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 7.400000035762787,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.900000035762787,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 6.899999976158142,
+            "iqrMs": 0.10000008344650269,
+            "dispersionRatio": 0.014492765766961905,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.shuffle-100",
+          "samples": [
+            {
+              "durationMs": 6.099999964237213,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 6.300000011920929,
+            "iqrMs": 0.30000001192092896,
+            "dispersionRatio": 0.047619049421153276,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.no-op-100",
+          "samples": [
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.09999996423721313,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.10000002384185791,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.10000002384185791,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.09999996423721313,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.09999996423721313,
+            "iqrMs": 5.960464477539063e-8,
+            "dispersionRatio": 5.960466609168032e-7,
+            "measurementStatus": "unresolved"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.retained-title-100",
+          "samples": [
+            {
+              "durationMs": 1.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 4.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.5,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.0999999642372131,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1.300000011920929,
+            "iqrMs": 0.19999998807907104,
+            "dispersionRatio": 0.15384614326544777,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        }
+      ]
+    },
+    {
+      "runIndex": 2,
+      "results": [
+        {
+          "id": "hello.initial-mount",
+          "samples": [
+            {
+              "durationMs": 5,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.599999964237213,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 4,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 9.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 4,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 5,
+            "iqrMs": 1.5999999642372131,
+            "dispersionRatio": 0.3199999928474426,
+            "measurementStatus": "valid"
+          },
+          "boundary": "module script start through successful root.mount; excludes network fetch and browser paint"
+        },
+        {
+          "id": "counter.initial-mount",
+          "samples": [
+            {
+              "durationMs": 5.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 4.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 8,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 2.900000035762787,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 5.199999988079071,
+            "iqrMs": 0.5,
+            "dispersionRatio": 0.09615384637427753,
+            "measurementStatus": "valid"
+          },
+          "boundary": "module script start through successful root.mount; excludes network fetch and browser paint"
+        },
+        {
+          "id": "conditional.initial-mount",
+          "samples": [
+            {
+              "durationMs": 5.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 16.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 9,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 4.799999952316284,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 6.899999976158142,
+            "iqrMs": 3.800000011920929,
+            "dispersionRatio": 0.5507246413117721,
+            "measurementStatus": "valid"
+          },
+          "boundary": "module script start through successful root.mount; excludes network fetch and browser paint"
+        },
+        {
+          "id": "todo.initial-mount",
+          "samples": [
+            {
+              "durationMs": 9.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 7.799999952316284,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 10.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 9,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 10.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 9.899999976158142,
+            "iqrMs": 1.199999988079071,
+            "dispersionRatio": 0.12121212029989831,
+            "measurementStatus": "valid"
+          },
+          "boundary": "module script start through successful root.mount; excludes network fetch and browser paint"
+        },
+        {
+          "id": "reorderable.initial-mount",
+          "samples": [
+            {
+              "durationMs": 7.700000047683716,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 14.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 10.599999964237213,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 7.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 6,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 7.700000047683716,
+            "iqrMs": 3.299999952316284,
+            "dispersionRatio": 0.4285714197247281,
+            "measurementStatus": "valid"
+          },
+          "boundary": "module script start through successful root.mount; excludes network fetch and browser paint"
+        },
+        {
+          "id": "counter.scalar-update-flush",
+          "samples": [
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.2999999523162842,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.2999999523162842,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.2999999523162842,
+            "iqrMs": 5.960464477539063e-8,
+            "dispersionRatio": 1.9868218083098424e-7,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "counter.repeated-scalar-updates",
+          "samples": [
+            {
+              "durationMs": 0.5,
+              "operationCount": 20,
+              "flushCalls": 20,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.3999999761581421,
+              "operationCount": 20,
+              "flushCalls": 20,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.3999999761581421,
+              "operationCount": 20,
+              "flushCalls": 20,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 20,
+              "flushCalls": 20,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 20,
+              "flushCalls": 20,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.5,
+            "iqrMs": 0.10000002384185791,
+            "dispersionRatio": 0.20000004768371582,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "counter.multiple-writes-one-flush",
+          "samples": [
+            {
+              "durationMs": 0.20000004768371582,
+              "operationCount": 3,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 3,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 3,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 3,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 3,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.30000001192092896,
+            "iqrMs": 0,
+            "dispersionRatio": 0,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "counter.equality-write",
+          "samples": [
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.10000002384185791,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.09999996423721313,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.19999998807907104,
+            "iqrMs": 0.09999996423721313,
+            "dispersionRatio": 0.4999998509883792,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "conditional.mount-branch",
+          "samples": [
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.9000000357627869,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1,
+            "iqrMs": 0,
+            "dispersionRatio": 0,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "conditional.nested-activation",
+          "samples": [
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.7999999523162842,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.5999999642372131,
+            "iqrMs": 0.2999999523162842,
+            "dispersionRatio": 0.4999999503294597,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.append-10",
+          "samples": [
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.40000003576278687,
+            "iqrMs": 0.09999996423721313,
+            "dispersionRatio": 0.24999988824130104,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.remove-10",
+          "samples": [
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.5,
+            "iqrMs": 0.3999999761581421,
+            "dispersionRatio": 0.7999999523162842,
+            "measurementStatus": "high_variability"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.toggle-retained-10",
+          "samples": [
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.3999999761581421,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.20000004768371582,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.40000003576278687,
+            "iqrMs": 0.10000002384185791,
+            "dispersionRatio": 0.25000003725289965,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.filter-10",
+          "samples": [
+            {
+              "durationMs": 1.2000000476837158,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.9000000357627869,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1.399999976158142,
+            "iqrMs": 0.19999992847442627,
+            "dispersionRatio": 0.14285709420028916,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.reverse-10",
+          "samples": [
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.3999999761581421,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.699999988079071,
+            "iqrMs": 0.30000001192092896,
+            "dispersionRatio": 0.42857145289985543,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.edit-retained-10",
+          "samples": [
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.2999999523162842,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.10000002384185791,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.20000004768371582,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.19999998807907104,
+            "iqrMs": 5.960464477539063e-8,
+            "dispersionRatio": 2.980232416405226e-7,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.clear-completed-10",
+          "samples": [
+            {
+              "durationMs": 1.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.9000000357627869,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.0999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1,
+            "iqrMs": 0.19999992847442627,
+            "dispersionRatio": 0.19999992847442627,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.append-10",
+          "samples": [
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.6000000238418579,
+            "iqrMs": 5.960464477539063e-8,
+            "dispersionRatio": 9.934107067819156e-8,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.prepend-10",
+          "samples": [
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.9000000357627869,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 2,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1.399999976158142,
+            "iqrMs": 0.9000000357627869,
+            "dispersionRatio": 0.6428571793497831,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.remove-10",
+          "samples": [
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.699999988079071,
+            "iqrMs": 0.19999998807907104,
+            "dispersionRatio": 0.2857142735500723,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.reverse-10",
+          "samples": [
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.0999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.9000000357627869,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.9000000357627869,
+            "iqrMs": 0.19999998807907104,
+            "dispersionRatio": 0.22222220014642874,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.shuffle-10",
+          "samples": [
+            {
+              "durationMs": 1.0999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.8999999761581421,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1,
+            "iqrMs": 0.10000002384185791,
+            "dispersionRatio": 0.10000002384185791,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.no-op-10",
+          "samples": [
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0,
+            "iqrMs": 0,
+            "dispersionRatio": null,
+            "measurementStatus": "unresolved"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.retained-title-10",
+          "samples": [
+            {
+              "durationMs": 0.2999999523162842,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.09999996423721313,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.2999999523162842,
+            "iqrMs": 0.10000002384185791,
+            "dispersionRatio": 0.33333346578812056,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.append-100",
+          "samples": [
+            {
+              "durationMs": 0.8999999761581421,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.8999999761581421,
+            "iqrMs": 0.19999998807907104,
+            "dispersionRatio": 0.2222222148636239,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.remove-100",
+          "samples": [
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1.300000011920929,
+            "iqrMs": 0.4999999403953552,
+            "dispersionRatio": 0.38461533523875624,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.toggle-retained-100",
+          "samples": [
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.7000000476837158,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.6000000238418579,
+            "iqrMs": 0.09999996423721313,
+            "dispersionRatio": 0.16666660043928622,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.filter-100",
+          "samples": [
+            {
+              "durationMs": 6.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.599999964237213,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.200000047683716,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 5.599999964237213,
+            "iqrMs": 0.7000000476837158,
+            "dispersionRatio": 0.1250000093132258,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.reverse-100",
+          "samples": [
+            {
+              "durationMs": 2.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 3,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 3.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 2.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 3.400000035762787,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 3,
+            "iqrMs": 0.3999999761581421,
+            "dispersionRatio": 0.13333332538604736,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.edit-retained-100",
+          "samples": [
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.8999999761581421,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.699999988079071,
+            "iqrMs": 0.10000002384185791,
+            "dispersionRatio": 0.14285717934978315,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.clear-completed-100",
+          "samples": [
+            {
+              "durationMs": 5.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.600000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 5.899999976158142,
+            "iqrMs": 0.5,
+            "dispersionRatio": 0.08474576305432142,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.append-100",
+          "samples": [
+            {
+              "durationMs": 1.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 2,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.9000000357627869,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1.899999976158142,
+            "iqrMs": 0.40000003576278687,
+            "dispersionRatio": 0.21052633725375047,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.prepend-100",
+          "samples": [
+            {
+              "durationMs": 10.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 11.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 9.799999952316284,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 11,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 11.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 11,
+            "iqrMs": 1.199999988079071,
+            "dispersionRatio": 0.10909090800718828,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.remove-100",
+          "samples": [
+            {
+              "durationMs": 2.299999952316284,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 2.099999964237213,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 2,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 2.600000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 2.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 2.100000023841858,
+            "iqrMs": 0.19999998807907104,
+            "dispersionRatio": 0.09523808848019909,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.reverse-100",
+          "samples": [
+            {
+              "durationMs": 6.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 7.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 7.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 6.300000011920929,
+            "iqrMs": 1.5,
+            "dispersionRatio": 0.2380952376447117,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.shuffle-100",
+          "samples": [
+            {
+              "durationMs": 6.400000035762787,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 6.399999976158142,
+            "iqrMs": 0.10000002384185791,
+            "dispersionRatio": 0.015625003783497973,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.no-op-100",
+          "samples": [
+            {
+              "durationMs": 0.10000002384185791,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.09999996423721313,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0,
+            "iqrMs": 0.09999996423721313,
+            "dispersionRatio": null,
+            "measurementStatus": "unresolved"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.retained-title-100",
+          "samples": [
+            {
+              "durationMs": 1.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.2000000476837158,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1.199999988079071,
+            "iqrMs": 0.20000004768371582,
+            "dispersionRatio": 0.1666667080587815,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        }
+      ]
+    },
+    {
+      "runIndex": 3,
+      "results": [
+        {
+          "id": "hello.initial-mount",
+          "samples": [
+            {
+              "durationMs": 6.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 2.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 5,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 7.099999964237213,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 3.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 5,
+            "iqrMs": 3.599999964237213,
+            "dispersionRatio": 0.7199999928474426,
+            "measurementStatus": "valid"
+          },
+          "boundary": "module script start through successful root.mount; excludes network fetch and browser paint"
+        },
+        {
+          "id": "counter.initial-mount",
+          "samples": [
+            {
+              "durationMs": 3.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.5,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 6,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 6,
+            "iqrMs": 0.6000000238418579,
+            "dispersionRatio": 0.10000000397364299,
+            "measurementStatus": "valid"
+          },
+          "boundary": "module script start through successful root.mount; excludes network fetch and browser paint"
+        },
+        {
+          "id": "conditional.initial-mount",
+          "samples": [
+            {
+              "durationMs": 5.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 3.600000023841858,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 7,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 4.900000035762787,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 5.199999988079071,
+            "iqrMs": 0.8999999761581421,
+            "dispersionRatio": 0.17307691888872687,
+            "measurementStatus": "valid"
+          },
+          "boundary": "module script start through successful root.mount; excludes network fetch and browser paint"
+        },
+        {
+          "id": "todo.initial-mount",
+          "samples": [
+            {
+              "durationMs": 5.600000023841858,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 5,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 9.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 9.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 8.200000047683716,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 8.200000047683716,
+            "iqrMs": 3.5,
+            "dispersionRatio": 0.42682926581063346,
+            "measurementStatus": "valid"
+          },
+          "boundary": "module script start through successful root.mount; excludes network fetch and browser paint"
+        },
+        {
+          "id": "reorderable.initial-mount",
+          "samples": [
+            {
+              "durationMs": 12.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 8.900000035762787,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 7.400000035762787,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.299999952316284,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 6,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 7.400000035762787,
+            "iqrMs": 2.6000000834465027,
+            "dispersionRatio": 0.3513513609298917,
+            "measurementStatus": "valid"
+          },
+          "boundary": "module script start through successful root.mount; excludes network fetch and browser paint"
+        },
+        {
+          "id": "counter.scalar-update-flush",
+          "samples": [
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.30000001192092896,
+            "iqrMs": 0,
+            "dispersionRatio": 0,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "counter.repeated-scalar-updates",
+          "samples": [
+            {
+              "durationMs": 0.5,
+              "operationCount": 20,
+              "flushCalls": 20,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.3999999761581421,
+              "operationCount": 20,
+              "flushCalls": 20,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 20,
+              "flushCalls": 20,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 20,
+              "flushCalls": 20,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 20,
+              "flushCalls": 20,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.5,
+            "iqrMs": 0.09999996423721313,
+            "dispersionRatio": 0.19999992847442627,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "counter.multiple-writes-one-flush",
+          "samples": [
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 3,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 3,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 3,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.3999999761581421,
+              "operationCount": 3,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.2999999523162842,
+              "operationCount": 3,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.30000001192092896,
+            "iqrMs": 0.10000002384185791,
+            "dispersionRatio": 0.3333333995607138,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "counter.equality-write",
+          "samples": [
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.19999998807907104,
+            "iqrMs": 0,
+            "dispersionRatio": 0,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "conditional.mount-branch",
+          "samples": [
+            {
+              "durationMs": 1.0999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.8999999761581421,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1.0999999642372131,
+            "iqrMs": 0.10000002384185791,
+            "dispersionRatio": 0.09090911553911021,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "conditional.nested-activation",
+          "samples": [
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.2999999523162842,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.3999999761581421,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.30000001192092896,
+            "iqrMs": 0.10000002384185791,
+            "dispersionRatio": 0.3333333995607138,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.append-10",
+          "samples": [
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.9000000357627869,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.5,
+            "iqrMs": 0.5,
+            "dispersionRatio": 1,
+            "measurementStatus": "high_variability"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.remove-10",
+          "samples": [
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.3999999761581421,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.3999999761581421,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.40000003576278687,
+            "iqrMs": 0.10000002384185791,
+            "dispersionRatio": 0.25000003725289965,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.toggle-retained-10",
+          "samples": [
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.30000001192092896,
+            "iqrMs": 0.19999998807907104,
+            "dispersionRatio": 0.6666666004392862,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.filter-10",
+          "samples": [
+            {
+              "durationMs": 1.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.9000000357627869,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.9000000357627869,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1,
+            "iqrMs": 0.09999996423721313,
+            "dispersionRatio": 0.09999996423721313,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.reverse-10",
+          "samples": [
+            {
+              "durationMs": 0.40000003576278687,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.9000000357627869,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.3999999761581421,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.5,
+            "iqrMs": 0.2999999523162842,
+            "dispersionRatio": 0.5999999046325684,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.edit-retained-10",
+          "samples": [
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.20000004768371582,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.20000004768371582,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.19999998807907104,
+            "iqrMs": 5.960464477539063e-8,
+            "dispersionRatio": 2.980232416405226e-7,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.clear-completed-10",
+          "samples": [
+            {
+              "durationMs": 0.7999999523162842,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.7000000476837158,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.7000000476837158,
+            "iqrMs": 0.09999996423721313,
+            "dispersionRatio": 0.1428570820360809,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.append-10",
+          "samples": [
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.0999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1,
+            "iqrMs": 0.5,
+            "dispersionRatio": 0.5,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.prepend-10",
+          "samples": [
+            {
+              "durationMs": 1.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1.199999988079071,
+            "iqrMs": 0.09999996423721313,
+            "dispersionRatio": 0.08333330435885294,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.remove-10",
+          "samples": [
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.6000000238418579,
+            "iqrMs": 0.09999996423721313,
+            "dispersionRatio": 0.16666660043928622,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.reverse-10",
+          "samples": [
+            {
+              "durationMs": 0.8999999761581421,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.7000000476837158,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.7000000476837158,
+            "iqrMs": 0.19999998807907104,
+            "dispersionRatio": 0.28571424922164856,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.shuffle-10",
+          "samples": [
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.8999999761581421,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.8999999761581421,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.6000000238418579,
+            "iqrMs": 0.2999999523162842,
+            "dispersionRatio": 0.4999999006589293,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.no-op-10",
+          "samples": [
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0,
+            "iqrMs": 0,
+            "dispersionRatio": null,
+            "measurementStatus": "unresolved"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.retained-title-10",
+          "samples": [
+            {
+              "durationMs": 0.20000004768371582,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.19999998807907104,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.30000001192092896,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.30000001192092896,
+            "iqrMs": 0.09999996423721313,
+            "dispersionRatio": 0.33333320087857243,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.append-100",
+          "samples": [
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1,
+            "iqrMs": 0.19999998807907104,
+            "dispersionRatio": 0.19999998807907104,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.remove-100",
+          "samples": [
+            {
+              "durationMs": 1.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.2000000476837158,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1.199999988079071,
+            "iqrMs": 0.10000002384185791,
+            "dispersionRatio": 0.08333335402939075,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.toggle-retained-100",
+          "samples": [
+            {
+              "durationMs": 0.6000000238418579,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.699999988079071,
+            "iqrMs": 0.09999996423721313,
+            "dispersionRatio": 0.14285709420028916,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.filter-100",
+          "samples": [
+            {
+              "durationMs": 6.399999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 7.299999952316284,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.200000047683716,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 6.100000023841858,
+            "iqrMs": 1.1999999284744263,
+            "dispersionRatio": 0.1967212989810205,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.reverse-100",
+          "samples": [
+            {
+              "durationMs": 3.099999964237213,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 3,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 3.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 3,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 3.200000047683716,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 3.099999964237213,
+            "iqrMs": 0.19999998807907104,
+            "dispersionRatio": 0.06451612593107985,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.edit-retained-100",
+          "samples": [
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.5999999642372131,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.2999999523162842,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.800000011920929,
+            "iqrMs": 0.3999999761581421,
+            "dispersionRatio": 0.49999996274709757,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "todo.clear-completed-100",
+          "samples": [
+            {
+              "durationMs": 6.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.299999952316284,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 7,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 6,
+            "iqrMs": 1.0000000596046448,
+            "dispersionRatio": 0.16666667660077414,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.append-100",
+          "samples": [
+            {
+              "durationMs": 1.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.600000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.100000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.600000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.7999999523162842,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1.600000023841858,
+            "iqrMs": 0.09999996423721313,
+            "dispersionRatio": 0.06249997671693598,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.prepend-100",
+          "samples": [
+            {
+              "durationMs": 8.800000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 8.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 8.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 9.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 8.799999952316284,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 8.799999952316284,
+            "iqrMs": 0.10000002384185791,
+            "dispersionRatio": 0.01136363913451346,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.remove-100",
+          "samples": [
+            {
+              "durationMs": 2.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 2,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 2.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 2.099999964237213,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 2,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 2.099999964237213,
+            "iqrMs": 0.19999998807907104,
+            "dispersionRatio": 0.09523809118335742,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.reverse-100",
+          "samples": [
+            {
+              "durationMs": 5.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.699999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 7.199999988079071,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.5,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.600000023841858,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 5.600000023841858,
+            "iqrMs": 1.199999988079071,
+            "dispersionRatio": 0.214285711244661,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.shuffle-100",
+          "samples": [
+            {
+              "durationMs": 5.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.599999964237213,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 5.899999976158142,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            },
+            {
+              "durationMs": 6.400000035762787,
+              "operationCount": 1,
+              "flushCalls": 1,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 5.899999976158142,
+            "iqrMs": 0.5000000596046448,
+            "dispersionRatio": 0.08474577315680364,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.no-op-100",
+          "samples": [
+            {
+              "durationMs": 0.10000002384185791,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.10000002384185791,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.09999996423721313,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0.10000002384185791,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            },
+            {
+              "durationMs": 0,
+              "operationCount": 1,
+              "flushCalls": 0,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 0.10000002384185791,
+            "iqrMs": 5.960464477539063e-8,
+            "dispersionRatio": 5.96046305645393e-7,
+            "measurementStatus": "unresolved"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        },
+        {
+          "id": "reorderable.retained-title-100",
+          "samples": [
+            {
+              "durationMs": 1.300000011920929,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.4000000357627869,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.0999999642372131,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            },
+            {
+              "durationMs": 1.2000000476837158,
+              "operationCount": 1,
+              "flushCalls": 2,
+              "correctness": true
+            }
+          ],
+          "summary": {
+            "sampleCount": 5,
+            "medianMs": 1.2000000476837158,
+            "iqrMs": 0.20000004768371582,
+            "dispersionRatio": 0.1666666997803569,
+            "measurementStatus": "valid"
+          },
+          "boundary": "synchronous application operation through the explicit flush calls in the operation"
+        }
+      ]
+    }
+  ],
+  "integrity": {
+    "positiveFiniteSamplesRequired": true,
+    "correctnessRequired": true,
+    "dispersionIsReportedNotSilentlyAccepted": true
+  }
+}

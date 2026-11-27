@@ -18,7 +18,11 @@
     "build": "corepack pnpm artifacts:verify && corepack pnpm compile && corepack pnpm typecheck && vite build",
     "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
     "pretest": "corepack pnpm build",
-    "test": "node scripts/test.mjs"
+    "test": "node scripts/test.mjs",
+    "audit:negative": "node scripts/audit-negative.mjs",
+    "audit:accessibility": "node scripts/audit-accessibility.mjs",
+    "audit:benchmark": "corepack pnpm build && node scripts/audit-benchmark.mjs",
+    "audit:benchmark:validate": "node scripts/validate-audit-benchmark.mjs"
   },
   "dependencies": {
     "ruseact": "file:artifacts/ruseact/0.1.0-alpha.1/ruseact-0.1.0-alpha.1.tgz",

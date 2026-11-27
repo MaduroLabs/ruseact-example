@@ -216,3 +216,24 @@ This document records observations from the independent Hello World and Counter 
   it does not expose private host mutation counts. Workaround: inspect native
   node identity in the browser harness. Impact: metrics are educational and
   must not be read as a performance benchmark.
+
+## M4.5.4 validation audit
+
+The consolidated M4.5.4 audit is in
+[`m4.5.4-dx-audit.md`](m4.5.4-dx-audit.md). It assigns stable IDs DX-001
+through DX-012, preserves the historical alpha.0 structural-identity failure
+as resolved evidence, and separates correctness blockers from authoring
+friction, browser-specific behavior, and consumer tooling limitations.
+
+The audit's highest-priority finding is the explicit one-pass flush contract:
+Counter scalar updates and pure structural changes commonly complete in one
+flush, while retained-field writes generated during Todo and Reorderable
+reconciliation require a bounded second explicit flush. The consumer does not
+use a recursive drain or hidden scheduler. This is evidence for the proposed
+M5 scheduling research, not an accepted architecture change.
+
+The audit also records that the corrected direct-input measurements distinguish
+node identity, node connectivity, stored selection range, and
+`document.activeElement`. Chromium preserved the retained input's value and
+selection range even in scenarios where document focus moved elsewhere. No
+cross-browser focus guarantee is claimed.

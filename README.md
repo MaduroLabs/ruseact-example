@@ -2,11 +2,18 @@
 
 This repository is the independent consumer bootstrap and public demonstration surface for [Ruseact](https://github.com/MaduroLabs/ruseact). It demonstrates the experimental framework through five small applications:
 
-- `/hello.html` — static Hello World mounting.
-- `/counter.html` — an explicit scalar signal, native event handlers, and manual `root.flush()`.
-- `/conditional.html` — nested conditional regions, one-shot component setup, and branch-local DOM lifetimes.
-- `/todo.html` — a JavaScript-owned Todo collection rendered with keyed items, retained field signals, filtering, and explicit flushes.
-- `/reorderable.html` — native keyed range movement, uncontrolled input state, browser focus observations, and nested item ownership.
+- [Hello World](https://ruseact-example.vercel.app/hello.html) (`/hello.html`) — static Hello World mounting.
+- [Counter](https://ruseact-example.vercel.app/counter.html) (`/counter.html`) — an explicit scalar signal, native event handlers, and manual `root.flush()`.
+- [Conditional Playground](https://ruseact-example.vercel.app/conditional.html) (`/conditional.html`) — nested conditional regions, one-shot component setup, and branch-local DOM lifetimes.
+- [Todo Application](https://ruseact-example.vercel.app/todo.html) (`/todo.html`) — a JavaScript-owned Todo collection rendered with keyed items, retained field signals, filtering, and explicit flushes.
+- [Reorderable List](https://ruseact-example.vercel.app/reorderable.html) (`/reorderable.html`) — native keyed range movement, uncontrolled input state, browser focus observations, and nested item ownership.
+
+## Live demo
+
+**[Open the Ruseact alpha.1 showcase](https://ruseact-example.vercel.app/)**
+
+The showcase is a static deployment of this public consumer repository. Ruseact
+remains experimental and is not presented as production-ready.
 
 The repository is public. The package artifacts remain private and are not published to npm.
 

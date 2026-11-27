@@ -837,7 +837,411 @@ try {
     throw new Error(`Todo application disposal failed: ${JSON.stringify(todoDisposal)}`);
   }
 
-  console.log(`Real Chromium consumer verification passed: Hello World, Counter, Conditional Playground, keyed Todo insertion, retained updates, editing, filtering, reordering, cleanup, nested item conditionals, and explicit follow-up flush semantics.`);
+  await evaluate(webSocketUrl, `location.href = "http://127.0.0.1:4173/reorderable.html?test=1"; true`);
+  const reorderPage = await waitForPage(webSocketUrl, "Reorderable List");
+  if (!reorderPage.text.includes("Reorderable List")) {
+    throw new Error(`Reorderable List mount failed: ${JSON.stringify(reorderPage)}`);
+  }
+  await new Promise((resolvePromise) => setTimeout(resolvePromise, 200));
+
+  const initialReorder = await evaluate(webSocketUrl, `(() => {
+    const items = [...document.querySelectorAll('[data-testid="reorder-item"]')];
+    window.__reorderRefs = Object.fromEntries(items.map((item) => [item.getAttribute('data-task-key'), {
+      item,
+      input: item.querySelector('[data-testid="reorder-local-input"]'),
+      check: item.querySelector('[data-testid="reorder-local-check"]'),
+    }]));
+    const snapshot = window.__ruseactReorderableTest.getSnapshot();
+    return {
+      ids: items.map((item) => Number(item.getAttribute('data-task-key'))),
+      setup: snapshot,
+      orderText: document.querySelector('[data-testid="reorder-order"]')?.textContent?.trim(),
+      hasDetail: document.querySelector('[data-testid="reorder-detail"]') !== null,
+      hasEmpty: document.querySelector('[data-testid="reorder-empty"]') !== null,
+    };
+  })()`);
+  if (
+    JSON.stringify(initialReorder.ids) !== JSON.stringify([1, 2, 3, 4]) ||
+    initialReorder.setup.parentSetupCount !== 1 ||
+    initialReorder.setup.itemSetupCount !== 4 ||
+    initialReorder.setup.reorderActionCount !== 0 ||
+    initialReorder.hasDetail ||
+    initialReorder.hasEmpty ||
+    initialReorder.orderText !== "1 → 2 → 3 → 4"
+  ) {
+    throw new Error(`Initial Reorderable List state failed: ${JSON.stringify(initialReorder)}`);
+  }
+
+  const reorderFocusObservation = await evaluate(webSocketUrl, `(() => {
+    const ref = window.__reorderRefs['3'];
+    ref.input.value = 'focused draft';
+    ref.check.checked = true;
+    ref.input.focus();
+    ref.input.setSelectionRange(2, 9, 'forward');
+    const beforeSelection = {
+      start: ref.input.selectionStart,
+      end: ref.input.selectionEnd,
+      direction: ref.input.selectionDirection,
+    };
+    const beforeItem = ref.item;
+    window.__ruseactReorderableTest.moveUp(3);
+    const afterInput = document.querySelector('[data-testid="reorder-item"][data-task-key="3"] [data-testid="reorder-local-input"]');
+    const activeItem = document.activeElement?.closest('[data-testid="reorder-item"]')?.getAttribute('data-task-key') ?? null;
+    return {
+      ids: [...document.querySelectorAll('[data-testid="reorder-item"]')].map((item) => Number(item.getAttribute('data-task-key'))),
+      sameItem: beforeItem === document.querySelector('[data-testid="reorder-item"][data-task-key="3"]'),
+      sameInput: ref.input === afterInput,
+      value: afterInput?.value,
+      checked: document.querySelector('[data-testid="reorder-item"][data-task-key="3"] [data-testid="reorder-local-check"]')?.checked,
+      activeItem,
+      selection: { start: afterInput?.selectionStart ?? null, end: afterInput?.selectionEnd ?? null, direction: afterInput?.selectionDirection ?? null },
+      beforeSelection,
+    };
+  })()`);
+  if (
+    JSON.stringify(reorderFocusObservation.ids) !== JSON.stringify([1, 3, 2, 4]) ||
+    !reorderFocusObservation.sameItem ||
+    !reorderFocusObservation.sameInput ||
+    reorderFocusObservation.value !== "focused draft" ||
+    !reorderFocusObservation.checked
+  ) {
+    throw new Error(`Focused item movement or native state preservation failed: ${JSON.stringify(reorderFocusObservation)}`);
+  }
+
+  const moveDownResult = await evaluate(webSocketUrl, `(() => {
+    const before = window.__reorderRefs['3'];
+    window.__ruseactReorderableTest.moveDown(3);
+    const item = document.querySelector('[data-testid="reorder-item"][data-task-key="3"]');
+    return {
+      ids: [...document.querySelectorAll('[data-testid="reorder-item"]')].map((node) => Number(node.getAttribute('data-task-key'))),
+      sameItem: before.item === item,
+      sameInput: before.input === item.querySelector('[data-testid="reorder-local-input"]'),
+      value: item.querySelector('[data-testid="reorder-local-input"]')?.value,
+      checked: item.querySelector('[data-testid="reorder-local-check"]')?.checked,
+    };
+  })()`);
+  if (JSON.stringify(moveDownResult.ids) !== JSON.stringify([1, 2, 3, 4]) || !moveDownResult.sameItem || !moveDownResult.sameInput || moveDownResult.value !== "focused draft" || !moveDownResult.checked) {
+    throw new Error(`Move down retained identity failed: ${JSON.stringify(moveDownResult)}`);
+  }
+
+  const firstLastResult = await evaluate(webSocketUrl, `(() => {
+    const refs = { ...window.__reorderRefs };
+    window.__ruseactReorderableTest.moveFirst(4);
+    const first = [...document.querySelectorAll('[data-testid="reorder-item"]')];
+    const firstOrder = first.map((item) => Number(item.getAttribute('data-task-key')));
+    const firstRetained = first.every((item) => refs[item.getAttribute('data-task-key')].item === item);
+    window.__ruseactReorderableTest.moveLast(4);
+    const last = [...document.querySelectorAll('[data-testid="reorder-item"]')];
+    return {
+      firstOrder,
+      firstRetained,
+      lastOrder: last.map((item) => Number(item.getAttribute('data-task-key'))),
+      lastRetained: last.every((item) => refs[item.getAttribute('data-task-key')].item === item),
+    };
+  })()`);
+  if (JSON.stringify(firstLastResult.firstOrder) !== JSON.stringify([4, 1, 2, 3]) || !firstLastResult.firstRetained || JSON.stringify(firstLastResult.lastOrder) !== JSON.stringify([1, 2, 3, 4]) || !firstLastResult.lastRetained) {
+    throw new Error(`Move first/last retained identity failed: ${JSON.stringify(firstLastResult)}`);
+  }
+
+  const noOpMove = await evaluate(webSocketUrl, `(() => new Promise((resolve) => {
+    const before = [...document.querySelectorAll('[data-testid="reorder-item"]')];
+    const setupBefore = window.__ruseactReorderableTest.getSnapshot().itemSetupCount;
+    const records = [];
+    const observer = new MutationObserver((mutations) => records.push(...mutations));
+    observer.observe(document.querySelector('[data-testid="reorder-list"]'), { childList: true, subtree: true });
+    const moved = window.__ruseactReorderableTest.moveUp(1);
+    setTimeout(() => {
+      observer.disconnect();
+      resolve({ moved, mutations: records.length, sameNodes: before.every((item) => item === document.querySelector('[data-testid="reorder-item"][data-task-key="' + item.getAttribute('data-task-key') + '"]')), setupBefore, setupAfter: window.__ruseactReorderableTest.getSnapshot().itemSetupCount });
+    }, 0);
+  }))()`);
+  if (noOpMove.moved || noOpMove.mutations !== 0 || !noOpMove.sameNodes || noOpMove.setupBefore !== noOpMove.setupAfter) {
+    throw new Error(`Boundary no-op movement was not inert: ${JSON.stringify(noOpMove)}`);
+  }
+
+  const orderOperations = await evaluate(webSocketUrl, `(() => {
+    const refs = Object.fromEntries([...document.querySelectorAll('[data-testid="reorder-item"]')].map((item) => [item.getAttribute('data-task-key'), item]));
+    window.__ruseactReorderableTest.reverse();
+    const reversed = [...document.querySelectorAll('[data-testid="reorder-item"]')].map((item) => Number(item.getAttribute('data-task-key')));
+    const reversedRetained = [...document.querySelectorAll('[data-testid="reorder-item"]')].every((item) => refs[item.getAttribute('data-task-key')] === item);
+    window.__ruseactReorderableTest.sort();
+    const sorted = [...document.querySelectorAll('[data-testid="reorder-item"]')].map((item) => Number(item.getAttribute('data-task-key')));
+    const sortedRetained = [...document.querySelectorAll('[data-testid="reorder-item"]')].every((item) => refs[item.getAttribute('data-task-key')] === item);
+    window.__ruseactReorderableTest.shuffle();
+    const shuffledItems = [...document.querySelectorAll('[data-testid="reorder-item"]')];
+    return {
+      reversed,
+      reversedRetained,
+      sorted,
+      sortedRetained,
+      shuffled: shuffledItems.map((item) => Number(item.getAttribute('data-task-key'))),
+      shuffledRetained: shuffledItems.every((item) => refs[item.getAttribute('data-task-key')] === item),
+      actionCount: window.__ruseactReorderableTest.getSnapshot().reorderActionCount,
+    };
+  })()`);
+  if (JSON.stringify(orderOperations.reversed) !== JSON.stringify([4, 3, 2, 1]) || !orderOperations.reversedRetained || JSON.stringify(orderOperations.sorted) !== JSON.stringify([1, 2, 3, 4]) || !orderOperations.sortedRetained || JSON.stringify([...orderOperations.shuffled].sort((a, b) => a - b)) !== JSON.stringify([1, 2, 3, 4]) || !orderOperations.shuffledRetained || orderOperations.actionCount < 7) {
+    throw new Error(`Reverse, sort, or shuffle failed: ${JSON.stringify(orderOperations)}`);
+  }
+
+  const nestedMove = await evaluate(webSocketUrl, `(() => {
+    const item = document.querySelector('[data-testid="reorder-item"][data-task-key="2"]');
+    window.__ruseactReorderableTest.toggleExpanded(2);
+    const detail = item.querySelector('[data-testid="reorder-detail"]');
+    const detailAction = item.querySelector('[data-testid="reorder-detail-action"]');
+    const detailEventsBefore = window.__ruseactReorderableTest.getSnapshot().detailEventCount;
+    detailAction.click();
+    const beforeOrder = window.__ruseactReorderableTest.getSnapshot().items.map((entry) => entry.id);
+    const index = beforeOrder.indexOf(2);
+    if (index === 0) window.__ruseactReorderableTest.moveDown(2);
+    else window.__ruseactReorderableTest.moveUp(2);
+    const movedItem = document.querySelector('[data-testid="reorder-item"][data-task-key="2"]');
+    return {
+      detailEvents: window.__ruseactReorderableTest.getSnapshot().detailEventCount - detailEventsBefore,
+      sameItem: item === movedItem,
+      sameDetail: detail === movedItem.querySelector('[data-testid="reorder-detail"]'),
+      otherDetail: document.querySelector('[data-testid="reorder-item"][data-task-key="1"] [data-testid="reorder-detail"]') !== null,
+    };
+  })()`);
+  if (nestedMove.detailEvents !== 1 || !nestedMove.sameItem || !nestedMove.sameDetail || nestedMove.otherDetail) {
+    throw new Error(`Nested detail movement failed: ${JSON.stringify(nestedMove)}`);
+  }
+
+  const nestedRemoval = await evaluate(webSocketUrl, `(() => {
+    const item = document.querySelector('[data-testid="reorder-item"][data-task-key="2"]');
+    const detailAction = item.querySelector('[data-testid="reorder-detail-action"]');
+    const detailEventsBefore = window.__ruseactReorderableTest.getSnapshot().detailEventCount;
+    window.__ruseactReorderableTest.remove(2);
+    detailAction.click();
+    const remaining = [...document.querySelectorAll('[data-testid="reorder-item"]')];
+    return {
+      detached: !item.isConnected && !detailAction.isConnected,
+      detachedListenerRemoved: window.__ruseactReorderableTest.getSnapshot().detailEventCount === detailEventsBefore,
+      ids: remaining.map((node) => Number(node.getAttribute('data-task-key'))),
+    };
+  })()`);
+  if (!nestedRemoval.detached || !nestedRemoval.detachedListenerRemoved || nestedRemoval.ids.includes(2)) {
+    throw new Error(`Nested item cleanup failed: ${JSON.stringify(nestedRemoval)}`);
+  }
+
+  const inserted = await evaluate(webSocketUrl, `(() => {
+    const before = Object.fromEntries([...document.querySelectorAll('[data-testid="reorder-item"]')].map((item) => [item.getAttribute('data-task-key'), item]));
+    const input = document.querySelector('[data-testid="reorder-input"]');
+    input.value = 'Appended control item';
+    document.querySelector('[data-testid="reorder-append"]').click();
+    input.value = 'Prepended control item';
+    document.querySelector('[data-testid="reorder-prepend"]').click();
+    const items = [...document.querySelectorAll('[data-testid="reorder-item"]')];
+    return {
+      ids: items.map((item) => Number(item.getAttribute('data-task-key'))),
+      retained: items.filter((item) => before[item.getAttribute('data-task-key')]).every((item) => before[item.getAttribute('data-task-key')] === item),
+      appendedTitle: items.find((item) => item.getAttribute('data-task-key') === '5')?.querySelector('[data-testid="reorder-title"]')?.textContent?.trim(),
+      prependedTitle: items.find((item) => item.getAttribute('data-task-key') === '6')?.querySelector('[data-testid="reorder-title"]')?.textContent?.trim(),
+    };
+  })()`);
+  if (!inserted.ids.includes(5) || !inserted.ids.includes(6) || inserted.appendedTitle !== "Appended control item" || inserted.prependedTitle !== "Prepended control item" || !inserted.retained) {
+    throw new Error(`Reorderable insertion failed: ${JSON.stringify(inserted)}`);
+  }
+
+  const retainedUpdate = await evaluate(webSocketUrl, `(() => {
+    const item = document.querySelector('[data-testid="reorder-item"][data-task-key="3"]');
+    const input = item.querySelector('[data-testid="reorder-local-input"]');
+    const check = item.querySelector('[data-testid="reorder-local-check"]');
+    input.value = 'keep this native value';
+    check.checked = true;
+    const setupBefore = window.__ruseactReorderableTest.getSnapshot().itemSetupCount;
+    window.__ruseactReorderableTest.updateTitle(3);
+    return {
+      title: item.querySelector('[data-testid="reorder-title"]')?.textContent?.trim(),
+      sameItem: item === document.querySelector('[data-testid="reorder-item"][data-task-key="3"]'),
+      sameInput: input === document.querySelector('[data-testid="reorder-item"][data-task-key="3"] [data-testid="reorder-local-input"]'),
+      value: input.value,
+      checked: check.checked,
+      setupBefore,
+      setupAfter: window.__ruseactReorderableTest.getSnapshot().itemSetupCount,
+    };
+  })()`);
+  if (retainedUpdate.title !== "Charlie · updated" || !retainedUpdate.sameItem || !retainedUpdate.sameInput || retainedUpdate.value !== "keep this native value" || !retainedUpdate.checked || retainedUpdate.setupBefore !== retainedUpdate.setupAfter) {
+    throw new Error(`Retained title update changed native or component identity: ${JSON.stringify(retainedUpdate)}`);
+  }
+
+  const emptyAndRestore = await evaluate(webSocketUrl, `(() => {
+    const oldItem = document.querySelector('[data-testid="reorder-item"][data-task-key="3"]');
+    const oldRemove = oldItem.querySelector('[data-testid="reorder-remove"]');
+    const managedBefore = window.__ruseactReorderableTest.getSnapshot().managedEventCount;
+    window.__ruseactReorderableTest.clear();
+    oldRemove.click();
+    const empty = {
+      ids: [...document.querySelectorAll('[data-testid="reorder-item"]')].map((item) => Number(item.getAttribute('data-task-key'))),
+      hasEmpty: document.querySelector('[data-testid="reorder-empty"]') !== null,
+      oldDetached: !oldItem.isConnected,
+      oldListenerRemoved: window.__ruseactReorderableTest.getSnapshot().managedEventCount === managedBefore,
+    };
+    const setupBeforeRestore = window.__ruseactReorderableTest.getSnapshot().itemSetupCount;
+    window.__ruseactReorderableTest.restoreDemo();
+    const restored = [...document.querySelectorAll('[data-testid="reorder-item"]')];
+    return {
+      empty,
+      restoredIds: restored.map((item) => Number(item.getAttribute('data-task-key'))),
+      freshKeys: restored.every((item) => Number(item.getAttribute('data-task-key')) > 6),
+      hasEmptyAfterRestore: document.querySelector('[data-testid="reorder-empty"]') !== null,
+      setupIncrease: window.__ruseactReorderableTest.getSnapshot().itemSetupCount - setupBeforeRestore,
+    };
+  })()`);
+  if (emptyAndRestore.empty.ids.length !== 0 || !emptyAndRestore.empty.hasEmpty || !emptyAndRestore.empty.oldDetached || !emptyAndRestore.empty.oldListenerRemoved || JSON.stringify(emptyAndRestore.restoredIds) !== JSON.stringify([7, 8, 9, 10]) || !emptyAndRestore.freshKeys || emptyAndRestore.hasEmptyAfterRestore || emptyAndRestore.setupIncrease !== 4) {
+    throw new Error(`Empty transition or fresh restore failed: ${JSON.stringify(emptyAndRestore)}`);
+  }
+
+  const focusObservations = await evaluate(webSocketUrl, `(() => {
+    const observations = {};
+    const focusInput = (id, value, start, end) => {
+      const input = document.querySelector('[data-testid="reorder-item"][data-task-key="' + id + '"] [data-testid="reorder-local-input"]');
+      input.value = value;
+      input.focus();
+      input.setSelectionRange(start, end, 'forward');
+      return input;
+    };
+    const readFocus = () => ({
+      activeKey: document.activeElement?.closest('[data-testid="reorder-item"]')?.getAttribute('data-task-key') ?? null,
+      activeIsInput: document.activeElement?.matches('[data-testid="reorder-local-input"]') ?? false,
+      selectionStart: document.activeElement?.selectionStart ?? null,
+      selectionEnd: document.activeElement?.selectionEnd ?? null,
+      selectionDirection: document.activeElement?.selectionDirection ?? null,
+    });
+    const item8 = focusInput(8, 'focus eight', 1, 5);
+    window.__ruseactReorderableTest.moveFirst(9);
+    observations.moveAnother = { beforeNodePreserved: item8 === document.querySelector('[data-testid="reorder-item"][data-task-key="8"] [data-testid="reorder-local-input"]'), value: item8.value, ...readFocus() };
+    const focusedForInsert = focusInput(8, 'insert focus', 2, 6);
+    window.__ruseactReorderableTest.prepend('Inserted before focus');
+    observations.insertBefore = { nodePreserved: focusedForInsert === document.querySelector('[data-testid="reorder-item"][data-task-key="8"] [data-testid="reorder-local-input"]'), value: focusedForInsert.value, ...readFocus() };
+    const focusedForRemove = focusInput(8, 'remove neighbor', 1, 4);
+    window.__ruseactReorderableTest.remove(7);
+    observations.removeUnrelated = { nodePreserved: focusedForRemove === document.querySelector('[data-testid="reorder-item"][data-task-key="8"] [data-testid="reorder-local-input"]'), value: focusedForRemove.value, ...readFocus() };
+    const focusedForUpdate = focusInput(8, 'update focus', 1, 3);
+    window.__ruseactReorderableTest.updateTitle(8);
+    observations.retainedUpdate = { nodePreserved: focusedForUpdate === document.querySelector('[data-testid="reorder-item"][data-task-key="8"] [data-testid="reorder-local-input"]'), value: focusedForUpdate.value, ...readFocus() };
+    const focusedForRemoval = focusInput(8, 'removed focus', 1, 3);
+    window.__ruseactReorderableTest.remove(8);
+    observations.removeFocused = { nodeConnected: focusedForRemoval.isConnected, ...readFocus() };
+    return observations;
+  })()`);
+  for (const observation of Object.values(focusObservations)) {
+    if (!observation.nodePreserved && observation.nodePreserved !== undefined && observation.nodePreserved !== true) {
+      throw new Error(`Focus observation lost native node identity: ${JSON.stringify(focusObservations)}`);
+    }
+  }
+
+  const manualReorderFlush = await evaluate(webSocketUrl, `(() => {
+    const item = document.querySelector('[data-testid="reorder-item"][data-task-key="9"]');
+    const beforeTitle = item.querySelector('[data-testid="reorder-title"]')?.textContent?.trim();
+    const beforeNode = item;
+    window.__ruseactReorderableTest.setWithoutFlush('updateTitle', 9);
+    const afterWrite = item.querySelector('[data-testid="reorder-title"]')?.textContent?.trim();
+    window.__ruseactReorderableTest.flush();
+    const afterFirstFlush = item.querySelector('[data-testid="reorder-title"]')?.textContent?.trim();
+    window.__ruseactReorderableTest.flush();
+    const afterFollowUpFlush = item.querySelector('[data-testid="reorder-title"]')?.textContent?.trim();
+    return { beforeTitle, afterWrite, afterFirstFlush, afterFollowUpFlush, sameNode: beforeNode === document.querySelector('[data-testid="reorder-item"][data-task-key="9"]') };
+  })()`);
+  if (manualReorderFlush.beforeTitle !== manualReorderFlush.afterWrite || manualReorderFlush.afterFirstFlush !== manualReorderFlush.beforeTitle || manualReorderFlush.afterFollowUpFlush === manualReorderFlush.beforeTitle || !manualReorderFlush.sameNode) {
+    throw new Error(`Reorderable one-pass flush behavior failed: ${JSON.stringify(manualReorderFlush)}`);
+  }
+
+  const stressResult = await evaluate(webSocketUrl, `(() => {
+    window.__ruseactReorderableTest.restoreDemo();
+    let model = window.__ruseactReorderableTest.getSnapshot().items.map((item) => ({ ...item }));
+    const setupAtStart = window.__ruseactReorderableTest.getSnapshot().itemSetupCount;
+    const refs = Object.fromEntries([...document.querySelectorAll('[data-testid="reorder-item"]')].map((item) => [item.getAttribute('data-task-key'), item]));
+    const assertState = (label) => {
+      const actual = window.__ruseactReorderableTest.getSnapshot();
+      const actualIds = actual.items.map((item) => item.id);
+      const expectedIds = model.map((item) => item.id);
+      if (JSON.stringify(actualIds) !== JSON.stringify(expectedIds) || new Set(actualIds).size !== actualIds.length) throw new Error(label + ': model/order mismatch ' + JSON.stringify({ expectedIds, actualIds }));
+      for (const item of document.querySelectorAll('[data-testid="reorder-item"]')) {
+        const key = item.getAttribute('data-task-key');
+        if (refs[key] && refs[key] !== item) throw new Error(label + ': retained node changed for ' + key);
+        refs[key] = item;
+      }
+      return actual;
+    };
+    const appendId = Math.max(...model.map((item) => item.id)) + 1;
+    window.__ruseactReorderableTest.append('Stress append');
+    model = [...model, { id: appendId, title: 'Stress append' }];
+    assertState('append');
+    const prependId = appendId + 1;
+    window.__ruseactReorderableTest.prepend('Stress prepend');
+    model = [{ id: prependId, title: 'Stress prepend' }, ...model];
+    assertState('prepend');
+    const moveDownId = model[0].id;
+    model = [model[1], model[0], ...model.slice(2)];
+    window.__ruseactReorderableTest.moveDown(moveDownId);
+    assertState('move down');
+    const lastId = model[model.length - 1].id;
+    const lastIndex = model.findIndex((item) => item.id === lastId);
+    [model[lastIndex - 1], model[lastIndex]] = [model[lastIndex], model[lastIndex - 1]];
+    window.__ruseactReorderableTest.moveUp(lastId);
+    assertState('move up');
+    const first = model[0];
+    model = [...model.slice(1), first];
+    window.__ruseactReorderableTest.moveLast(first.id);
+    assertState('move last');
+    model = [...model].reverse();
+    window.__ruseactReorderableTest.reverse();
+    assertState('reverse');
+    const shuffled = [...model];
+    for (let index = shuffled.length - 1; index > 0; index -= 1) {
+      const swapIndex = (index * 7 + 3) % (index + 1);
+      [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+    }
+    if (shuffled.every((item, index) => item.id === model[index].id)) [shuffled[0], shuffled[1]] = [shuffled[1], shuffled[0]];
+    model = shuffled;
+    window.__ruseactReorderableTest.shuffle();
+    assertState('shuffle');
+    model = [...model].sort((left, right) => left.title.localeCompare(right.title) || left.id - right.id);
+    window.__ruseactReorderableTest.sort();
+    assertState('sort');
+    const updateId = model[1].id;
+    model = model.map((item) => item.id === updateId ? { ...item, title: item.title + ' · updated' } : item);
+    window.__ruseactReorderableTest.updateTitle(updateId);
+    assertState('title update');
+    const expandedId = model[0].id;
+    window.__ruseactReorderableTest.toggleExpanded(expandedId);
+    const expanded = document.querySelector('[data-testid="reorder-item"][data-task-key="' + expandedId + '"] [data-testid="reorder-detail"]') !== null;
+    const removeId = model[2].id;
+    model = model.filter((item) => item.id !== removeId);
+    window.__ruseactReorderableTest.remove(removeId);
+    const final = assertState('remove');
+    return {
+      ids: final.items.map((item) => item.id),
+      expanded,
+      setupAtStart,
+      setupAtEnd: final.itemSetupCount,
+      expectedSetupIncrease: 2,
+      actionCount: final.reorderActionCount,
+    };
+  })()`);
+  if (!stressResult.expanded || stressResult.setupAtEnd !== stressResult.setupAtStart + stressResult.expectedSetupIncrease || new Set(stressResult.ids).size !== stressResult.ids.length || stressResult.actionCount < 6) {
+    throw new Error(`Repeated reorder stress regression failed: ${JSON.stringify(stressResult)}`);
+  }
+
+  const reorderDisposal = await evaluate(webSocketUrl, `(() => {
+    const oldButton = document.querySelector('[data-testid="reorder-item"] [data-testid="reorder-remove"]');
+    const snapshotBefore = window.__ruseactReorderableTest.getSnapshot();
+    window.__ruseactReorderableTest.dispose();
+    window.__ruseactReorderableTest.dispose();
+    oldButton?.click();
+    const snapshotAfter = window.__ruseactReorderableTest.getSnapshot();
+    return {
+      signalsDisposed: window.__ruseactReorderableTest.isApplicationSignalsDisposed(),
+      appChildren: document.querySelector('#app').childElementCount,
+      listenerRemoved: snapshotBefore.managedEventCount === snapshotAfter.managedEventCount,
+    };
+  })()`);
+  if (!reorderDisposal.signalsDisposed || reorderDisposal.appChildren !== 0 || !reorderDisposal.listenerRemoved) {
+    throw new Error(`Reorderable application disposal failed: ${JSON.stringify(reorderDisposal)}`);
+  }
+
+  console.log(`Real Chromium consumer verification passed: Hello World, Counter, Conditional Playground, Todo, Reorderable List movement, retained DOM/input identity, nested ownership, focus observations, explicit follow-up flushes, cleanup, and repeated reconciliation.`);
+  console.log(`Reorderable focus/selection observations: ${JSON.stringify({ firstMove: reorderFocusObservation, scenarios: focusObservations })}`);
 } finally {
   await stopProcess(browser);
   await stopProcess(preview);

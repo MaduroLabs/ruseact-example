@@ -75,7 +75,6 @@ export function createView(view: ConditionalViewContext): ViewDescription {
       ok: true,
       value: (
         <section class="conditional-panel" data-testid="settings-panel" aria-labelledby="settings-title">
-          <p class="eyebrow">Mounted branch</p>
           <h2 id="settings-title">Settings panel</h2>
           <label for="display-name">Display name</label>
           <input id="display-name" data-testid="branch-input" type="text" value="Branch-local value" />
@@ -107,13 +106,21 @@ export function createView(view: ConditionalViewContext): ViewDescription {
       value: (
         <main class="example-page">
           <nav class="site-nav" aria-label="Example navigation">
-            <a class="brand" href="/"><span class="brand-mark">R</span> Ruseact</a>
-            <span class="page-index">Example 03 / 05</span>
+            <a class="brand" href="/" aria-label="Ruseact Playground home">
+              <span class="brand-mark" aria-hidden="true">
+                <span class="brand-mark-line brand-mark-line-long"></span>
+                <span class="brand-mark-line brand-mark-line-short"></span>
+                <span class="brand-mark-line brand-mark-line-long"></span>
+                <span class="brand-mark-dot"></span>
+              </span>
+              <span>Ruseact Playground</span>
+            </a>
+            <span class="nav"><a href="/">Examples</a><a href="https://github.com/MaduroLabs/ruseact-example">Source</a><span class="version-note">alpha.1</span></span>
           </nav>
           <section class="example-card" aria-labelledby="conditional-title">
-            <p class="eyebrow">Conditional structural rendering</p>
+            <div class="surface-header"><span class="route">/conditional.html</span><span class="surface-label">Preview</span></div>
             <h1 id="conditional-title">Conditional Playground</h1>
-            <p>Structural updates replace only the selected branch while the parent stays mounted.</p>
+            <p class="example-description">Structural updates replace only the selected branch while the parent stays mounted.</p>
 
             <div class="conditional-controls" aria-label="Conditional playground controls">
               <button
@@ -148,7 +155,6 @@ export function createView(view: ConditionalViewContext): ViewDescription {
             )}
 
             <section class="observations" data-testid="observations" aria-labelledby="observations-title">
-              <p class="eyebrow">Lifecycle observations</p>
               <h2 id="observations-title">What to watch</h2>
               <p>
                 Parent setup is one-shot. Each panel opening creates a fresh Settings Panel, and advanced content
@@ -174,7 +180,7 @@ export function createView(view: ConditionalViewContext): ViewDescription {
             </section>
 
             <p class="source-note">Explore <a href="https://github.com/MaduroLabs/ruseact-example/blob/main/src/examples/conditional/App.tsx">the Conditional Playground source</a>. Branch-local inputs are intentionally recreated after removal.</p>
-            <a href="/">Back to examples</a>
+            <div class="example-footer"><span>Signal writes stay invisible until root.flush() runs.</span><a href="/">All examples</a></div>
           </section>
         </main>
       ),

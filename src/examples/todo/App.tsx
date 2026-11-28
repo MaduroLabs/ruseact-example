@@ -254,13 +254,21 @@ export function createView(view: TodoViewContext): unknown {
       value: (
         <main class="example-page">
           <nav class="site-nav" aria-label="Example navigation">
-            <a class="brand" href="/"><span class="brand-mark">R</span> Ruseact</a>
-            <span class="page-index">Example 04 / 05</span>
+            <a class="brand" href="/" aria-label="Ruseact Playground home">
+              <span class="brand-mark" aria-hidden="true">
+                <span class="brand-mark-line brand-mark-line-long"></span>
+                <span class="brand-mark-line brand-mark-line-short"></span>
+                <span class="brand-mark-line brand-mark-line-long"></span>
+                <span class="brand-mark-dot"></span>
+              </span>
+              <span>Ruseact Playground</span>
+            </a>
+            <span class="nav"><a href="/">Examples</a><a href="https://github.com/MaduroLabs/ruseact-example">Source</a><span class="version-note">alpha.1</span></span>
           </nav>
           <section class="example-card todo-card" aria-labelledby="todo-title">
-            <p class="eyebrow">Version 4 keyed reconciliation</p>
+            <div class="surface-header"><span class="route">/todo.html</span><span class="surface-label">Preview</span></div>
             <h1 id="todo-title">Todo Application</h1>
-            <p>
+            <p class="example-description">
               A small application model published from JavaScript, rendered through retained keyed items, and flushed
               explicitly at each event boundary.
             </p>
@@ -394,7 +402,7 @@ export function createView(view: TodoViewContext): unknown {
               flush because each root.flush() drains one pending snapshot.
             </p>
             <p class="source-note">Explore <a href="https://github.com/MaduroLabs/ruseact-example/blob/main/src/examples/todo/App.tsx">the Todo source</a>. Keyed items retain scalar fields and native nodes while their JavaScript collection changes.</p>
-            <a href="/">Back to examples</a>
+            <div class="example-footer"><span>Each event keeps the flush boundary explicit.</span><a href="/">All examples</a></div>
           </section>
         </main>
       ),

@@ -2,11 +2,12 @@
 
 ## Status
 
-This is a project-scoped draft created for the frontend design quality
-workflow. The proposed visual direction is **AWAITING HUMAN APPROVAL**. No
-application UI has been redesigned in this task.
+The **Open Page** visual direction was approved by the project owner on
+2026-11-28 for implementation on `feat/playground-redesign`. This document is
+the implementation reference for the redesign; it does not authorize changes
+to the framework repository or deployment.
 
-## Current visual inventory
+## Previous visual inventory
 
 Evidence source: Impeccable screenshots captured from the unchanged local
 development server on 2026-11-27 at Chromium desktop `1440x900` and mobile
@@ -47,40 +48,39 @@ Observed risks are visual/DX findings, not framework defects:
 - The examples use a shared rounded-card treatment that is consistent but may
   overuse containers as the site grows.
 
-No redesign decision is made here. These findings require art-direction
-approval before implementation.
+These findings are preserved as the rationale for replacing the previous
+presentation. They do not describe framework defects.
 
-## Proposed direction — awaiting human approval
+## Approved direction — Open Page
 
 Visual thesis: **an open technical workbench where each example is a labeled
-experiment, not a product-marketing card.**
+capability, not a product-marketing card.**
 
-The direction would retain the current restrained light foundation and strong
-readability, but make hierarchy more editorial and capability-led: a compact
-orientation header, a sharper first-view thesis, a more deliberate example
-sequence, and fewer repeated containers. The visual language should use
-measured blue/ink contrast and restrained rule lines to suggest instrumentation
-without decorative grids, glows, or novelty effects.
+The direction uses a light mineral paper surface, dark blue-green ink, one teal
+action color, thin rules, and a compact example index. It deliberately removes
+decorative eyebrows, section numbers, repeated cards, large marketing heroes,
+and simulated interactions from the landing page.
 
-### Proposed system
+### Approved system
 
-- Typography: keep a highly readable sans for UI and body text; reserve a
-  monospace face only for code, keys, and measured values if the surface needs
-  it. Use a compact heading scale rather than escalating every section.
-- Color: preserve the current accessible navy/blue-gray foundation; use one
-  clear action blue, one experimental-status treatment, and semantic state
-  colors only where an example needs them. Validate contrast before shipping.
-- Spacing: keep a consistent 8px-derived rhythm, reduce unintentional hero
-  dead space, and give the first example path priority over decorative padding.
-- Layout: treat the index as a guided sequence with one strong primary path and
-  supporting source/validation paths. Use cards only where grouping genuinely
-  improves comparison or task completion.
-- Components: preserve native controls, visible `:focus-visible`, simple
-  borders, and small-radius geometry. Avoid nested cards, badge repetition, and
-  visual effects without a functional explanation.
-- Responsive behavior: keep the brand/version relationship compact on mobile,
-  prevent inline actions from colliding with prose, and test every proposed
-  change at `1440x900` and `390x844`.
+- Typography: use a readable system sans for UI and body text. Body text is
+  400, labels and controls are 400–500, headings are 500–600, and the page
+  heading remains within a compact 26–32px scale. Reserve monospace for route
+  paths and other technical data.
+- Color: use the approved tokens `#eef2f1` paper, `#fbfcfb` surface,
+  `#142934` ink, `#596c70` muted text, `#cbd8d5` rules, `#287875` teal,
+  and `#1c5d5a` deep teal. Contrast must be verified in the rendered pages.
+- Spacing: use a compact 8px-derived rhythm. Reduce hero dead space and keep
+  the example surface close to the page orientation text.
+- Layout: use a compact header, capability index, and one active example
+  surface. On the landing page, links lead to the actual Ruseact applications;
+  the page must not simulate their controls.
+- Components: preserve native controls, explicit `root.flush()` behavior,
+  visible `:focus-visible`, simple borders, and small-radius geometry. Group
+  related data with rules or tint rather than nested rounded cards.
+- Responsive behavior: keep the navigation compact, stack the index above the
+  active surface, expose the primary example controls early, and verify every
+  route at `1440x900` and `390x844`.
 
 ## Reference research
 
@@ -98,10 +98,10 @@ without decorative grids, glows, or novelty effects.
   Transferable principle: make quality constraints visible and useful. Not
   copied: its Google/Chrome identity or editorial modules.
 
-## Approval gate
+## Implementation boundary
 
-The proposed direction is not approved. Before any major visual redesign,
-the project owner must approve the thesis, world, hierarchy, type/color system,
-and scope. A later implementation must run the actual app, capture and inspect
-desktop/mobile screenshots, receive an independent critique, and use
-Impeccable `critique`, `audit`, and `polish` at the appropriate stages.
+The approved direction changes the consumer presentation only. It does not
+change Ruseact runtime semantics, signal ownership, explicit flushing, keyed
+identity, native input behavior, test instrumentation, package artifacts, or
+public routes. All screenshots and audits must use the actual built
+applications rather than the temporary prototype's simulated preview.

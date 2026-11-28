@@ -24,12 +24,21 @@ export function createView(view: CounterViewContext): ViewDescription {
   return (
     <main class="example-page">
       <nav class="site-nav" aria-label="Example navigation">
-        <a class="brand" href="/"><span class="brand-mark">R</span> Ruseact</a>
-        <span class="page-index">Example 02 / 05</span>
+        <a class="brand" href="/" aria-label="Ruseact Playground home">
+          <span class="brand-mark" aria-hidden="true">
+            <span class="brand-mark-line brand-mark-line-long"></span>
+            <span class="brand-mark-line brand-mark-line-short"></span>
+            <span class="brand-mark-line brand-mark-line-long"></span>
+            <span class="brand-mark-dot"></span>
+          </span>
+          <span>Ruseact Playground</span>
+        </a>
+        <span class="nav"><a href="/">Examples</a><a href="https://github.com/MaduroLabs/ruseact-example">Source</a><span class="version-note">alpha.1</span></span>
       </nav>
       <section class="example-card" aria-labelledby="counter-title">
-        <p class="eyebrow">Explicit signals and flush</p>
+        <div class="surface-header"><span class="route">/counter.html</span><span class="surface-label">Preview</span></div>
         <h1 id="counter-title">Counter</h1>
+        <p class="example-description">Each event writes one signal and calls root.flush() explicitly.</p>
         <output class="counter-value" aria-live="polite">
           {ruseact.bindText([view.count], ({ runtime }) => runtime.get(view.count))}
         </output>
@@ -44,11 +53,8 @@ export function createView(view: CounterViewContext): ViewDescription {
             Reset
           </button>
         </div>
-        <p class="manual-flush-note" data-status>
-          Each event writes the signal and then calls root.flush() explicitly.
-        </p>
         <p class="source-note">Explore <a href="https://github.com/MaduroLabs/ruseact-example/blob/main/src/examples/counter/App.tsx">the Counter source</a> and try a keyboard-activated control.</p>
-        <a href="/">Back to examples</a>
+        <div class="example-footer"><span>Changed and unchanged signal writes remain explicit.</span><a href="/">All examples</a></div>
       </section>
     </main>
   );

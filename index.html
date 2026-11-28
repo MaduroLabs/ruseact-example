@@ -13,76 +13,91 @@
     <title>Ruseact · Experimental reactive UI</title>
   </head>
   <body>
-    <header class="site-header landing-header">
-      <a class="brand" href="/" aria-label="Ruseact examples home"><span class="brand-mark">R</span> Ruseact</a>
-      <span class="version-pill">0.1.0-alpha.1 · experimental</span>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Ruseact Playground home">
+        <span class="brand-mark" aria-hidden="true">
+          <span class="brand-mark-line brand-mark-line-long"></span>
+          <span class="brand-mark-line brand-mark-line-short"></span>
+          <span class="brand-mark-line brand-mark-line-long"></span>
+          <span class="brand-mark-dot"></span>
+        </span>
+        <span>Ruseact Playground</span>
+      </a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#examples">Examples</a>
+        <a href="https://github.com/MaduroLabs/ruseact-example">Source</a>
+        <span class="version-note">alpha.1</span>
+      </nav>
     </header>
-    <main class="landing-page">
-      <section class="landing-hero" aria-labelledby="landing-title">
-        <p class="eyebrow">Rust-powered reactive UI framework</p>
-        <h1 id="landing-title">Ruseact</h1>
-        <p class="hero-lede">An experimental compiler-driven frontend framework combining a Rust reactive core, WebAssembly, explicit dependencies, and fine-grained native DOM updates.</p>
-        <div class="hero-actions">
-          <a class="primary-action" href="/hello.html">Open Hello World</a>
-          <a href="https://github.com/MaduroLabs/ruseact">View framework on GitHub</a>
-          <a href="https://github.com/MaduroLabs/ruseact-example">View examples source</a>
+
+    <main id="top" class="landing-page">
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <h1 id="page-title">Inspect reactive behavior.</h1>
+          <p class="intro-copy">Run an example, then trace the source.</p>
         </div>
-        <ul class="technology-list" aria-label="Technology summary">
-          <li>Rust core</li>
-          <li>WebAssembly</li>
-          <li>TypeScript</li>
-          <li>Native DOM</li>
-        </ul>
+        <p class="intro-note">
+          <strong>Built for inspection</strong>
+          Signals, explicit flush, ownership, keyed identity, and native DOM behavior.
+        </p>
       </section>
 
-      <section class="showcase" aria-labelledby="showcase-title">
-        <div class="section-heading">
-          <p class="eyebrow">A guided tour</p>
-          <h2 id="showcase-title">Five small experiments</h2>
-          <p>Each page isolates a different part of the current public alpha.1 consumer contract.</p>
-        </div>
-        <div class="showcase-grid">
-          <article class="showcase-card">
-            <span class="showcase-number">01</span>
-            <h3>Hello World</h3>
-            <p>Package loading, explicit WASM initialization, and static rendering.</p>
-            <a class="card-action" href="/hello.html">Open demo <span aria-hidden="true">→</span></a>
-          </article>
-          <article class="showcase-card">
-            <span class="showcase-number">02</span>
-            <h3>Counter</h3>
-            <p>Scalar signals, native event handlers, and an explicit manual flush.</p>
-            <a class="card-action" href="/counter.html">Open demo <span aria-hidden="true">→</span></a>
-          </article>
-          <article class="showcase-card">
-            <span class="showcase-number">03</span>
-            <h3>Conditional Playground</h3>
-            <p>Lazy structural regions, nested components, and owned branch lifetimes.</p>
-            <a class="card-action" href="/conditional.html">Open demo <span aria-hidden="true">→</span></a>
-          </article>
-          <article class="showcase-card">
-            <span class="showcase-number">04</span>
-            <h3>Todo Application</h3>
-            <p>Keyed lists, retained scalar fields, filtering, and application state in JavaScript.</p>
-            <a class="card-action" href="/todo.html">Open demo <span aria-hidden="true">→</span></a>
-          </article>
-          <article class="showcase-card">
-            <span class="showcase-number">05</span>
-            <h3>Reorderable List</h3>
-            <p>Native DOM identity, uncontrolled input state, and keyed movement observations.</p>
-            <a class="card-action" href="/reorderable.html">Open demo <span aria-hidden="true">→</span></a>
-          </article>
+      <section class="landing-playground" id="examples" aria-labelledby="examples-title">
+        <aside class="example-index">
+          <h2 class="index-heading" id="examples-title">Examples</h2>
+          <ul class="example-list">
+            <li><a class="example-row" href="/hello.html" aria-current="true"><span class="example-name">Hello world</span><span class="example-capability">WASM initialization</span></a></li>
+            <li><a class="example-row" href="/counter.html"><span class="example-name">Counter</span><span class="example-capability">Signal writes</span></a></li>
+            <li><a class="example-row" href="/conditional.html"><span class="example-name">Conditional</span><span class="example-capability">Branch lifetime</span></a></li>
+            <li><a class="example-row" href="/todo.html"><span class="example-name">Todo</span><span class="example-capability">Derived state</span></a></li>
+            <li><a class="example-row" href="/reorderable.html"><span class="example-name">Reorderable</span><span class="example-capability">Keyed identity</span></a></li>
+          </ul>
+        </aside>
+
+        <div class="preview">
+          <div class="preview-header">
+            <span class="route">/hello.html</span>
+            <span class="preview-label">Preview</span>
+          </div>
+          <div class="landing-preview-content">
+            <h2>Hello world</h2>
+            <p>Package loading, explicit WebAssembly initialization, and static native DOM rendering.</p>
+            <div class="action-row">
+              <a class="primary-action" href="/hello.html">Open demo</a>
+              <a class="text-link" href="https://github.com/MaduroLabs/ruseact-example/blob/main/src/examples/hello-world/App.tsx">Source</a>
+            </div>
+          </div>
+          <div class="example-footer">
+            <span>The demo uses the actual Ruseact runtime and native controls.</span>
+            <a href="/hello.html">Run Hello world</a>
+          </div>
         </div>
       </section>
 
-      <section class="landing-note" aria-labelledby="status-title">
-        <p class="eyebrow">Read the fine print</p>
-        <h2 id="status-title">An honest experimental surface</h2>
-        <p>Ruseact is not production-ready and is not a React compatibility layer. Packages are private, dependencies are explicit, and scheduling remains manual in this alpha. The source, validation reports, and limitations are available in the repository.</p>
-        <a href="https://github.com/MaduroLabs/ruseact-example/blob/main/docs/m4.5.4-consumer-validation.md">Read the validation report</a>
+      <section class="next" aria-labelledby="next-title">
+        <div>
+          <h2 id="next-title">Choose another example</h2>
+          <p class="next-intro">Each route keeps one behavior in view and links to its source.</p>
+          <ul class="next-list">
+            <li><a href="/counter.html">Counter</a><span>Signal writes</span></li>
+            <li><a href="/conditional.html">Conditional</a><span>Branch lifetime</span></li>
+            <li><a href="/todo.html">Todo</a><span>Derived state</span></li>
+            <li><a href="/reorderable.html">Reorderable</a><span>Keyed identity</span></li>
+          </ul>
+        </div>
+        <aside class="constraints">
+          <strong>Runtime boundary</strong>
+          <p>Ruseact owns the reactive graph. The browser owns the page and its native controls.</p>
+          <p><a class="text-link" href="https://github.com/MaduroLabs/ruseact-example/tree/main/src/examples">Inspect example source</a></p>
+        </aside>
       </section>
     </main>
-    <footer class="site-footer"><span>Ruseact alpha.1</span><a href="https://github.com/MaduroLabs/ruseact">Framework</a><a href="https://github.com/MaduroLabs/ruseact-example">Examples</a></footer>
+
+    <footer class="site-footer">
+      <span>Ruseact alpha.1</span>
+      <a href="https://github.com/MaduroLabs/ruseact">Framework</a>
+      <a href="https://github.com/MaduroLabs/ruseact-example">Examples</a>
+    </footer>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

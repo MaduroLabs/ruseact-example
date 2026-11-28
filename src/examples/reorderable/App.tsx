@@ -52,7 +52,6 @@ export function createView(view: ReorderableViewContext): unknown {
     ok: true,
     value: (
       <section class="reorder-metrics" data-testid="reorder-metrics" aria-labelledby="reorder-metrics-title">
-        <p class="eyebrow">Observable identity notes</p>
         <h2 id="reorder-metrics-title">What stays the same?</h2>
         <dl>
           <dt>Parent setup calls</dt>
@@ -206,13 +205,21 @@ export function createView(view: ReorderableViewContext): unknown {
       value: (
         <main class="example-page">
           <nav class="site-nav" aria-label="Example navigation">
-            <a class="brand" href="/"><span class="brand-mark">R</span> Ruseact</a>
-            <span class="page-index">Example 05 / 05</span>
+            <a class="brand" href="/" aria-label="Ruseact Playground home">
+              <span class="brand-mark" aria-hidden="true">
+                <span class="brand-mark-line brand-mark-line-long"></span>
+                <span class="brand-mark-line brand-mark-line-short"></span>
+                <span class="brand-mark-line brand-mark-line-long"></span>
+                <span class="brand-mark-dot"></span>
+              </span>
+              <span>Ruseact Playground</span>
+            </a>
+            <span class="nav"><a href="/">Examples</a><a href="https://github.com/MaduroLabs/ruseact-example">Source</a><span class="version-note">alpha.1</span></span>
           </nav>
           <section class="example-card reorder-card" aria-labelledby="reorder-title">
-            <p class="eyebrow">Version 4 native keyed movement</p>
+            <div class="surface-header"><span class="route">/reorderable.html</span><span class="surface-label">Preview</span></div>
             <h1 id="reorder-title">Reorderable List</h1>
-            <p>
+            <p class="example-description">
               Move retained item ranges through the browser DOM while observing component setup, renderer-owned
               signals, uncontrolled inputs, focus, and nested branch lifetimes.
             </p>
@@ -288,7 +295,7 @@ export function createView(view: ReorderableViewContext): unknown {
               restores browser focus and selection.
             </p>
             <p class="source-note">Explore <a href="https://github.com/MaduroLabs/ruseact-example/blob/main/src/examples/reorderable/App.tsx">the Reorderable List source</a>. Focus and selection notes describe tested Chromium behavior, not a universal guarantee.</p>
-            <a href="/">Back to examples</a>
+            <div class="example-footer"><span>Keyed movement is observed in the actual DOM.</span><a href="/">All examples</a></div>
           </section>
         </main>
       ),

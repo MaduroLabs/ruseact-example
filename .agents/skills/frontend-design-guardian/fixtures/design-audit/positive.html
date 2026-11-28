@@ -1,0 +1,19 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Positive audit fixture</title>
+<style>
+  :root { font: 16px/1.5 system-ui, sans-serif; color: #202124; background: #fff; }
+  main { max-width: 42rem; margin: 2rem auto; padding: 0 1rem; }
+  h1 { font-size: 2rem; font-weight: 600; line-height: 1.15; }
+  p { font-weight: 400; }
+  button { font: 500 0.875rem/1.25 system-ui, sans-serif; color: #fff; background: #175cd3; border: 0; padding: .6rem .9rem; }
+  code { font-family: ui-monospace, monospace; }
+</style>
+<main>
+  <h1>Runtime state</h1>
+  <p>Read the current signal value and update it when the task requires a change.</p>
+  <p><strong>Changed</strong> updates are queued for the next explicit flush.</p>
+  <button type="button">Run test</button>
+  <p><span>WASM</span> bridge errors stay distinct from interface copy.</p>
+  <p><code>Uint32Array</code> is a technical type name, not interface copy.</p>
+</main>

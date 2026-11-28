@@ -1,4 +1,4 @@
 interface:
   display_name: "Frontend Design Guardian"
-  short_description: "Guard frontend design quality with evidence and critique"
-  default_prompt: "Use $frontend-design-guardian to plan, review, and validate this frontend design workflow before implementation."
+  short_description: "Audit typography, copy, hierarchy, and visual quality with evidence"
+  default_prompt: "Use $frontend-design-guardian for screenshot, computed-style, anti-slop, accessibility, and human-approval review before changing frontend design."

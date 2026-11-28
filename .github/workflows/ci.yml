@@ -45,3 +45,9 @@ jobs:
         run: pnpm test
         env:
           CHROMIUM: chrome
+      - name: Run design audit regression tests
+        run: node .agents/skills/frontend-design-guardian/scripts/test-audit-design.mjs
+      - name: Audit mounted Ruseact page
+        run: node .agents/skills/frontend-design-guardian/scripts/test-audit-app.mjs
+        env:
+          CHROMIUM: chrome
